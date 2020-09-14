@@ -9,6 +9,7 @@ const state = isBrowser && JsonGlobal("state");
 const apolloState = isBrowser && state.apolloState;
 const apiGatewayUrl = isBrowser && state.base.apiGatewayUrl;
 const csrfToken = isBrowser && state.base.csrfToken;
+const authToken = isBrowser && state.base.authToken;
 
 export const apolloClient = new ApolloClient({
   ssrMode: !isBrowser,
@@ -16,7 +17,10 @@ export const apolloClient = new ApolloClient({
     uri: apiGatewayUrl,
     fetch,
     credentials: "same-origin",
-    headers: { "x-csrf-token": csrfToken },
+    headers: {
+      "x-csrf-token": csrfToken,
+      authorization: `Bearer ${authToken}`,
+    },
   }),
   cache: new InMemoryCache().restore(apolloState),
 });

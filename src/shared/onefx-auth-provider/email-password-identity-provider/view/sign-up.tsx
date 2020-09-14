@@ -1,7 +1,7 @@
 import Button from "antd/lib/button";
 import serialize from "form-serialize";
 import { t } from "onefx/lib/iso-i18n";
-import Helmet from "onefx/lib/react-helmet";
+import { Helmet } from "onefx/lib/react-helmet";
 import { Link } from "onefx/lib/react-router-dom";
 import { styled } from "onefx/lib/styletron-react";
 import React, { useState } from "react";
@@ -17,6 +17,7 @@ import { EmailField } from "./email-field";
 import { FieldMargin } from "./field-margin";
 import { FormContainer } from "./form-container";
 import { PasswordField } from "./password-field";
+import { H1, TopMargin } from "./sign-in";
 
 const LOGIN_FORM = "signup";
 
@@ -75,17 +76,18 @@ const SignUpInner = (props: Props): JSX.Element => {
         }
       }
     } catch (err) {
-      window.console.error(`failed to post sign-in: ${err}`);
+      window.console.error(`failed to post sign-up: ${err}`);
     }
   };
 
   return (
     <ContentPadding>
-      <Flex center minHeight="550px">
+      <Flex center>
         <Form id={LOGIN_FORM} onSubmit={onSubmit}>
           <Helmet title={`Sign Up - ${t("topbar.brand")}`} />
           <Flex column>
-            <h1>Create Account</h1>
+            <TopMargin />
+            <H1>{t("auth/create_account")}</H1>
             <EmailField defaultValue={valueEmail} error={errorEmail} />
             <input defaultValue={props.next} hidden name="next" />
             <PasswordField defaultValue={valuePassword} error={errorPassword} />
@@ -110,8 +112,8 @@ const SignUpInner = (props: Props): JSX.Element => {
             <div
               dangerouslySetInnerHTML={{
                 __html: t("auth/consent", {
-                  tosUrl: "/legal/terms-of-service",
-                  policyUrl: "/legal/privacy-policy",
+                  tosUrl: "/p/legal/terms-of-service",
+                  policyUrl: "/p/legal/privacy-policy",
                 }),
               }}
               style={{ fontSize: "10px" }}

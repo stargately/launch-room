@@ -2,7 +2,7 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import { mobileViewPortContent } from "onefx/lib/iso-react-render/root/mobile-view-port-content";
 
-import Helmet from "onefx/lib/react-helmet";
+import { Helmet } from "onefx/lib/react-helmet";
 import { noFlashColorMode } from "onefx/lib/styletron-react";
 import React from "react";
 import { connect } from "react-redux";
@@ -65,7 +65,7 @@ function HeadInner({
       title={`${t("meta.title")} - ${t("meta.description")}`}
     >
       <html lang={locale} />
-      <script type={"text/javascript"} nonce={nonce}>
+      <script type="text/javascript" nonce={nonce}>
         {noFlashColorMode({ defaultMode: "light" })}
       </script>
     </Helmet>

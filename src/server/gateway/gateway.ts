@@ -13,9 +13,14 @@ export function setGateways(server: MyServer): void {
       "cannot connect to the database without gateways.mongoose.uri provided in configuration"
     );
   } else {
-    mongoose.connect(server.config.gateways.mongoose.uri).catch((err) => {
-      server.logger.warn(`failed to connect mongoose: ${err}`);
-    });
+    mongoose
+      .connect(server.config.gateways.mongoose.uri, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      })
+      .catch((err) => {
+        server.logger.warn(`failed to connect mongoose: ${err}`);
+      });
     server.gateways.mongoose = mongoose;
   }
 }

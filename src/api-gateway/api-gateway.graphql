@@ -3,7 +3,114 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type ApiTokens {
+  _id: String
+  sendgridApiKey: String
+  carrierToken: String
+  logoUrl: String
+}
+
+type Clause {
+  attribute: String!
+  op: String!
+  values: [String!]!
+  negate: Boolean!
+}
+
+input ClauseInput {
+  attribute: String!
+  op: String!
+  values: [String!]!
+  negate: Boolean!
+}
+
+type ClientSideAvailability {
+  usingMobileKey: Boolean!
+  usingEnvironmentId: Boolean!
+}
+
+type Empty {
+  ok: Boolean!
+}
+
+type Fallthrough {
+  variation: Int!
+}
+
+type FlagDetails {
+  key: String!
+  version: Int!
+  on: Boolean!
+  trackEvents: Boolean!
+  trackEventsFallthrough: Boolean!
+  deleted: Boolean!
+  prerequisites: [Prerequisite!]!
+  salt: String!
+  sel: String!
+  targets: [Target!]!
+  rules: [Rule!]!
+  fallthrough: Fallthrough!
+  offVariation: Int!
+  variations: [Boolean!]!
+  clientSide: Boolean!
+  clientSideAvailability: ClientSideAvailability!
+}
+
+type FlagsStatus {
+  total: Int!
+  skip: Int!
+  limit: Int!
+  flags: [FlagDetails!]!
+}
+
+type Mutation {
+  subscribeToNewsletter(
+    email: String!
+    firstName: String
+    lastName: String
+  ): Empty!
+  upsertFlag(
+    workspaceId: ID!
+    key: ID!
+    rules: [RuleInput!]
+    on: Boolean
+  ): Boolean!
+  upsertApiTokens(
+    _id: String!
+    sendgridApiKey: String
+    carrierToken: String
+  ): ApiTokens
+}
+
+type Prerequisite {
+  key: String!
+  variation: Int!
+}
+
 type Query {
+  flagsStatus(workspaceId: ID!, skip: Int!, limit: Int!): FlagsStatus!
+  flagDetails(workspaceId: ID!, key: ID!): FlagDetails
+  apiTokens: ApiTokens!
+
   # is the server healthy?
   health: String!
+}
+
+type Rule {
+  id: ID!
+  variation: Int!
+  clauses: [Clause!]!
+  trackEvents: Boolean!
+}
+
+input RuleInput {
+  id: ID!
+  variation: Int!
+  clauses: [ClauseInput!]!
+  trackEvents: Boolean!
+}
+
+type Target {
+  values: [String!]!
+  variation: Int!
 }

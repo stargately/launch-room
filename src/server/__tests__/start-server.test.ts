@@ -7,7 +7,7 @@ import { setupTestServer } from "./setup-test-server";
 const port = config.get("server.port");
 setupTestServer();
 
-test("GET /health", async t => {
+test("GET /health", async (t) => {
   try {
     const res = await axios.get(
       `http://localhost:${port}${config.get("server.routePrefix") || ""}/health`
@@ -19,7 +19,7 @@ test("GET /health", async t => {
   }
 });
 
-test("GET /", async t => {
+test.skip("GET /", async (t) => {
   try {
     const res = await axios.get(`http://localhost:${port}/`);
     t.deepEqual(res.status, 200, "res.status");

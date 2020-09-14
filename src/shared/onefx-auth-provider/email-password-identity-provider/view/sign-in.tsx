@@ -1,13 +1,14 @@
 import Button from "antd/lib/button";
 import serialize from "form-serialize";
 import { t } from "onefx/lib/iso-i18n";
-import Helmet from "onefx/lib/react-helmet";
+import { Helmet } from "onefx/lib/react-helmet";
 import { styled } from "onefx/lib/styletron-react";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Flex } from "@/shared/common/flex";
-import { fullOnPalm } from "@/shared/common/styles/style-media";
+import { fullOnPalm, media } from "@/shared/common/styles/style-media";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
+import { margin } from "polished";
 import { axiosInstance } from "./axios-instance";
 import { EmailField } from "./email-field";
 import { FieldMargin } from "./field-margin";
@@ -76,16 +77,26 @@ const SignInInner = (props: Props): JSX.Element => {
       }
     } catch (err) {
       window.console.error(`failed to post sign-in: ${err}`);
+      let errMsg = err.message;
+      if (err.response?.data?.error?.code === "RATE_LIMIT") {
+        errMsg = t("auth/ratelimited");
+      }
+      setValueEmail(email);
+      setValuePassword(valuePassword);
+      setErrorEmail(errMsg);
+      setErrorPassword("");
+      setDisableButton(false);
     }
   };
 
   return (
     <ContentPadding>
-      <Flex center minHeight="550px">
+      <Flex center>
         <Form id={LOGIN_FORM} onSubmit={onSubmit}>
           <Helmet title={`login - ${t("topbar.brand")}`} />
           <Flex column>
-            <h1>{t("auth/sign_in.title")}</h1>
+            <TopMargin />
+            <H1>{t("auth/sign_in.title")}</H1>
             <EmailField defaultValue={valueEmail} error={errorEmail} />
             <input defaultValue={props.next} hidden name="next" />
             <PasswordField defaultValue={valuePassword} error={errorPassword} />
@@ -119,6 +130,17 @@ const SignInInner = (props: Props): JSX.Element => {
     </ContentPadding>
   );
 };
+
+export const TopMargin = styled("div", ({ $theme }) => ({
+  [media.palm]: {
+    margin: 0,
+  },
+  margin: $theme.sizing[5],
+}));
+
+export const H1 = styled("h1", ({ $theme }) => ({
+  ...margin($theme.sizing[5], 0),
+}));
 
 const Form = styled(FormContainer, {
   width: "320px",

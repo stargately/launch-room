@@ -2,29 +2,19 @@ import React from "react";
 import { actionSetTheme } from "@/shared/common/base-reducer";
 import { colors } from "@/shared/common/styles/style-color";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
-import { HealthController } from "@/shared/home/health-controller";
 import Row from "antd/lib/grid/row";
-import Layout from "antd/lib/layout";
 import { assetURL } from "onefx/lib/asset-url";
 import { styled } from "onefx/lib/styletron-react";
 import { connect } from "react-redux";
+import Col from "antd/lib/grid/col";
+import { Flex } from "@/shared/common/flex";
+import { media } from "@/shared/common/styles/style-media";
+import { t } from "onefx/lib/iso-i18n";
+import { margin } from "polished";
+import Button from "antd/lib/button";
+import { CommonMargin } from "../common/common-margin";
 
-const ExampleButton = styled("button", ({ $theme }) => {
-  return {
-    backgroundColor: $theme.colors.white,
-    borderColor: $theme.colors.black,
-    color: $theme.colors.text01,
-    fontSize: $theme.sizing[3],
-    padding: $theme.sizing[1],
-    borderRadius: $theme.sizing[1],
-    outline: "none",
-  };
-});
-
-const StyledContent = styled(Layout.Content, ({ $theme }) => ({
-  backgroundColor: $theme.colors.white,
-  padding: $theme.sizing[5],
-}));
+const Fade = require("react-reveal/Fade");
 
 export const Home = connect(
   (state: { base: { themeCode: "dark" | "light" } }) => ({
@@ -36,66 +26,69 @@ export const Home = connect(
     },
   })
 )(
-  (props: {
-    actionSetTheme: (themeCode: "dark" | "light") => void;
-    themeCode: "dark" | "light";
-  }): JSX.Element => {
+  (): JSX.Element => {
     return (
-      <ContentPadding>
-        <Layout>
-          <StyledContent>
-            <Row justify="center">
-              <OneFxIcon src={assetURL("favicon.svg")} />
-            </Row>
-            <Row justify="center">
-              <Title>OneFx</Title>
-            </Row>
-            <Row justify="center">
-              <p>Building Web & Mobile Apps with Speed & Quality</p>
-            </Row>
-            <Row justify="center">
-              <a
-                href="/api-gateway/"
-                rel="noreferrer nofollow noopener"
-                target="_blank"
-              >
-                GraphQL Endpoint
-              </a>
-            </Row>
-            <Row justify="center">
-              <HealthController />
-            </Row>
-            <Row justify={"center"}>
-              <ExampleButton
-                onClick={() =>
-                  props.actionSetTheme(
-                    props.themeCode === "dark" ? "light" : "dark"
-                  )
-                }
-              >
-                Toggle {props.themeCode === "dark" ? "light" : "dark"} mode
-              </ExampleButton>
-            </Row>
-          </StyledContent>
-        </Layout>
-      </ContentPadding>
+      <div>
+        <ContentPadding>
+          <StyledHeroRow gutter={32}>
+            <Col md={12} xs={24}>
+              <HeroH1>{t("home.title")}</HeroH1>
+              <HeroP>{t("home.desc")}</HeroP>
+
+              <CommonMargin />
+
+              <Fade ssrReveal={true}>
+                <Button href="/sign-up/" type="primary">
+                  Sign Up for Free
+                </Button>
+                <CommonMargin />
+                <Button>Fork me on Github</Button>
+              </Fade>
+              <CommonMargin />
+            </Col>
+
+            <Col md={12} xs={24}>
+              <Flex center={true} width="100%">
+                <Fade right ssrReveal={true} style={{ width: "100%" }}>
+                  <Img src={assetURL("hero.svg")} alt="Feature flag" />
+                </Fade>
+                <CommonMargin />
+              </Flex>
+            </Col>
+          </StyledHeroRow>
+        </ContentPadding>
+      </div>
     );
   }
 );
 
-const OneFxIcon = styled("img", {
-  width: "150px",
-  height: "150px",
-  boxSizing: "border-box",
-  border: "5px white solid",
-  borderRadius: "50%",
-  overflow: "hidden",
-  boxShadow: "0 5px 15px 0px rgba(0,0,0,0.6)",
-  transform: "translate-y(0px)",
-  animation: "float 6s ease-in-out infinite",
+const Img = styled("img", {
+  width: "100%",
+  height: "400px",
+  [media.palm]: {
+    width: "100%",
+  },
 });
 
-const Title = styled("h1", {
-  color: colors.secondary,
-  margin: "16px",
-});
+const HeroH1 = styled("h1", ({ $theme }) => ({
+  color: colors.text01,
+  fontSize: $theme.sizing[5],
+  margin: 0,
+  fontWeight: 700,
+  [media.palm]: {
+    fontSize: $theme.sizing[4],
+  },
+}));
+
+const HeroP = styled("div", ({ $theme }) => ({
+  fontSize: $theme.sizing[3],
+  fontWeight: 400,
+  ...margin($theme.sizing[3], 0),
+}));
+
+const StyledHeroRow = styled(Row, ({ $theme }) => ({
+  ...margin("120px", 0, 0),
+  [media.palm]: {
+    ...margin($theme.sizing[5], 0, 0),
+  },
+}));

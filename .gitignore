@@ -54,3 +54,5 @@ dump.rdb
 
 package-lock.json
 __generated__
+
+yarn.lock

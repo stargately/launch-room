@@ -1,7 +1,7 @@
 import { clientReactRender } from "onefx/lib/iso-react-render/client-react-render";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import React from "react";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from "@apollo/client";
 import { combineReducers } from "redux";
 import { AppContainer } from "@/shared/app-container";
 import { apolloClient } from "@/shared/common/apollo-client";
@@ -16,6 +16,7 @@ clientReactRender({
       </ThemeProvider>
     </ApolloProvider>
   ),
+  // @ts-ignore
   reducer: combineReducers({
     base: baseReducer,
     apolloState: noopReducer,
