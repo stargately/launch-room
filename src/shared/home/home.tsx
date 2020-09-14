@@ -8,6 +8,7 @@ import Layout from "antd/lib/layout";
 import { assetURL } from "onefx/lib/asset-url";
 import { styled } from "onefx/lib/styletron-react";
 import { connect } from "react-redux";
+import { HooksDemo } from "@/shared/home/flags-demo";
 
 const ExampleButton = styled("button", ({ $theme }) => {
   return {
@@ -44,6 +45,7 @@ export const Home = connect(
       <ContentPadding>
         <Layout>
           <StyledContent>
+            <HooksDemo />
             <Row justify="center">
               <OneFxIcon src={assetURL("favicon.svg")} />
             </Row>

@@ -1,4 +1,5 @@
 const { config } = require("dotenv");
+
 config();
 
 module.exports = {
@@ -10,31 +11,35 @@ module.exports = {
     staticDir: "./dist",
     delayInitMiddleware: false,
     cookie: {
-      secrets: ["insecure plain text", "insecure secret here"]
+      secrets: ["insecure plain text", "insecure secret here"],
     },
     noSecurityHeadersRoutes: {
       "/api-gateway/": true,
-      "/api/": true
+      "/api/": true,
+      "/events/": true,
+      "/sdk/": true,
     },
     noCsrfRoutes: {
       "/api-gateway/": true,
-      "/api/": true
-    }
+      "/api/": true,
+      "/events/": true,
+      "/sdk/": true,
+    },
   },
   ssm: {
-    enabled: false
+    enabled: false,
   },
   gateways: {
     logger: {
       enabled: true,
-      level: "debug"
+      level: "debug",
     },
     mongoose: {
-      uri: process.env.MONGODB_URI
-    }
+      uri: process.env.MONGODB_URI,
+    },
   },
   analytics: {
-    googleTid: "TODO: replace with your googleTid"
+    googleTid: "TODO: replace with your googleTid",
   },
   csp: {
     "default-src": ["none"],
@@ -44,13 +49,13 @@ module.exports = {
     "connect-src": [
       "self",
       "https://www.google-analytics.com/",
-      ...(process.env.API_GATEWAY_URL ? [process.env.API_GATEWAY_URL] : [])
+      ...(process.env.API_GATEWAY_URL ? [process.env.API_GATEWAY_URL] : []),
     ],
     "child-src": ["self"],
     "font-src": ["self", "data:", "https://fonts.gstatic.com/"],
     "img-src": ["*", "data:"],
     "media-src": ["self"],
     "object-src": ["self"],
-    "script-src": ["self", "https://www.google-analytics.com/"]
-  }
+    "script-src": ["self", "https://www.google-analytics.com/"],
+  },
 };

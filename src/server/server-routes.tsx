@@ -16,6 +16,45 @@ export function setServerRoutes(server: MyServer): void {
   setApiGateway(server);
   setEmailPasswordIdentityProviderRoutes(server);
 
+  server.get("get-sdk-goals", "/sdk/goals/:clientId", async (ctx: Context) => {
+    ctx.response.body = [];
+  });
+
+  server.get(
+    "get-eval",
+    "/sdk/evalx/:clientId/users/:userBase64",
+    async (ctx: Context) => {
+      const buff = Buffer.from(ctx.params.userBase64, "base64");
+      const text = buff.toString("utf8");
+      const user = JSON.parse(text);
+
+      let announcementsValue = false;
+      if (
+        ["puncsky@gmail.com", "email@example.com"].indexOf(user?.email) !== -1
+      ) {
+        announcementsValue = true;
+      }
+
+      ctx.response.body = {
+        announcements: {
+          version: 5586,
+          flagVersion: 1,
+          value: announcementsValue,
+          variation: 1,
+          trackEvents: false,
+        },
+      };
+    }
+  );
+
+  server.post(
+    "check-events-bulk",
+    "/events/bulk/:clientId",
+    async (ctx: Context) => {
+      ctx.response.status = 202;
+    }
+  );
+
   server.get("SPA", /^(?!\/?api-gateway\/).+$/, async (ctx: Context) => {
     ctx.setState("base.nonce", ctx.state.nonce);
 
