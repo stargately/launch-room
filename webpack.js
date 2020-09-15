@@ -9,7 +9,7 @@ const process = require("global/process");
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
-const ANALYZE = false;
+const ANALYZE = true;
 const PROD = process.env.NODE_ENV === "production";
 const OUTPUT_DIR = "dist/";
 

@@ -14,12 +14,14 @@ module.exports = {
       secrets: ["insecure plain text", "insecure secret here"],
     },
     noSecurityHeadersRoutes: {
+      "/diagnostic": true,
       "/api-gateway/": true,
       "/api/": true,
       "/events/": true,
       "/sdk/": true,
     },
     noCsrfRoutes: {
+      "/diagnostic": true,
       "/api-gateway/": true,
       "/api/": true,
       "/events/": true,
