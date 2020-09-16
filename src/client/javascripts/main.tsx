@@ -16,6 +16,7 @@ clientReactRender({
       </ThemeProvider>
     </ApolloProvider>
   ),
+  // @ts-ignore
   reducer: combineReducers({
     base: baseReducer,
     apolloState: noopReducer,

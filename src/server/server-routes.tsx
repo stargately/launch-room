@@ -5,6 +5,7 @@ import { AppContainer } from "@/shared/app-container";
 import { apolloSSR } from "@/shared/common/apollo-ssr";
 import { setEmailPasswordIdentityProviderRoutes } from "@/shared/onefx-auth-provider/email-password-identity-provider/email-password-identity-provider-handler";
 import { setApiGateway } from "@/api-gateway/api-gateway";
+import { latestAll } from "@/server/sdk-latest-all";
 import { MyServer } from "./start-server";
 
 export function setServerRoutes(server: MyServer): void {
@@ -64,28 +65,7 @@ export function setServerRoutes(server: MyServer): void {
   });
 
   server.all("get-latest-all", "/sdk/latest-all", async (ctx: Context) => {
-    ctx.response.body = JSON.stringify({
-      flags: {
-        flagKey: {
-          key: "flagKey",
-          version: 5586,
-          on: false,
-          offVariation: 0,
-          variations: [
-            {
-              announcements: {
-                version: 5586,
-                flagVersion: 1,
-                value: "false",
-                variation: 1,
-                trackEvents: false,
-              },
-            },
-          ],
-        },
-      },
-      segments: {},
-    });
+    ctx.response.body = JSON.stringify(latestAll);
   });
 
   server.get(
@@ -122,6 +102,33 @@ export function setServerRoutes(server: MyServer): void {
       ctx.response.status = 202;
     }
   );
+
+  server.post("create-bulk", "/bulk", async (ctx: Context) => {
+    const yo = [
+      {
+        kind: "index",
+        creationDate: 1600233412007,
+        user: {
+          key: "aa0ceb",
+          name: "Grace Hopper",
+          email: "gracehopper@example.com",
+        },
+      },
+      {
+        startDate: 1600233412007,
+        endDate: 1600233412007,
+        features: {
+          announcements: {
+            default: false,
+            counters: [{ value: true, count: 1, variation: 0, version: 2 }],
+          },
+        },
+        kind: "summary",
+      },
+    ];
+    console.log(yo);
+    ctx.response.status = 202;
+  });
 
   server.get("SPA", /^(?!\/?api-gateway\/).+$/, async (ctx: Context) => {
     ctx.setState("base.nonce", ctx.state.nonce);

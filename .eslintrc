@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "@puncsky/eslint-config-onefx-react",
+    "@puncsky/eslint-config-onefx"
+  ],
+  "rules": {
+    "no-restricted-imports": [
+      {
+        "name": "styletron-react",
+        "message": "import onefx/lib/styletron-react instead."
+      }
+    ]
+  }
+}
