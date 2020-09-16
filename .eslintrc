@@ -5,6 +5,7 @@
   ],
   "rules": {
     "no-restricted-imports": [
+      "error",
       {
         "name": "styletron-react",
         "message": "import onefx/lib/styletron-react instead."
