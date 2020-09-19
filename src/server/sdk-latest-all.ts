@@ -39,7 +39,7 @@ export const latestAll = {
           trackEvents: false,
         },
       ],
-      fallthrough: { variation: 0 },
+      fallthrough: { variation: 1 },
       offVariation: 1,
       variations: [true, false],
       debugEventsUntilDate: null,
