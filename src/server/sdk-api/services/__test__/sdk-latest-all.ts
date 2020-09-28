@@ -11,35 +11,8 @@ export const latestAll = {
       salt: "2afdfb6f53304d9a990e0c347c061eee",
       sel: "c18957b75318447788891bc8fc7dfa02",
       targets: [],
-      rules: [
-        {
-          id: "29610c1e-f48c-41c6-8601-41293317f1ec",
-          variation: 0,
-          clauses: [
-            {
-              attribute: "email",
-              op: "in",
-              values: ["email@example.com"],
-              negate: false,
-            },
-          ],
-          trackEvents: false,
-        },
-        {
-          id: "b47993ca-fb08-4eac-bc19-839fce50b2ac",
-          variation: 0,
-          clauses: [
-            {
-              attribute: "email",
-              op: "startsWith",
-              values: ["puncsky+"],
-              negate: false,
-            },
-          ],
-          trackEvents: false,
-        },
-      ],
-      fallthrough: { variation: 1 },
+      rules: [],
+      fallthrough: { variation: 0 },
       offVariation: 1,
       variations: [true, false],
       debugEventsUntilDate: null,
