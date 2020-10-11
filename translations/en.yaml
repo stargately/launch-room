@@ -1,3 +1,7 @@
+home.desc: Launch room leverages Launch Darkly clients and build the open-source server upon it.
+
+home.title: 'Feature Flags, Simplified'
+
 meta.description: Feature Flags Simplified
 
 meta.title: LaunchRoom
@@ -16,6 +20,3 @@ topbar.home: Home
 
 topbar.login: Login
 
-home.title: Feature Flags, Simplified
-
-home.desc: Launch room leverages Launch Darkly clients and build the open-source server upon it.

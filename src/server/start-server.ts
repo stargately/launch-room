@@ -14,6 +14,13 @@ export type MyServer = Server & {
       mongoose: {
         uri: string;
       };
+      sendgrid: {
+        sendgridApiKey: string;
+        listName: string;
+        senderId: string;
+        unsubscribeUrl?: string;
+        unsubscribeGroup?: number;
+      };
     };
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

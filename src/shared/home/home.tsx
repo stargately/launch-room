@@ -11,9 +11,8 @@ import { Flex } from "@/shared/common/flex";
 import { media } from "@/shared/common/styles/style-media";
 import { t } from "onefx/lib/iso-i18n";
 import { margin } from "polished";
-import { NewsletterForm } from "@/shared/newsletter/newsletter-form/newsletter-form";
+import Button from "antd/lib/button";
 import { CommonMargin } from "../common/common-margin";
-import { Button } from "antd";
 
 const Fade = require("react-reveal/Fade");
 
