@@ -39,6 +39,11 @@ module.exports = {
     mongoose: {
       uri: process.env.MONGODB_URI,
     },
+    sendgrid: {
+      sendgridApiKey: process.env.SENDGRID_API_KEY,
+      listName: "hedgehog-newsletter",
+      senderId: "hedgehog",
+    },
   },
   analytics: {
     googleTid: "TODO: replace with your googleTid",

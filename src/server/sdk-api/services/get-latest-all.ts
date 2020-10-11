@@ -1,13 +1,14 @@
 import { latestAll } from "@/server/sdk-api/services/__test__/sdk-latest-all";
-import { FlagsModel } from "@/model/flags-model";
+import { FlagModel } from "@/model/flag-model";
 
 export function createGetLatestAll({
-  model: { flagsModel },
+  model: { flagModel },
 }: {
-  model: { flagsModel: FlagsModel };
+  model: { flagModel: typeof FlagModel };
 }) {
   return function getLatestAll(sdkKey: string) {
-    flagsModel.get(sdkKey);
+    const namespace = sdkKey; // get workspace by sdkKey
+    flagModel.find({ namespace });
     return latestAll;
   };
 }

@@ -3,6 +3,18 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Empty {
+  ok: Boolean!
+}
+
+type Mutation {
+  subscribeToNewsletter(
+    email: String!
+    firstName: String
+    lastName: String
+  ): Empty!
+}
+
 type Query {
   # is the server healthy?
   health: String!

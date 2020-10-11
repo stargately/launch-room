@@ -1,6 +1,6 @@
 import config from "config";
 import { Config, Server } from "onefx/lib/server";
-import { setModel } from "@/model";
+import { Model, setModel } from "@/model";
 import { OnefxAuth, authConfig } from "onefx-auth";
 import { Gateways, setGateways } from "./gateway/gateway";
 import { setMiddleware } from "./middleware";
@@ -18,8 +18,7 @@ export type MyServer = Server & {
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolvers: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  model: any;
+  model: Model;
 };
 
 export async function startServer(): Promise<Server> {

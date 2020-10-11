@@ -1,7 +1,11 @@
 import { MyServer } from "@/server/start-server";
-import { FlagsModel } from "@/model/flags-model";
+import { FlagModel } from "@/model/flag-model";
+
+export type Model = {
+  flagModel: typeof FlagModel;
+};
 
 export function setModel(server: MyServer): void {
   server.model = server.model || {};
-  server.model.flagsModel = new FlagsModel();
+  server.model.flagModel = FlagModel;
 }
