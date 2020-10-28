@@ -22,7 +22,7 @@ export function setSdkApiRoutes(server: MyServer) {
 
   server.all("get-latest-all", "/sdk/latest-all", async (ctx: Context) => {
     const sdkKey = ctx.headers.authorization;
-    const resp = getLatestAll(sdkKey);
+    const resp = await getLatestAll(sdkKey);
     ctx.response.body = JSON.stringify(resp);
   });
 

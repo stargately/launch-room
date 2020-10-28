@@ -1,14 +1,21 @@
-import { latestAll } from "@/server/sdk-api/services/__test__/sdk-latest-all";
 import { FlagModel } from "@/model/flag-model";
+import { SegmentModel } from "@/model/segment-model";
 
 export function createGetLatestAll({
-  model: { flagModel },
+  model: { flagModel, segmentModel },
 }: {
-  model: { flagModel: typeof FlagModel };
+  model: { flagModel: typeof FlagModel; segmentModel: typeof SegmentModel };
 }) {
-  return function getLatestAll(sdkKey: string) {
+  return async function getLatestAll(sdkKey: string) {
     const namespace = sdkKey; // get workspace by sdkKey
-    flagModel.find({ namespace });
+
+    const flags = await flagModel.find().exec();
+    const segments = await segmentModel.find().exec();
+    const latestAll = {
+      flags,
+      segments,
+    };
+
     return latestAll;
   };
 }
