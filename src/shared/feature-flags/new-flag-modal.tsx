@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import Modal from "antd/lib/modal/Modal";
 import { NewFlagForm } from "@/shared/feature-flags/new-flag-form";
 
+type Props = {
+  action: Promise<boolean>;
+};
+
 export const NewFlagModal: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const close = () => setVisible(false);
