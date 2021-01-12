@@ -89,7 +89,7 @@
     "@storybook/react": "6.1.11",
     "@typescript-eslint/eslint-plugin": "4.1.0",
     "@typescript-eslint/parser": "4.1.0",
-    "apollo": "2.32.0",
+    "apollo": "2.32.1",
     "ava": "3.14.0",
     "cache-loader": "4.1.0",
     "del": "5.1.0",
