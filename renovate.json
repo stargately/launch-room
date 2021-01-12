@@ -3,5 +3,25 @@
     "config:base",
     "github>whitesource/merge-confidence:beta"
   ],
-  "automerge": true
+  "npm": {
+    "separateMinorPatch": true,
+    "packageRules": [
+      {
+        "updateTypes": ["major"],
+        "automerge": true,
+        "unpublishSafe": true
+      },
+      {
+        "updateTypes": ["minor"],
+        "automerge": true,
+        "unpublishSafe": true
+      },
+      {
+        "updateTypes": ["patch"],
+        "automerge": true,
+        "unpublishSafe": true
+      }
+    ]
+  }
+
 }
