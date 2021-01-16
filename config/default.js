@@ -64,5 +64,5 @@ module.exports = {
     "object-src": ["self"],
     "script-src": ["self", "https://www.google-analytics.com/"],
   },
-  loadSeedData: getEnvVar("LOAD_SEED_DATA", "true"),
+  loadSeedData: getEnvVar("LOAD_SEED_DATA", "false"),
 };
