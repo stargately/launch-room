@@ -114,6 +114,12 @@ class FlagDetails {
   @Field(() => String)
   key: string;
 
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  description: string;
+
   @Field(() => Int)
   version: number;
 
@@ -204,11 +210,20 @@ class UpFlagDetailsArgs {
   @Field(() => ID)
   key: string;
 
+  @Field(() => String, { nullable: true })
+  name: string;
+
+  @Field(() => String, { nullable: true })
+  description: string;
+
   @Field(() => [RuleInput], { nullable: true })
   rules: Array<RuleInput>;
 
   @Field(() => Boolean, { nullable: true })
   on: boolean;
+
+  @Field(() => [Boolean], { nullable: true })
+  variations: boolean[];
 }
 
 @Resolver()
@@ -264,26 +279,49 @@ export class FlagResolver {
   @Authorized()
   @Mutation(() => Boolean)
   async upsertFlag(
-    @Args() { key, workspaceId, rules, on }: UpFlagDetailsArgs,
+    @Args() detail: UpFlagDetailsArgs,
     @Ctx() { model: { flagModel, userWorkspace }, userId }: IContext
   ): Promise<boolean> {
+    const { key, workspaceId, rules, on } = detail;
+
     await assertWorkspace(userWorkspace, userId, workspaceId);
 
-    const updated = {} as Record<string, unknown>;
-    if (rules) {
-      updated.rules = rules;
-    }
-    if (on !== null && on !== undefined) {
-      updated.isOn = on;
-    }
+    const flag = await flagModel.findOne({ key, workspace: workspaceId });
+    if (flag) {
+      const updated = {} as Record<string, unknown>;
 
-    await flagModel.findOneAndUpdate(
-      {
-        key,
+      if (rules) {
+        updated.rules = rules;
+      }
+
+      if (on !== null && on !== undefined) {
+        updated.isOn = on;
+      }
+
+      await flagModel.findOneAndUpdate(
+        {
+          key,
+          workspace: workspaceId,
+        },
+        updated
+      );
+    } else {
+      await flagModel.create({
         workspace: workspaceId,
-      },
-      updated
-    );
+        clientSideAvailability: {
+          usingMobileKey: true,
+          usingEnvironmentId: true,
+        },
+        isOn: true,
+        salt: "",
+        sel: "",
+        targets: [],
+        fallthrough: {
+          variation: 0,
+        },
+        ...detail,
+      });
+    }
 
     return true;
   }

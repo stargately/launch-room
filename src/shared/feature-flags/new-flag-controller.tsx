@@ -5,5 +5,5 @@ import { useUpsertFlag } from "../flag-details/hooks/use-upsert-flag";
 
 export const NewFlagController: React.FC = () => {
   const { upsertFlag } = useUpsertFlag();
-  return <NewFlagModal />;
+  return <NewFlagModal action={upsertFlag} />;
 };
