@@ -49,6 +49,8 @@ const seedUserWorkspaces = [
 const seedFlags = [
   {
     key: "alpha-launch-users",
+    name: "alpha-launch-users",
+    description: "alpha-launch-users",
     workspace: seedWorkspaces[0]._id,
     version: 100,
     // this should be "on", however mongoose does not allow it
@@ -100,6 +102,8 @@ const seedFlags = [
   },
   {
     key: "spendingReportSubscription",
+    name: "spendingReportSubscription",
+    description: "spendingReportSubscription",
     workspace: seedWorkspaces[1]._id,
     version: 2,
     // this should be "on", however mongoose does not allow it

@@ -40,6 +40,7 @@ export async function startServer(): Promise<Server> {
     ...authConfig,
     loginUrl: "/launch-room/login/",
   });
+
   setMiddleware(server);
   if (loadSeedData) {
     await server.gateways.mongoose.connection.dropDatabase();

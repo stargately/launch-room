@@ -6,7 +6,7 @@ import { ColumnsType } from "antd/lib/table";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
 import { Link } from "onefx/lib/react-router-dom";
 import { CommonMargin } from "@/shared/common/common-margin";
-import { NewFlagModal } from "./new-flag-modal";
+import { NewFlagController } from "./new-flag-controller";
 
 type Props = {
   data: FlagsStatus_flagsStatus_flags[];
@@ -55,7 +55,7 @@ export const FlagsStatusTable: React.FC<Props> = ({ data }) => {
     <ContentPadding>
       <CommonMargin />
       <h1>Feature Flags</h1>
-      <NewFlagModal />
+      <NewFlagController />
       <div>
         Use this page to see all feature flags in this project. Select a flag to
         manage the environment-specific targeting and rollout rules.

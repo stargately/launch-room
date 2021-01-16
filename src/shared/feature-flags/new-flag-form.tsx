@@ -5,9 +5,11 @@ import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Select from "antd/lib/select";
 import Checkbox from "antd/lib/checkbox";
-import { Button } from "antd";
+import { Button, notification } from "antd";
 import { CommonMargin } from "@/shared/common/common-margin";
+import { RefetchContext, WorkspaceIdContext } from "./context";
 import { VarIcon } from "../common/icons/var-icon";
+import { UpsertFlagVariables } from "../flag-details/data/__generated__/UpsertFlag";
 
 const KeyHelp = (
   <>
@@ -19,13 +21,54 @@ const KeyHelp = (
   </>
 );
 
+export type Props = {
+  action: (variables: UpsertFlagVariables) => Promise<void>;
+  closeModal: () => void;
+};
+
 const usingMobileKey = "usingMobileKey";
 const usingEnvironmentId = "usingEnvironmentId";
 
-export const NewFlagForm: React.FC = () => {
-  const onFinish = (values: Record<string, unknown>) => {
-    console.log(values);
+export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
+  const workspaceId = React.useContext(WorkspaceIdContext);
+  const refetch = React.useContext(RefetchContext);
+  const [form] = Form.useForm();
+
+  const onFinish = async (values: Record<string, unknown>) => {
+    const variations = Object.keys(values)
+      .map((key) => /variations\[(.+?)\]/.exec(key))
+      .filter((key) => !!key)
+      .map((result) => ({
+        // @ts-ignore
+        key: result[0],
+        // @ts-ignore
+        value: Number.parseInt(result[1], 10),
+      }))
+      .sort((a, b) => a.value - b.value)
+      .map((item) => values[item.key]) as any[];
+
+    try {
+      await action({
+        name: values.name as string,
+        description: values.name as string,
+        workspaceId,
+        key: values.key as string,
+        on: true,
+        variations,
+      });
+      form.resetFields();
+      closeModal();
+      refetch();
+      notification.success({
+        message: "created",
+      });
+    } catch (e) {
+      notification.error({
+        message: "error, please check",
+      });
+    }
   };
+
   return (
     <div>
       <h3>Create a feature flag</h3>
@@ -33,7 +76,7 @@ export const NewFlagForm: React.FC = () => {
         A feature flag lets you control who can see a particular feature in your
         app.
       </div>
-      <Form onFinish={onFinish} layout="vertical">
+      <Form form={form} onFinish={onFinish} layout="vertical">
         <Form.Item
           name="name"
           label="Name"

@@ -18,25 +18,25 @@ export class Flag extends TimeStamps {
   @prop({ ref: Workspace })
   workspace: Ref<Workspace>;
 
-  @prop()
-  version: number;
+  @prop({ default: 1 })
+  version?: number;
 
   // this should be on; however, mongoose does not allow it for
   // throw new Error('`' + firstPieceOfPath + '` may not be used as a schema pathname');
-  @prop()
+  @prop({ default: true })
   isOn: boolean;
 
-  @prop()
-  trackEvents: boolean;
+  @prop({ default: true })
+  trackEvents?: boolean;
 
-  @prop()
-  trackEventsFallthrough: boolean;
+  @prop({ default: true })
+  trackEventsFallthrough?: boolean;
 
-  @prop()
-  deleted: boolean;
+  @prop({ default: false })
+  deleted?: boolean;
 
-  @prop()
-  prerequisites: Array<{
+  @prop({ default: [] })
+  prerequisites?: Array<{
     key: string;
     variation: number;
   }>;
@@ -47,8 +47,8 @@ export class Flag extends TimeStamps {
   @prop()
   sel: string;
 
-  @prop()
-  targets: Array<{
+  @prop({ default: [] })
+  targets?: Array<{
     values: Array<string>;
     variation: number;
   }>;
@@ -69,23 +69,29 @@ export class Flag extends TimeStamps {
   @prop()
   fallthrough: { variation: number };
 
-  @prop()
-  offVariation: number;
+  @prop({ default: 0 })
+  offVariation?: number;
 
   @prop()
   variations: Array<boolean>;
 
-  @prop()
-  debugEventsUntilDate: any;
+  @prop({ default: null })
+  debugEventsUntilDate?: any;
 
-  @prop()
-  clientSide: boolean;
+  @prop({ default: true })
+  clientSide?: boolean;
 
   @prop()
   clientSideAvailability: {
     usingMobileKey: boolean;
     usingEnvironmentId: boolean;
   };
+
+  @prop()
+  name?: string;
+
+  @prop()
+  description?: string;
 }
 
 export const FlagModel = getModelForClass(Flag);

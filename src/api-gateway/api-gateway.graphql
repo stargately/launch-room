@@ -39,6 +39,8 @@ type Fallthrough {
 
 type FlagDetails {
   key: String!
+  name: String!
+  description: String!
   version: Int!
   on: Boolean!
   trackEvents: Boolean!
@@ -72,8 +74,11 @@ type Mutation {
   upsertFlag(
     workspaceId: ID!
     key: ID!
+    name: String
+    description: String
     rules: [RuleInput!]
     on: Boolean
+    variations: [Boolean!]
   ): Boolean!
   upsertApiTokens(
     _id: String!
