@@ -85,6 +85,8 @@ export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
           <Input placeholder="Eg. New gallery" />
         </Form.Item>
 
+        <CommonMargin />
+
         <Form.Item
           name="key"
           label="Key"
@@ -94,9 +96,13 @@ export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
           <Input placeholder="new-gallery" />
         </Form.Item>
 
+        <CommonMargin />
+
         <Form.Item name="description" label="Description">
           <Input placeholder="Describe what this feature flag controls" />
         </Form.Item>
+
+        <CommonMargin />
 
         <h4>Client-side SDK availability</h4>
         <p>Control which client-side SDKs can use this flag.</p>
@@ -117,6 +123,8 @@ export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
             </Row>
           </Checkbox.Group>
         </Form.Item>
+
+        <CommonMargin />
 
         <Form.Item
           name="variationType"
@@ -143,6 +151,8 @@ export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
           <Input disabled />
         </Form.Item>
 
+        <CommonMargin />
+
         <Form.Item
           name="variations[1]"
           label={
@@ -154,6 +164,8 @@ export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
         >
           <Input disabled />
         </Form.Item>
+
+        <CommonMargin />
 
         <h4>Default variations</h4>
 
@@ -192,6 +204,8 @@ export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
             </Select>
           </Form.Item>
         </Input.Group>
+
+        <CommonMargin />
 
         <Form.Item>
           <Button htmlType="submit">Submit</Button>
