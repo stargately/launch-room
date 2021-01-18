@@ -54,8 +54,8 @@ export class Flag extends TimeStamps {
   }>;
 
   @prop()
-  rules: Array<{
-    id: string;
+  rules?: Array<{
+    id?: string;
     variation: number;
     clauses: Array<{
       attribute: string;

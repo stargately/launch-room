@@ -31,7 +31,7 @@ const columns: ColumnsType<FlagsStatus_flagsStatus_flags> = [
         val = variations[record.offVariation];
       } else {
         const set = new Set();
-        for (const r of record.rules) {
+        for (const r of record.rules || []) {
           set.add(variations[r.variation]);
         }
         set.add(variations[record.fallthrough.variation]);

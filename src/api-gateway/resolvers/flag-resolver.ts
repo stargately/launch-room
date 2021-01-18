@@ -12,6 +12,7 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
+import { v4 as uuid } from "uuid";
 import { IContext } from "@/api-gateway/api-gateway";
 import { ForbiddenError } from "apollo-server-koa";
 import { UserWorkspaceModel } from "@/model/user-workspace-model";
@@ -72,8 +73,8 @@ class Fallthrough {
 
 @ObjectType()
 class Rule {
-  @Field(() => ID)
-  id: string;
+  @Field(() => ID, { nullable: true })
+  id?: string;
 
   @Field(() => Int)
   variation: number;
@@ -87,8 +88,8 @@ class Rule {
 
 @InputType()
 class RuleInput {
-  @Field(() => ID)
-  id: string;
+  @Field(() => ID, { nullable: true })
+  id?: string;
 
   @Field(() => Int)
   variation: number;
@@ -147,7 +148,7 @@ class FlagDetails {
   @Field(() => [Target])
   targets: Array<Target>;
 
-  @Field(() => [Rule])
+  @Field(() => [Rule], { nullable: true })
   rules: Array<Rule>;
 
   @Field(() => Fallthrough)
@@ -242,7 +243,7 @@ export class FlagResolver {
 
     const [total, flags] = await Promise.all([
       flagModel.estimatedDocumentCount({ workspace: workspaceId }),
-      flagModel.find(query).skip(skip).limit(limit).exec(),
+      flagModel.find(query).skip(skip).limit(limit).lean(),
     ]);
     for (const f of flags) {
       // @ts-ignore
@@ -291,6 +292,9 @@ export class FlagResolver {
       const updated = {} as Record<string, unknown>;
 
       if (rules) {
+        for (const r of rules) {
+          r.id = r.id || uuid();
+        }
         updated.rules = rules;
       }
 

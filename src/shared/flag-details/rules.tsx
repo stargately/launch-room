@@ -13,11 +13,41 @@ export type RulesProps = {
   variance: boolean[];
 };
 
+const getDefaultRules = (): FlagDetails_flagDetails_rules[] => [
+  {
+    id: null,
+    clauses: [
+      {
+        attribute: "email",
+        op: "endsWith",
+        values: [],
+        negate: false,
+      },
+    ],
+    variation: 0,
+    trackEvents: false,
+  },
+  {
+    id: null,
+    clauses: [
+      {
+        attribute: "email",
+        op: "startsWith",
+        values: [],
+        negate: false,
+      },
+    ],
+    variation: 0,
+    trackEvents: false,
+  },
+];
+
 export function Rules({ rules, variance }: RulesProps): JSX.Element {
+  const conertedRules = rules && rules.length ? rules : getDefaultRules();
   return (
     <Row gutter={[12, 12]}>
       <Col>Target users who match these rules</Col>
-      {rules.map((r, i) => (
+      {conertedRules.map((r, i) => (
         <Col key={i} span={24}>
           <Rule rule={r} variance={variance} index={i} />
         </Col>

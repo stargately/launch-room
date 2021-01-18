@@ -50,7 +50,7 @@ type FlagDetails {
   salt: String!
   sel: String!
   targets: [Target!]!
-  rules: [Rule!]!
+  rules: [Rule!]
   fallthrough: Fallthrough!
   offVariation: Int!
   variations: [Boolean!]!
@@ -102,14 +102,14 @@ type Query {
 }
 
 type Rule {
-  id: ID!
+  id: ID
   variation: Int!
   clauses: [Clause!]!
   trackEvents: Boolean!
 }
 
 input RuleInput {
-  id: ID!
+  id: ID
   variation: Int!
   clauses: [ClauseInput!]!
   trackEvents: Boolean!
