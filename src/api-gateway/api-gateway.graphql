@@ -66,25 +66,9 @@ type FlagsStatus {
 }
 
 type Mutation {
-  subscribeToNewsletter(
-    email: String!
-    firstName: String
-    lastName: String
-  ): Empty!
-  upsertFlag(
-    workspaceId: ID!
-    key: ID!
-    name: String
-    description: String
-    rules: [RuleInput!]
-    on: Boolean
-    variations: [Boolean!]
-  ): Boolean!
-  upsertApiTokens(
-    _id: String!
-    sendgridApiKey: String
-    carrierToken: String
-  ): ApiTokens
+  subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
+  upsertFlag(workspaceId: ID!, key: ID!, name: String, description: String, rules: [RuleInput!], on: Boolean, variations: [Boolean!]): Boolean!
+  upsertApiTokens(_id: String!, sendgridApiKey: String, carrierToken: String): ApiTokens
 }
 
 type Prerequisite {
