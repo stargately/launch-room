@@ -3,6 +3,7 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
+import { useSelector } from "react-redux";
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
 import { Cross } from "./icons/cross.svg";
@@ -52,13 +53,19 @@ export const TopBar = (): JSX.Element => {
     );
   };
 
+  const { routePrefix } = useSelector(
+    (state: { base: { routePrefix: string } }) => ({
+      routePrefix: state.base.routePrefix,
+    })
+  );
+
   return (
     <div>
       <Bar>
         <Flex>
           <Logo />
           <CommonMargin />
-          <BrandText href="/">{t("topbar.brand")}</BrandText>
+          <BrandText href={routePrefix}>{t("topbar.brand")}</BrandText>
         </Flex>
         <Flex>
           <Menu>{renderMenu()}</Menu>

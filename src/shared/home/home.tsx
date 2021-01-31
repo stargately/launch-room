@@ -5,7 +5,7 @@ import { ContentPadding } from "@/shared/common/styles/style-padding";
 import Row from "antd/lib/grid/row";
 import { assetURL } from "onefx/lib/asset-url";
 import { styled } from "onefx/lib/styletron-react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import Col from "antd/lib/grid/col";
 import { Flex } from "@/shared/common/flex";
 import { media } from "@/shared/common/styles/style-media";
@@ -27,6 +27,11 @@ export const Home = connect(
   })
 )(
   (): JSX.Element => {
+    const { routePrefix } = useSelector(
+      (state: { base: { routePrefix: string } }) => ({
+        routePrefix: state.base.routePrefix,
+      })
+    );
     return (
       <div>
         <ContentPadding>
@@ -38,7 +43,7 @@ export const Home = connect(
               <CommonMargin />
 
               <Fade ssrReveal={true}>
-                <Button href="/sign-up/" type="primary">
+                <Button href={`${routePrefix}/sign-up/`} type="primary">
                   Sign Up for Free
                 </Button>
                 <CommonMargin />
