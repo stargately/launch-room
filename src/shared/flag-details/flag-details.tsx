@@ -12,6 +12,7 @@ import Row from "antd/lib/row";
 // eslint-disable-next-line camelcase
 import { FlagDetails_flagDetails } from "@/shared/flag-details/data/__generated__/FlagDetails";
 import { UpsertFlagVariables } from "@/shared/flag-details/data/__generated__/UpsertFlag";
+import { VarianceSelect } from "@/shared/flag-details/variance-select";
 import { RuleInput } from "../../../__generated__/globalTypes";
 import { CommonMargin } from "../common/common-margin";
 
@@ -49,6 +50,7 @@ export function FlagDetails({
 
       <Form
         onFinish={async (values) => {
+          console.log(values);
           const rules = [] as RuleInput[];
           const valKeys = Object.keys(values);
           for (const k of valKeys) {
@@ -75,6 +77,10 @@ export function FlagDetails({
             key: flagKey,
             on: values.on,
             rules,
+            fallthrough: {
+              variation: values["fallthrough.variation"],
+            },
+            offVariation: values.offVariation,
           });
 
           notification.success({ message: "Updated!" });
@@ -95,9 +101,17 @@ export function FlagDetails({
         <Rules
           rules={flagDetails?.rules || []}
           variance={flagDetails?.variations || []}
+          fallthroughVariance={flagDetails?.fallthrough.variation}
         />
         If targeting is off, serve{" "}
-        {String(flagDetails?.variations[flagDetails?.fallthrough.variation])}
+        <VarianceSelect
+          itemProps={{
+            name: "offVariation",
+            initialValue: flagDetails?.offVariation,
+          }}
+          variance={flagDetails?.variations}
+          disabled={false}
+        />
       </Form>
     </ContentPadding>
   );

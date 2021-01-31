@@ -12,7 +12,7 @@ export default {
 const Template: Story = (args) => (
   <NewFlagForm
     {...args}
-    action={() =>
+    upsertFlag={() =>
       new Promise(() => {
         return 0;
       })

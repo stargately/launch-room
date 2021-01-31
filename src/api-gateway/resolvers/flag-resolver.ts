@@ -167,6 +167,12 @@ class FlagDetails {
   clientSideAvailability: ClientSideAvailability;
 }
 
+@InputType()
+class FallthroughInput {
+  @Field(() => Int)
+  variation: number;
+}
+
 @ObjectType()
 class FlagsStatus {
   @Field(() => Int)
@@ -225,6 +231,12 @@ class UpFlagDetailsArgs {
 
   @Field(() => [Boolean], { nullable: true })
   variations: boolean[];
+
+  @Field(() => Int, { nullable: true })
+  offVariation: number;
+
+  @Field(() => FallthroughInput, { nullable: true })
+  fallthrough: FallthroughInput;
 }
 
 @Resolver()
@@ -283,7 +295,7 @@ export class FlagResolver {
     @Args() detail: UpFlagDetailsArgs,
     @Ctx() { model: { flagModel, userWorkspace }, userId }: IContext
   ): Promise<boolean> {
-    const { key, workspaceId, rules, on } = detail;
+    const { key, workspaceId, rules, on, offVariation, fallthrough } = detail;
 
     await assertWorkspace(userWorkspace, userId, workspaceId);
 
@@ -300,6 +312,14 @@ export class FlagResolver {
 
       if (on !== null && on !== undefined) {
         updated.isOn = on;
+      }
+
+      if (offVariation !== undefined) {
+        updated.offVariation = offVariation;
+      }
+
+      if (fallthrough) {
+        updated.fallthrough = fallthrough;
       }
 
       await flagModel.findOneAndUpdate(
@@ -320,9 +340,6 @@ export class FlagResolver {
         salt: "",
         sel: "",
         targets: [],
-        fallthrough: {
-          variation: 0,
-        },
         ...detail,
       });
     }

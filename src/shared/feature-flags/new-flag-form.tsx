@@ -22,14 +22,14 @@ const KeyHelp = (
 );
 
 export type Props = {
-  action: (variables: UpsertFlagVariables) => Promise<void>;
+  upsertFlag: (variables: UpsertFlagVariables) => Promise<void>;
   closeModal: () => void;
 };
 
 const usingMobileKey = "usingMobileKey";
 const usingEnvironmentId = "usingEnvironmentId";
 
-export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
+export const NewFlagForm: React.FC<Props> = ({ upsertFlag, closeModal }) => {
   const workspaceId = React.useContext(WorkspaceIdContext);
   const refetch = React.useContext(RefetchContext);
   const [form] = Form.useForm();
@@ -48,7 +48,7 @@ export const NewFlagForm: React.FC<Props> = ({ action, closeModal }) => {
       .map((item) => values[item.key]) as any[];
 
     try {
-      await action({
+      await upsertFlag({
         name: values.name as string,
         description: values.name as string,
         workspaceId,

@@ -9,6 +9,8 @@ export const upsertFlag = gql`
     $rules: [RuleInput!]
     $on: Boolean
     $variations: [Boolean!]
+    $fallthrough: FallthroughInput
+    $offVariation: Int
   ) {
     upsertFlag(
       workspaceId: $workspaceId
@@ -18,6 +20,8 @@ export const upsertFlag = gql`
       name: $name
       description: $description
       variations: $variations
+      fallthrough: $fallthrough
+      offVariation: $offVariation
     )
   }
 `;

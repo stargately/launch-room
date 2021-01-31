@@ -43,9 +43,10 @@ export const Standard: React.FC = () => (
       ],
       variations: [true, false],
       fallthrough: { variation: 1 },
+      offVariation: 0,
     }}
     flagKey="key"
-    upsertFlag={async () => undefined}
+    upsertFlag={async (variables) => console.log(variables)}
     workspaceId="workspaceId"
   />
 );

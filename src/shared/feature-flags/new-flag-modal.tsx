@@ -16,7 +16,7 @@ export const NewFlagModal: React.FC<Props> = ({ action }) => {
     <>
       <Button onClick={open}>+ Flag</Button>
       <Modal visible={visible} footer={null} onCancel={close}>
-        <NewFlagForm action={action} closeModal={close} />
+        <NewFlagForm upsertFlag={action} closeModal={close} />
       </Modal>
     </>
   );

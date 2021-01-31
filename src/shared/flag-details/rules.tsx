@@ -7,10 +7,12 @@ import Col from "antd/lib/grid/col";
 import { Select } from "antd";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
+import { VarianceSelect } from "@/shared/flag-details/variance-select";
 
 export type RulesProps = {
   rules: FlagDetails_flagDetails_rules[];
   variance: boolean[];
+  fallthroughVariance?: number;
 };
 
 const getDefaultRules = (): FlagDetails_flagDetails_rules[] => [
@@ -42,7 +44,11 @@ const getDefaultRules = (): FlagDetails_flagDetails_rules[] => [
   },
 ];
 
-export function Rules({ rules, variance }: RulesProps): JSX.Element {
+export function Rules({
+  rules,
+  variance,
+  fallthroughVariance = 0,
+}: RulesProps): JSX.Element {
   const conertedRules = rules && rules.length ? rules : getDefaultRules();
   return (
     <Row gutter={[12, 12]}>
@@ -52,6 +58,20 @@ export function Rules({ rules, variance }: RulesProps): JSX.Element {
           <Rule rule={r} variance={variance} index={i} />
         </Col>
       ))}
+
+      <Col>Default Rule</Col>
+      <Col span={24}>
+        <Card>
+          <VarianceSelect
+            itemProps={{
+              name: "fallthrough.variation",
+              initialValue: fallthroughVariance,
+            }}
+            variance={variance}
+            disabled={false}
+          />
+        </Card>
+      </Col>
     </Row>
   );
 }
@@ -118,20 +138,13 @@ const Rule: React.FC<RuleProps> = ({ rule, variance, index }) => {
       <Row gutter={4}>
         <Col span={2}>SERVE</Col>
         <Col span={4}>
-          <Form.Item
-            name={`rules.${index}.variation`}
-            initialValue={rule.variation}
-          >
-            <Select disabled placeholder="Please select">
-              {variance.map((v, i) => {
-                return (
-                  <Select.Option key={i} value={i}>
-                    {String(v)}
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <VarianceSelect
+            itemProps={{
+              name: `rules.${index}.variation`,
+              initialValue: rule.variation,
+            }}
+            variance={variance}
+          />
         </Col>
         {/* TODO(tian): what is this for? */}
         <Form.Item

@@ -19,6 +19,7 @@ export const flagDetails = gql`
       fallthrough {
         variation
       }
+      offVariation
     }
   }
 `;
