@@ -1,22 +1,27 @@
-# web-onefx-boilerplate
+# launch-room
 
 [![CircleCI](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master)
+
+## User guide
+
+Launch Room is a feature flag service that is lightweight and compatible with LaunchDarkly client.
+
+[User guide](https://stargately.com/docs/launch-room): How to integrate your service with launch-room?
+
+![](https://tp-misc.b-cdn.net/launch-room-01.png)
+![](https://tp-misc.b-cdn.net/launch-room-02.png)
+
+## Development
+
+All the descriptions below are for the development of launch-room itself.
 
 - [Documentation](https://onefx.js.org/doc.html?utm_source=github-iotex-explorer)
 - [Contributing](https://onefx.js.org/contributing.html?utm_source=github-iotex-explorer)
 
-## Getting Started
-
-OneFx is a full-stack framework for building web apps. Here are the features you'll find in Onefx.js:
-
-- server side rendering and universal rendering with react and redux
-- ES2017, JSX, TypeScript support out of the box
-- server-side development via Koa.js
-
 ### Create a project
 
 ```bash
-git clone git@github.com:puncsky/web-onefx-boilerplate.git my-awesome-project
+git clone git@github.com:puncsky/launch-room.git
 ```
 
 ### Run your project
@@ -24,9 +29,9 @@ git clone git@github.com:puncsky/web-onefx-boilerplate.git my-awesome-project
 This is intended for \*nix users. If you use Windows, go to [Run on Windows](#run-on-windows). Let's first prepare the environment.
 
 ```bash
-cd my-awesome-project
+cd launch-room
 
-nvm use 10.15.0
+nvm use 10.23.0
 npm install
 
 # prepare environment variable
