@@ -220,7 +220,7 @@
     "validator": "13.1.1"
   },
   "engines": {
-    "node": "10.23.0",
+    "node": "10.23.3",
     "npm": "6.14.8"
   },
   "private": true
