@@ -1,7 +1,7 @@
 {
-  "name": "web-onefx-boilerplate",
+  "name": "launch-room",
   "version": "1.1.0",
-  "description": "field_description",
+  "description": "a feature flag service that is lightweight and compatible with LaunchDarkly client",
   "main": "server.js",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register --transpile-only ./server.ts",
@@ -11,7 +11,6 @@
     "watch": "gulp watch",
     "build": "gulp build",
     "build-production": "NODE_ENV=production gulp build",
-    "build-static-html": "NODE_ENV=production ts-node ./src/server/generate-static-html.ts",
     "server": "node server",
     "lint": "npm run format-i18n && pretty-quick --staged && eslint src --fix --ext .js,.tsx,.ts --quiet",
     "lint:css": "stylelint 'css/*.css' 'src/**/*.tsx' --fix",
@@ -220,8 +219,7 @@
     "validator": "13.1.1"
   },
   "engines": {
-    "node": "10.23.0",
-    "npm": "6.14.8"
+    "node": "14.15.4"
   },
   "private": true
 }

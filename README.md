@@ -1,6 +1,6 @@
 # launch-room
 
-[![CircleCI](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master)
+[![CircleCI](https://circleci.com/gh/puncsky/launch-room/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/launch-room/tree/master)
 
 ## User guide
 
@@ -31,7 +31,7 @@ This is intended for \*nix users. If you use Windows, go to [Run on Windows](#ru
 ```bash
 cd launch-room
 
-nvm use 10.23.0
+nvm use 14.15.4
 npm install
 
 # prepare environment variable
