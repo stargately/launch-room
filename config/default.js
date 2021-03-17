@@ -6,7 +6,7 @@ config();
 const routePrefix = "/launch-room";
 
 module.exports = {
-  project: "web-onefx-boilerplate",
+  project: "launch-room",
   server: {
     routePrefix,
     port: process.env.PORT || 4105,
