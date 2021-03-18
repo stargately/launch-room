@@ -56,10 +56,10 @@ export const FlagsStatusTable: React.FC<Props> = ({ data }) => {
       <CommonMargin />
       <h1>Feature Flags</h1>
       <NewFlagController />
-      <div>
+      <p>
         Use this page to see all feature flags in this project. Select a flag to
         manage the environment-specific targeting and rollout rules.
-      </div>
+      </p>
       <Table<FlagsStatus_flagsStatus_flags>
         columns={columns}
         dataSource={data}
