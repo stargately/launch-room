@@ -60,10 +60,10 @@ export const FlagsStatusTable: React.FC<Props> = ({ data }) => {
       <CommonMargin />
       <h1>Feature Flags</h1>
       <NewFlagController newFlagLabel="+ Flag" />
-      <div>
+      <p>
         Use this page to see all feature flags in this project. Select a flag to
         manage the environment-specific targeting and rollout rules.
-      </div>
+      </p>
       <ConfigProvider
         renderEmpty={() => (
           <Space direction="vertical">

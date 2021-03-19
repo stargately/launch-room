@@ -1,5 +1,5 @@
 import { styled, StyleObject } from "onefx/lib/styletron-react";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 import { Flex } from "../flex";
 import { media } from "./style-media";
@@ -20,6 +20,8 @@ export const contentPadding = {
   },
 };
 
+export const maxContentWidth = { maxWidth: "1320px", width: "100%" };
+
 export const topBottomContentPadding = {
   paddingTop: "12px",
   paddingBottom: "12px",
@@ -35,9 +37,9 @@ export function ContentPadding({
   style?: StyleObject;
 }): JSX.Element {
   return (
-    <Pd style={style}>
+    <Pd style={style as CSSProperties}>
       <Flex center width="100%">
-        <div style={{ maxWidth: "1320px", width: "100%" }}>{children}</div>
+        <div style={maxContentWidth}>{children}</div>
       </Flex>
     </Pd>
   );
