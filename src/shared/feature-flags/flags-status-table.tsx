@@ -1,11 +1,15 @@
 /* eslint-disable camelcase */
 import React from "react";
 import Table from "antd/lib/table/Table";
-import { FlagsStatus_flagsStatus_flags } from "@/shared/feature-flags/data/__generated__/FlagsStatus";
+import ConfigProvider from "antd/lib/config-provider";
+import Space from "antd/lib/space";
+import Typography from "antd/lib/typography";
 import { ColumnsType } from "antd/lib/table";
+import { FlagsStatus_flagsStatus_flags } from "@/shared/feature-flags/data/__generated__/FlagsStatus";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
-import { Link } from "onefx/lib/react-router-dom";
 import { CommonMargin } from "@/shared/common/common-margin";
+import { Link } from "onefx/lib/react-router-dom";
+import { t } from "onefx/lib/iso-i18n";
 import { NewFlagController } from "./new-flag-controller";
 
 type Props = {
@@ -55,15 +59,29 @@ export const FlagsStatusTable: React.FC<Props> = ({ data }) => {
     <ContentPadding>
       <CommonMargin />
       <h1>Feature Flags</h1>
-      <NewFlagController />
+      <NewFlagController newFlagLabel="+ Flag" />
       <div>
         Use this page to see all feature flags in this project. Select a flag to
         manage the environment-specific targeting and rollout rules.
       </div>
-      <Table<FlagsStatus_flagsStatus_flags>
-        columns={columns}
-        dataSource={data}
-      />
+      <ConfigProvider
+        renderEmpty={() => (
+          <Space direction="vertical">
+            <Typography.Title level={5} type="secondary">
+              {t("feature_flags.not_found_title")}
+            </Typography.Title>
+            <Typography.Text type="secondary">
+              {t("feature_flags.not_found_description")}
+            </Typography.Text>
+            <NewFlagController newFlagLabel="CREATE FLAG" />
+          </Space>
+        )}
+      >
+        <Table<FlagsStatus_flagsStatus_flags>
+          columns={columns}
+          dataSource={data}
+        />
+      </ConfigProvider>
     </ContentPadding>
   );
 };
