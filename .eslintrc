@@ -3,12 +3,21 @@
     "@puncsky/eslint-config-onefx-react",
     "@puncsky/eslint-config-onefx"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
     "no-restricted-imports": [
       "error",
       {
         "name": "styletron-react",
         "message": "import onefx/lib/styletron-react instead."
+      },
+      {
+        "name": "antd",
+        "message": "import antd/lib/* instead."
       }
     ],
     "import/no-extraneous-dependencies": 0
