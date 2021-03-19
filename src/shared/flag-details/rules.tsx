@@ -4,7 +4,7 @@ import { FlagDetails_flagDetails_rules } from "@/shared/flag-details/data/__gene
 import Card from "antd/lib/card";
 import Row from "antd/lib/grid/row";
 import Col from "antd/lib/grid/col";
-import { Select } from "antd";
+import Select from "antd/lib/select";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import { VarianceSelect } from "@/shared/flag-details/variance-select";
