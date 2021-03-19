@@ -1,3 +1,9 @@
+auth.label_workspace: Workspace Name
+
+feature_flags.not_found_description: There are no flags in this project yet.
+
+feature_flags.not_found_title: Create feature flags to manage who sees different aspects of your product.
+
 home.desc: Launch room leverages Launch Darkly clients and build the open-source server upon it.
 
 home.title: 'Feature Flags, Simplified'

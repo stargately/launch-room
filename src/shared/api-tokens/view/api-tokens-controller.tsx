@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useApiTokens } from "@/shared/api-tokens/view/hooks/use-api-tokens";
-import Form from "antd/lib/form";
 import Button from "antd/lib/button";
 import Input from "antd/lib/input";
 import { useUpsertApiTokens } from "@/shared/api-tokens/view/hooks/use-upsert-api-tokens";
 import notification from "antd/lib/notification";
+import Form from "antd/lib/form";
 
 const layout = {
   labelCol: { span: 8 },

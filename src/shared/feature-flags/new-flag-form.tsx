@@ -5,7 +5,8 @@ import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Select from "antd/lib/select";
 import Checkbox from "antd/lib/checkbox";
-import { Button, notification } from "antd";
+import Button from "antd/lib/button";
+import notification from "antd/lib/notification";
 import { CommonMargin } from "@/shared/common/common-margin";
 import { RefetchContext, WorkspaceIdContext } from "./context";
 import { VarIcon } from "../common/icons/var-icon";
@@ -55,6 +56,7 @@ export const NewFlagForm: React.FC<Props> = ({ upsertFlag, closeModal }) => {
         key: values.key as string,
         on: true,
         variations,
+        fallthrough: values.fallthrough as { variation: number },
       });
       form.resetFields();
       closeModal();
@@ -173,16 +175,12 @@ export const NewFlagForm: React.FC<Props> = ({ upsertFlag, closeModal }) => {
           <Input style={{ width: "44px" }} addonBefore="ON" disabled />
           <Form.Item
             style={{ width: "20%" }}
-            name="fallthrough.variation"
-            initialValue={true}
+            name={["fallthrough", "variation"]}
+            initialValue={1}
           >
             <Select>
-              {/*
-              // @ts-ignore */}
-              <Select.Option value={true}>True</Select.Option>
-              {/*
-              // @ts-ignore */}
-              <Select.Option value={false}>False</Select.Option>
+              <Select.Option value={0}>True</Select.Option>
+              <Select.Option value={1}>False</Select.Option>
             </Select>
           </Form.Item>
         </Input.Group>

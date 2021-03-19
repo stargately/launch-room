@@ -5,6 +5,7 @@ import { createRateLimiter } from "onefx/lib/middleware/rate-limiter-middleware"
 import { Context } from "onefx/lib/types";
 import * as React from "react";
 import validator from "validator";
+import { WorkspaceRole } from "@/model/user-workspace-model";
 import { IdentityAppContainer } from "./view/identity-app-container";
 
 const PASSWORD_MIN_LENGTH = 8;
@@ -132,7 +133,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     emailValidator(),
     passwordValidator(),
     async (ctx: Context, next: koa.Next) => {
-      const { email, password } = ctx.request.body;
+      const { email, password, workspaceName } = ctx.request.body;
       const locale = ctx.i18n.getLocale();
       try {
         const user = await server.auth.user.newAndSave({
@@ -141,6 +142,18 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
           locale,
           ip: ctx.headers["x-forwarded-for"],
         });
+
+        const userWorkspace = await server.model.workspaceModel.create({
+          name: workspaceName,
+          owner: user._id,
+        });
+
+        await server.model.userWorkspace.create({
+          workspace: userWorkspace._id,
+          user: user._id,
+          role: WorkspaceRole.follower,
+        });
+
         ctx.state.userId = user._id;
         await next();
       } catch (err) {
