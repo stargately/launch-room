@@ -12,6 +12,8 @@ import { transition } from "@/shared/common/styles/style-animation";
 import { colors } from "@/shared/common/styles/style-color";
 import { fullOnPalm } from "@/shared/common/styles/style-media";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
+import { InputLabel } from "@/shared/onefx-auth-provider/email-password-identity-provider/view/input-label";
+import { TextInput } from "@/shared/onefx-auth-provider/email-password-identity-provider/view/text-input";
 import { axiosInstance } from "./axios-instance";
 import { EmailField } from "./email-field";
 import { FieldMargin } from "./field-margin";
@@ -29,6 +31,7 @@ const SignUpInner = (props: Props): JSX.Element => {
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
   const [valueEmail, setValueEmail] = useState("");
+  const [valueWorkspaceName, setValueWorkspaceName] = useState("");
   const [valuePassword, setValuePassword] = useState("");
   const [disableButton, setDisableButton] = useState(false);
 
@@ -37,20 +40,28 @@ const SignUpInner = (props: Props): JSX.Element => {
   ): Promise<void> => {
     e.preventDefault();
     const el = window.document.getElementById(LOGIN_FORM) as HTMLFormElement;
-    const { email = "", password = "", next = "" } = serialize(el, {
+    const {
+      email = "",
+      password = "",
+      workspaceName = "",
+      next = "",
+    } = serialize(el, {
       hash: true,
     }) as {
       email: string;
       password: string;
+      workspaceName: string;
       next: string;
     };
     setDisableButton(true);
     setValueEmail(email);
     setValuePassword(password);
+    setValueWorkspaceName(workspaceName);
     try {
       const r = await axiosInstance.post("/api/sign-up/", {
         email,
         password,
+        workspaceName,
         next,
       });
       if (r.data.ok && r.data.shouldRedirect) {
@@ -92,8 +103,16 @@ const SignUpInner = (props: Props): JSX.Element => {
             <input defaultValue={props.next} hidden name="next" />
             <PasswordField defaultValue={valuePassword} error={errorPassword} />
             <FieldMargin>
-              {/*
-               */}
+              <InputLabel htmlFor="workspace-name">
+                {t("auth.sign_up.label.workspace")}
+              </InputLabel>
+              <TextInput
+                defaultValue={valueWorkspaceName}
+                id="workspaceName"
+                name="workspaceName"
+              />
+            </FieldMargin>
+            <FieldMargin>
               <Button
                 htmlType="submit"
                 loading={disableButton}
