@@ -1,121 +1,128 @@
-/* eslint-disable camelcase */
 import * as React from "react";
-import { FlagDetails_flagDetails_rules } from "@/shared/flag-details/data/__generated__/FlagDetails";
 import Card from "antd/lib/card";
-import Row from "antd/lib/grid/row";
-import Col from "antd/lib/grid/col";
+import Space from "antd/lib/space";
+import Typography from "antd/lib/typography";
+import Row from "antd/lib/row";
+import Menu from "antd/lib/menu";
+import Col from "antd/lib/col";
 import Select from "antd/lib/select";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
+import Button from "antd/lib/button";
+import Dropdown from "antd/lib/dropdown";
+import MoreOutlined from "@ant-design/icons/MoreOutlined";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { VarianceSelect } from "@/shared/flag-details/variance-select";
 
 export type RulesProps = {
-  rules: FlagDetails_flagDetails_rules[];
   variance: boolean[];
-  fallthroughVariance?: number;
 };
 
-const getDefaultRules = (): FlagDetails_flagDetails_rules[] => [
-  {
-    id: null,
-    clauses: [
-      {
-        attribute: "email",
-        op: "endsWith",
-        values: [],
-        negate: false,
-      },
-    ],
-    variation: 0,
-    trackEvents: false,
-  },
-  {
-    id: null,
-    clauses: [
-      {
-        attribute: "email",
-        op: "startsWith",
-        values: [],
-        negate: false,
-      },
-    ],
-    variation: 0,
-    trackEvents: false,
-  },
-];
-
-export function Rules({
-  rules,
-  variance,
-  fallthroughVariance = 0,
-}: RulesProps): JSX.Element {
-  const conertedRules = rules && rules.length ? rules : getDefaultRules();
+export function Rules({ variance }: RulesProps): JSX.Element {
   return (
-    <Row gutter={[12, 12]}>
-      <Col>Target users who match these rules</Col>
-      {conertedRules.map((r, i) => (
-        <Col key={i} span={24}>
-          <Rule rule={r} variance={variance} index={i} />
-        </Col>
-      ))}
+    <>
+      <Form.List name="rules">
+        {(fields, { add, remove }) => (
+          <Space direction="vertical" style={{ width: "100%" }}>
+            {fields.map((field) => (
+              <Rule
+                variance={variance}
+                index={field.key}
+                key={field.key}
+                remove={() => remove(field.name)}
+              />
+            ))}
 
-      <Col>Default Rule</Col>
-      <Col span={24}>
-        <Card>
-          <VarianceSelect
-            itemProps={{
-              name: "fallthrough.variation",
-              initialValue: fallthroughVariance,
-            }}
-            variance={variance}
-            disabled={false}
-          />
-        </Card>
-      </Col>
-    </Row>
+            <Form.Item>
+              <Button
+                block
+                type="dashed"
+                onClick={() =>
+                  add({
+                    variation: 0,
+                    trackEvents: false,
+                    clauses: [
+                      {
+                        attribute: "email",
+                        op: "endsWith",
+                        values: [],
+                        negate: false,
+                      },
+                    ],
+                  })
+                }
+                icon={<PlusOutlined />}
+              >
+                Add rules
+              </Button>
+            </Form.Item>
+          </Space>
+        )}
+      </Form.List>
+
+      <Card>
+        <VarianceSelect
+          itemProps={{
+            name: "fallthrough.variation",
+            label: "Default Rule",
+          }}
+          variance={variance}
+          disabled={false}
+        />
+      </Card>
+    </>
   );
 }
 
 type RuleProps = {
-  rule: FlagDetails_flagDetails_rules;
   variance: boolean[];
   index: number;
+  remove: () => void;
 };
 
-const Rule: React.FC<RuleProps> = ({ rule, variance, index }) => {
-  const clause = rule.clauses[0];
+const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
   return (
     <Card>
-      <Form.Item name={`rules.${index}.id`} initialValue={rule.id} hidden>
+      <Row gutter={[4, 20]}>
+        <Col flex="auto">
+          <Typography.Title level={5}>Rule {index + 1}</Typography.Title>
+        </Col>
+        <Col flex="32px">
+          <Dropdown
+            arrow
+            placement="bottomRight"
+            overlay={
+              <Menu onClick={() => remove()}>
+                <Menu.Item>Delete rule</Menu.Item>
+              </Menu>
+            }
+          >
+            <Button type="text" shape="circle" icon={<MoreOutlined />} />
+          </Dropdown>
+        </Col>
+      </Row>
+
+      <Form.Item name={["rules", index, "id"]} hidden>
         <Input />
       </Form.Item>
 
-      <Row gutter={4}>
+      <Row gutter={[4, 20]} align="middle">
         <Col span={1}>IF</Col>
 
         <Col span={3}>
-          <Form.Item
-            name={`rules.${index}.clauses.0.attribute`}
-            initialValue={clause.attribute}
-          >
+          <Form.Item noStyle name={[index, "clauses", 0, "attribute"]}>
             <Select disabled style={{ width: "100%" }} />
           </Form.Item>
         </Col>
 
         <Col span={3}>
-          <Form.Item
-            name={`rules.${index}.clauses.0.op`}
-            initialValue={clause.op}
-          >
+          <Form.Item noStyle name={[index, "clauses", 0, "op"]}>
             <Select disabled style={{ width: "100%" }} />
           </Form.Item>
         </Col>
 
         <Col span={17}>
-          <Form.Item
-            name={`rules.${index}.clauses.0.values`}
-            initialValue={clause.values}
-          >
+          <Form.Item noStyle name={[index, "clauses", 0, "values"]}>
             <Select
               style={{ width: "100%" }}
               mode="tags"
@@ -125,33 +132,25 @@ const Rule: React.FC<RuleProps> = ({ rule, variance, index }) => {
           </Form.Item>
 
           {/* TODO(tian): what is this for? */}
-          <Form.Item
-            name={`rules.${index}.clauses.0.negate`}
-            initialValue={clause.negate}
-            hidden
-          >
+          <Form.Item noStyle name={[index, "clauses", 0, "negate"]} hidden>
             <Input />
           </Form.Item>
         </Col>
       </Row>
 
-      <Row gutter={4}>
+      <Row gutter={4} align="middle">
         <Col span={2}>SERVE</Col>
         <Col span={4}>
           <VarianceSelect
             itemProps={{
-              name: `rules.${index}.variation`,
-              initialValue: rule.variation,
+              name: [index, "variation"],
+              noStyle: true,
             }}
             variance={variance}
           />
         </Col>
         {/* TODO(tian): what is this for? */}
-        <Form.Item
-          name={`rules.${index}.trackEvents`}
-          initialValue={rule.trackEvents}
-          hidden
-        >
+        <Form.Item name={[index, "trackEvents"]} hidden>
           <Input />
         </Form.Item>
       </Row>

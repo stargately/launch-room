@@ -10,8 +10,43 @@ export default {
   decorators: [themeDecorator()],
 } as Meta;
 
+const rules = [
+  {
+    id: "b47993ca-fb08-4eac-bc19-839fce50b1ac",
+    clauses: [
+      {
+        attribute: "email",
+        op: "endsWith",
+        values: ["@daommo.com"],
+        negate: false,
+      },
+    ],
+    trackEvents: true,
+    variation: 0,
+  },
+  {
+    id: "65947501-e647-44fc-b4e2-f4e025c07157",
+    clauses: [
+      {
+        attribute: "email",
+        op: "startsWith",
+        values: [
+          "puncsky",
+          "mengqiang.q",
+          "erickim987",
+          "ericjin987",
+          "therealchuhan",
+          "shiruisheng88@gmail.com",
+        ],
+        negate: false,
+      },
+    ],
+    trackEvents: true,
+    variation: 0,
+  },
+];
 const Template: Story<RulesProps> = (args) => (
-  <Form>
+  <Form initialValues={{ rules }}>
     <Rules {...args} />
   </Form>
 );
@@ -21,40 +56,5 @@ export const Default = Template.bind({});
 Default.storyName = "Rules";
 
 Default.args = {
-  rules: [
-    {
-      id: "b47993ca-fb08-4eac-bc19-839fce50b1ac",
-      clauses: [
-        {
-          attribute: "email",
-          op: "endsWith",
-          values: ["@daommo.com"],
-          negate: false,
-        },
-      ],
-      trackEvents: true,
-      variation: 0,
-    },
-    {
-      id: "65947501-e647-44fc-b4e2-f4e025c07157",
-      clauses: [
-        {
-          attribute: "email",
-          op: "startsWith",
-          values: [
-            "puncsky",
-            "mengqiang.q",
-            "erickim987",
-            "ericjin987",
-            "therealchuhan",
-            "shiruisheng88@gmail.com",
-          ],
-          negate: false,
-        },
-      ],
-      trackEvents: true,
-      variation: 0,
-    },
-  ],
   variance: [true, false],
 };
