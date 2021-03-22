@@ -18,6 +18,8 @@ not_found.info: We cannot find the page for you...
 
 not_found.title: Oops!
 
+notification.update: Updated!
+
 page.noscript: 'We’re sorry, some parts of the website don’t work properly without JavaScript enabled.'
 
 topbar.brand: LaunchRoom
