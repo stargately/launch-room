@@ -12,6 +12,7 @@ import Button from "antd/lib/button";
 import Dropdown from "antd/lib/dropdown";
 import MoreOutlined from "@ant-design/icons/MoreOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
+import MinusOutlined from "@ant-design/icons/MinusOutlined";
 import { VarianceSelect } from "@/shared/flag-details/variance-select";
 
 export type RulesProps = {
@@ -106,37 +107,86 @@ const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
         <Input />
       </Form.Item>
 
-      <Row gutter={[4, 20]} align="middle">
-        <Col span={1}>IF</Col>
+      <Form.List name={[index, "clauses"]}>
+        {(fields, { add, remove: removeClause }) =>
+          fields.map((field) => (
+            <Row key={field.fieldKey} gutter={[4, 20]} align="middle">
+              <Col span={1}>{field.name > 0 ? "AND" : "IF"}</Col>
 
-        <Col span={3}>
-          <Form.Item noStyle name={[index, "clauses", 0, "attribute"]}>
-            <Select disabled style={{ width: "100%" }} />
-          </Form.Item>
-        </Col>
+              <Col span={3}>
+                <Form.Item
+                  noStyle
+                  name={[field.name, "attribute"]}
+                  fieldKey={[field.fieldKey, "attribute"]}
+                >
+                  <Select disabled style={{ width: "100%" }} />
+                </Form.Item>
+              </Col>
 
-        <Col span={3}>
-          <Form.Item noStyle name={[index, "clauses", 0, "op"]}>
-            <Select disabled style={{ width: "100%" }} />
-          </Form.Item>
-        </Col>
+              <Col span={3}>
+                <Form.Item
+                  noStyle
+                  name={[field.name, "op"]}
+                  fieldKey={[field.fieldKey, "op"]}
+                >
+                  <Select disabled style={{ width: "100%" }} />
+                </Form.Item>
+              </Col>
 
-        <Col span={17}>
-          <Form.Item noStyle name={[index, "clauses", 0, "values"]}>
-            <Select
-              style={{ width: "100%" }}
-              mode="tags"
-              allowClear
-              placeholder="Please select"
-            />
-          </Form.Item>
+              <Col span={15}>
+                <Form.Item
+                  noStyle
+                  name={[field.name, "values"]}
+                  fieldKey={[field.fieldKey, "values"]}
+                >
+                  <Select
+                    style={{ width: "100%" }}
+                    mode="tags"
+                    allowClear
+                    placeholder="Please select"
+                  />
+                </Form.Item>
 
-          {/* TODO(tian): what is this for? */}
-          <Form.Item noStyle name={[index, "clauses", 0, "negate"]} hidden>
-            <Input />
-          </Form.Item>
-        </Col>
-      </Row>
+                {/* TODO(tian): what is this for? */}
+                <Form.Item
+                  noStyle
+                  hidden
+                  name={[field.name, "negate"]}
+                  fieldKey={[field.fieldKey, "negate"]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={2}>
+                {(field.name !== 0 || fields.length !== 1) && (
+                  <Button
+                    type="text"
+                    shape="circle"
+                    onClick={() => removeClause(field.name)}
+                    icon={<MinusOutlined />}
+                  />
+                )}
+
+                {field.name + 1 === fields.length && (
+                  <Button
+                    type="text"
+                    shape="circle"
+                    onClick={() =>
+                      add({
+                        attribute: "email",
+                        op: "endsWith",
+                        values: [],
+                        negate: false,
+                      })
+                    }
+                    icon={<PlusOutlined />}
+                  />
+                )}
+              </Col>
+            </Row>
+          ))
+        }
+      </Form.List>
 
       <Row gutter={4} align="middle">
         <Col span={2}>SERVE</Col>
