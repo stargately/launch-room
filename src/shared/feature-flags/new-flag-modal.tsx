@@ -9,13 +9,18 @@ import { UpsertFlagVariables } from "../flag-details/data/__generated__/UpsertFl
 type Props = {
   action: (variables: UpsertFlagVariables) => Promise<void>;
   newFlagLabel: string;
+  loading?: boolean;
 };
 
 const StyledAddFlag = styled("div", ({ $theme }) => ({
   ...margin($theme.sizing[2], 0),
 }));
 
-export const NewFlagModal: React.FC<Props> = ({ action, newFlagLabel }) => {
+export const NewFlagModal: React.FC<Props> = ({
+  action,
+  newFlagLabel,
+  loading,
+}) => {
   const [visible, setVisible] = useState(false);
   const close = () => setVisible(false);
   const open = () => setVisible(true);
@@ -23,7 +28,7 @@ export const NewFlagModal: React.FC<Props> = ({ action, newFlagLabel }) => {
     <StyledAddFlag>
       <Button onClick={open}>{newFlagLabel}</Button>
       <Modal visible={visible} footer={null} onCancel={close}>
-        <NewFlagForm upsertFlag={action} closeModal={close} />
+        <NewFlagForm upsertFlag={action} closeModal={close} loading={loading} />
       </Modal>
     </StyledAddFlag>
   );

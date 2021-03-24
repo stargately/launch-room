@@ -10,6 +10,7 @@ import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import Dropdown from "antd/lib/dropdown";
+import Skeleton from "antd/lib/skeleton";
 import MoreOutlined from "@ant-design/icons/MoreOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import MinusOutlined from "@ant-design/icons/MinusOutlined";
@@ -17,23 +18,25 @@ import { VarianceSelect } from "@/shared/flag-details/variance-select";
 
 export type RulesProps = {
   variance: boolean[];
+  loading?: boolean;
 };
 
-export function Rules({ variance }: RulesProps): JSX.Element {
+export function Rules({ variance, loading }: RulesProps): JSX.Element {
   return (
     <>
       <Form.List name="rules">
         {(fields, { add, remove }) => (
           <Space direction="vertical" style={{ width: "100%" }}>
-            {fields.map((field) => (
-              <Rule
-                variance={variance}
-                index={field.key}
-                key={field.key}
-                remove={() => remove(field.name)}
-              />
-            ))}
-
+            <Skeleton active loading={loading}>
+              {fields.map((field) => (
+                <Rule
+                  variance={variance}
+                  index={field.key}
+                  key={field.key}
+                  remove={() => remove(field.name)}
+                />
+              ))}
+            </Skeleton>
             <Form.Item>
               <Button
                 block
@@ -69,6 +72,7 @@ export function Rules({ variance }: RulesProps): JSX.Element {
           }}
           variance={variance}
           disabled={false}
+          loading={loading}
         />
       </Card>
     </>

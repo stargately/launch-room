@@ -8,6 +8,12 @@ type Props = {
 };
 
 export const NewFlagController: React.FC<Props> = ({ newFlagLabel }) => {
-  const { upsertFlag } = useUpsertFlag();
-  return <NewFlagModal action={upsertFlag} newFlagLabel={newFlagLabel} />;
+  const { upsertFlag, loading } = useUpsertFlag();
+  return (
+    <NewFlagModal
+      action={upsertFlag}
+      newFlagLabel={newFlagLabel}
+      loading={loading}
+    />
+  );
 };
