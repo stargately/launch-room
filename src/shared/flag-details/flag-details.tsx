@@ -33,6 +33,8 @@ type Props = {
   flagDetails: FlagDetails_flagDetails | null | undefined;
   upsertFlag: (variables: UpsertFlagVariables) => Promise<void>;
   workspaceId: string;
+  isFetching?: boolean;
+  isPosting?: boolean;
 };
 
 export function FlagDetails({
@@ -40,6 +42,8 @@ export function FlagDetails({
   flagKey,
   upsertFlag,
   workspaceId,
+  isFetching,
+  isPosting,
 }: Props): JSX.Element {
   const [form] = Form.useForm();
 
@@ -73,7 +77,7 @@ export function FlagDetails({
         layout="vertical"
         onFinish={_onFinish}
       >
-        <Button type="primary" htmlType="submit">
+        <Button loading={isPosting} type="primary" htmlType="submit">
           Save Changes
         </Button>
 
@@ -82,7 +86,7 @@ export function FlagDetails({
           <Col flex="none">Is flag on? :</Col>
           <Col flex="auto">
             <Form.Item noStyle name="on" valuePropName="checked">
-              <Switch />
+              <Switch loading={isFetching} />
             </Form.Item>
           </Col>
         </Row>
@@ -96,7 +100,10 @@ export function FlagDetails({
           }
         >
           {({ getFieldValue }) => (
-            <Rules variance={getFieldValue("variations")} />
+            <Rules
+              variance={getFieldValue("variations")}
+              loading={isFetching}
+            />
           )}
         </Form.Item>
         <Form.Item
@@ -112,6 +119,7 @@ export function FlagDetails({
               }}
               variance={getFieldValue("variations")}
               disabled={false}
+              loading={isFetching}
             />
           )}
         </Form.Item>

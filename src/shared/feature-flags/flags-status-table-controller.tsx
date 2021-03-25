@@ -9,7 +9,7 @@ export const FlagsStatusTableController: React.FC = () => {
   const workspaceId = useSelector(
     (state: { base: { workspaceId: string } }) => state.base.workspaceId
   );
-  const { flagsStatus, refetch } = useFlagsStatus({
+  const { flagsStatus, refetch, loading } = useFlagsStatus({
     workspaceId,
     skip: 0,
     limit: 10000,
@@ -17,7 +17,7 @@ export const FlagsStatusTableController: React.FC = () => {
   return (
     <WorkspaceIdContext.Provider value={workspaceId}>
       <RefetchContext.Provider value={refetch}>
-        <FlagsStatusTable data={flagsStatus?.flags || []} />;
+        <FlagsStatusTable data={flagsStatus?.flags || []} loading={loading} />
       </RefetchContext.Provider>
     </WorkspaceIdContext.Provider>
   );

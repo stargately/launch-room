@@ -24,13 +24,18 @@ const KeyHelp = (
 
 export type Props = {
   upsertFlag: (variables: UpsertFlagVariables) => Promise<void>;
+  loading?: boolean;
   closeModal: () => void;
 };
 
 const usingMobileKey = "usingMobileKey";
 const usingEnvironmentId = "usingEnvironmentId";
 
-export const NewFlagForm: React.FC<Props> = ({ upsertFlag, closeModal }) => {
+export const NewFlagForm: React.FC<Props> = ({
+  upsertFlag,
+  closeModal,
+  loading,
+}) => {
   const workspaceId = React.useContext(WorkspaceIdContext);
   const refetch = React.useContext(RefetchContext);
   const [form] = Form.useForm();
@@ -206,7 +211,9 @@ export const NewFlagForm: React.FC<Props> = ({ upsertFlag, closeModal }) => {
         <CommonMargin />
 
         <Form.Item>
-          <Button htmlType="submit">Submit</Button>
+          <Button loading={loading} htmlType="submit">
+            Submit
+          </Button>
         </Form.Item>
       </Form>
     </div>

@@ -10,17 +10,19 @@ export const FlagDetailsController: React.FC = () => {
     (state: { base: { workspaceId: string } }) => state.base.workspaceId
   );
   const { flagKey } = useParams<{ flagKey: string }>();
-  const { flagDetails } = useFlagDetails({
+  const { flagDetails, loading: isFetching } = useFlagDetails({
     key: flagKey,
     workspaceId,
   });
-  const { upsertFlag } = useUpsertFlag();
+  const { upsertFlag, loading: isPosting } = useUpsertFlag();
   return (
     <FlagDetails
       flagDetails={flagDetails}
       flagKey={flagKey}
       upsertFlag={upsertFlag}
       workspaceId={workspaceId}
+      isFetching={isFetching}
+      isPosting={isPosting}
     />
   );
 };

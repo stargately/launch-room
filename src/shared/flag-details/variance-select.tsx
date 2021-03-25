@@ -6,10 +6,11 @@ export const VarianceSelect: React.FC<{
   itemProps: FormItemProps;
   variance?: boolean[];
   disabled?: boolean;
-}> = ({ itemProps, variance = [], disabled = true }) => {
+  loading?: boolean;
+}> = ({ itemProps, variance = [], disabled = true, loading }) => {
   return (
     <Form.Item {...itemProps}>
-      <Select disabled={disabled} placeholder="Please select">
+      <Select disabled={disabled} placeholder="Please select" loading={loading}>
         {variance.map((v, i) => {
           return (
             <Select.Option key={String(v)} value={i}>

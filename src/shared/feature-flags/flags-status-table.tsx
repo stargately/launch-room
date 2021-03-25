@@ -2,6 +2,7 @@
 import React from "react";
 import Table from "antd/lib/table/Table";
 import ConfigProvider from "antd/lib/config-provider";
+import Skeleton from "antd/lib/skeleton";
 import Space from "antd/lib/space";
 import Typography from "antd/lib/typography";
 import { ColumnsType } from "antd/lib/table";
@@ -14,6 +15,7 @@ import { NewFlagController } from "./new-flag-controller";
 
 type Props = {
   data: FlagsStatus_flagsStatus_flags[];
+  loading?: boolean;
 };
 
 const columns: ColumnsType<FlagsStatus_flagsStatus_flags> = [
@@ -54,7 +56,7 @@ const columns: ColumnsType<FlagsStatus_flagsStatus_flags> = [
   // },
 ];
 
-export const FlagsStatusTable: React.FC<Props> = ({ data }) => {
+export const FlagsStatusTable: React.FC<Props> = ({ data, loading }) => {
   return (
     <ContentPadding>
       <CommonMargin />
@@ -66,15 +68,17 @@ export const FlagsStatusTable: React.FC<Props> = ({ data }) => {
       </p>
       <ConfigProvider
         renderEmpty={() => (
-          <Space direction="vertical">
-            <Typography.Title level={5} type="secondary">
-              {t("feature_flags.not_found_title")}
-            </Typography.Title>
-            <Typography.Text type="secondary">
-              {t("feature_flags.not_found_description")}
-            </Typography.Text>
-            <NewFlagController newFlagLabel="CREATE FLAG" />
-          </Space>
+          <Skeleton active loading={loading}>
+            <Space direction="vertical">
+              <Typography.Title level={5} type="secondary">
+                {t("feature_flags.not_found_title")}
+              </Typography.Title>
+              <Typography.Text type="secondary">
+                {t("feature_flags.not_found_description")}
+              </Typography.Text>
+              <NewFlagController newFlagLabel="CREATE FLAG" />
+            </Space>
+          </Skeleton>
         )}
       >
         <Table<FlagsStatus_flagsStatus_flags>
