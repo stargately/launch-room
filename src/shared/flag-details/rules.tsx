@@ -15,6 +15,8 @@ import MoreOutlined from "@ant-design/icons/MoreOutlined";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import MinusOutlined from "@ant-design/icons/MinusOutlined";
 import { VarianceSelect } from "@/shared/flag-details/variance-select";
+import operators from "@/shared/flag-details/data/operators";
+import attributes from "@/shared/flag-details/data/attributes";
 
 export type RulesProps = {
   variance: boolean[];
@@ -45,14 +47,7 @@ export function Rules({ variance, loading }: RulesProps): JSX.Element {
                   add({
                     variation: 0,
                     trackEvents: false,
-                    clauses: [
-                      {
-                        attribute: "email",
-                        op: "endsWith",
-                        values: [],
-                        negate: false,
-                      },
-                    ],
+                    clauses: [{ values: [] }],
                   })
                 }
                 icon={<PlusOutlined />}
@@ -86,6 +81,13 @@ type RuleProps = {
 };
 
 const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
+  const operatorOptions = operators.reduce((acc, { id, label }): any => {
+    if (label) {
+      return [...acc, { value: id, label }];
+    }
+    return acc;
+  }, []);
+
   return (
     <Card>
       <Row gutter={[4, 20]}>
@@ -117,27 +119,47 @@ const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
             <Row key={field.fieldKey} gutter={[4, 20]} align="middle">
               <Col span={1}>{field.name > 0 ? "AND" : "IF"}</Col>
 
-              <Col span={3}>
+              <Col span={5}>
                 <Form.Item
                   noStyle
                   name={[field.name, "attribute"]}
                   fieldKey={[field.fieldKey, "attribute"]}
                 >
-                  <Select disabled style={{ width: "100%" }} />
+                  <Select options={attributes} />
                 </Form.Item>
               </Col>
 
-              <Col span={3}>
-                <Form.Item
-                  noStyle
-                  name={[field.name, "op"]}
-                  fieldKey={[field.fieldKey, "op"]}
-                >
-                  <Select disabled style={{ width: "100%" }} />
-                </Form.Item>
-              </Col>
+              <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, curValues) =>
+                  prevValues.rules[index].clauses[field.name].attribute !==
+                  curValues.rules[index].clauses[field.name].attribute
+                }
+              >
+                {({ getFieldValue }) =>
+                  !["segmentMatch", "not-segmentMatch"].includes(
+                    getFieldValue([
+                      "rules",
+                      index,
+                      "clauses",
+                      field.name,
+                      "attribute",
+                    ])
+                  ) && (
+                    <Col span={5}>
+                      <Form.Item
+                        noStyle
+                        name={[field.name, "op"]}
+                        fieldKey={[field.fieldKey, "op"]}
+                      >
+                        <Select options={operatorOptions} />
+                      </Form.Item>
+                    </Col>
+                  )
+                }
+              </Form.Item>
 
-              <Col span={15}>
+              <Col flex="auto">
                 <Form.Item
                   noStyle
                   name={[field.name, "values"]}
@@ -149,16 +171,6 @@ const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
                     allowClear
                     placeholder="Please select"
                   />
-                </Form.Item>
-
-                {/* TODO(tian): what is this for? */}
-                <Form.Item
-                  noStyle
-                  hidden
-                  name={[field.name, "negate"]}
-                  fieldKey={[field.fieldKey, "negate"]}
-                >
-                  <Input />
                 </Form.Item>
               </Col>
               <Col span={2}>
@@ -175,14 +187,7 @@ const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
                   <Button
                     type="text"
                     shape="circle"
-                    onClick={() =>
-                      add({
-                        attribute: "email",
-                        op: "endsWith",
-                        values: [],
-                        negate: false,
-                      })
-                    }
+                    onClick={() => add({ values: [] })}
                     icon={<PlusOutlined />}
                   />
                 )}

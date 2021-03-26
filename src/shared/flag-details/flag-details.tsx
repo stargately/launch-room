@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Switch from "antd/lib/switch";
 import Form from "antd/lib/form";
 import Button from "antd/lib/button";
@@ -17,7 +17,8 @@ import { ContentPadding } from "@/shared/common/styles/style-padding";
 import { CommonMargin } from "@/shared/common/common-margin";
 import { Rules } from "@/shared/flag-details/rules";
 import deepOmit from "@/shared/utils/deep-omit";
-import { RuleInput } from "../../../__generated__/globalTypes";
+import operators from "@/shared/flag-details/data/operators";
+import { ClauseInput } from "../../../__generated__/globalTypes";
 
 const StyledRow = styled(Row, ({ $theme }) => ({
   ...padding($theme.sizing[2], 0),
@@ -47,16 +48,49 @@ export function FlagDetails({
 }: Props): JSX.Element {
   const [form] = Form.useForm();
 
+  const rules = useMemo(
+    () =>
+      flagDetails?.rules?.map((rule: { clauses: ClauseInput[] }) => ({
+        ...rule,
+        clauses: rule.clauses.map((clause) => {
+          const operator = operators.find(
+            ({ value, negate }) =>
+              value === clause.op && negate === clause.negate
+          )?.id;
+
+          return { ...clause, op: operator };
+        }),
+      })),
+    [flagDetails]
+  );
+
   const _onFinish = async (formData: Record<string, unknown>) => {
     const values = deepOmit(formData, "__typename");
+    const { on, fallthrough, offVariation } = values;
+    const newRules = values.rules.map((value: { clauses: ClauseInput[] }) => ({
+      ...value,
+      clauses: value.clauses.map((clause) => {
+        let operator;
+        if (clause.op) {
+          operator = operators.find(({ id }) => id === clause.op);
+        } else {
+          operator = {
+            value: "segmentMatch",
+            negate: clause.attribute !== "segmentMatch",
+          };
+        }
+
+        return { ...clause, op: operator?.value, negate: operator?.negate };
+      }),
+    }));
 
     await upsertFlag({
       workspaceId,
       key: flagKey,
-      on: values.on as boolean,
-      rules: values.rules as RuleInput[],
-      fallthrough: values.fallthrough as { variation: number },
-      offVariation: values.offVariation as number,
+      on,
+      fallthrough,
+      offVariation,
+      rules: newRules,
     });
 
     notification.success({ message: t("notification.update") });
@@ -73,7 +107,7 @@ export function FlagDetails({
       <h1>{flagKey}</h1>
       <Form
         form={form}
-        initialValues={flagDetails || {}}
+        initialValues={flagDetails ? { ...flagDetails, rules } : {}}
         layout="vertical"
         onFinish={_onFinish}
       >
