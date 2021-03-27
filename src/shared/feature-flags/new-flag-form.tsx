@@ -8,6 +8,8 @@ import Checkbox from "antd/lib/checkbox";
 import Button from "antd/lib/button";
 import notification from "antd/lib/notification";
 import { CommonMargin } from "@/shared/common/common-margin";
+import { styled } from "onefx/lib/styletron-react";
+import { margin } from "polished";
 import { RefetchContext, WorkspaceIdContext } from "./context";
 import { VarIcon } from "../common/icons/var-icon";
 import { UpsertFlagVariables } from "../flag-details/data/__generated__/UpsertFlag";
@@ -21,6 +23,10 @@ const KeyHelp = (
     <div>You cannot use new as a key.</div>
   </>
 );
+
+const VariationFlag = styled("span", ({ $theme }) => ({
+  ...margin(0, $theme.sizing[4], $theme.sizing[4], 0),
+}));
 
 export type Props = {
   upsertFlag: (variables: UpsertFlagVariables) => Promise<void>;
@@ -67,11 +73,11 @@ export const NewFlagForm: React.FC<Props> = ({
       closeModal();
       refetch();
       notification.success({
-        message: "created",
+        message: "You have added a new flag ⛳️",
       });
     } catch (e) {
       notification.error({
-        message: "error, please check",
+        message: `Failed to create a flag: ${e}`,
       });
     }
   };
@@ -176,8 +182,8 @@ export const NewFlagForm: React.FC<Props> = ({
 
         <h4>Default variations</h4>
 
-        <Input.Group compact={true}>
-          <Input style={{ width: "44px" }} addonBefore="ON" disabled />
+        <Row align="middle">
+          <VariationFlag>ON</VariationFlag>
           <Form.Item
             style={{ width: "20%" }}
             name={["fallthrough", "variation"]}
@@ -188,10 +194,10 @@ export const NewFlagForm: React.FC<Props> = ({
               <Select.Option value={1}>False</Select.Option>
             </Select>
           </Form.Item>
-        </Input.Group>
+        </Row>
 
-        <Input.Group compact={true}>
-          <Input style={{ width: "44px" }} addonBefore="OFF" disabled />
+        <Row align="middle">
+          <VariationFlag>OFF</VariationFlag>
           <Form.Item
             style={{ width: "20%" }}
             name="offVariation"
@@ -206,7 +212,7 @@ export const NewFlagForm: React.FC<Props> = ({
               <Select.Option value={false}>False</Select.Option>
             </Select>
           </Form.Item>
-        </Input.Group>
+        </Row>
 
         <CommonMargin />
 
