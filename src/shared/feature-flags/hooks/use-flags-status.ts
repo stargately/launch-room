@@ -6,10 +6,12 @@ export const useFlagsStatus = ({
   workspaceId,
   skip,
   limit,
+  archived,
 }: {
   workspaceId: string;
   skip: number;
   limit: number;
+  archived: boolean;
 }) => {
   const { data, loading, refetch } = useQuery<FlagsStatus>(flagsStatus, {
     ssr: false,
@@ -17,6 +19,7 @@ export const useFlagsStatus = ({
       workspaceId,
       skip,
       limit,
+      archived,
     },
   });
   return {

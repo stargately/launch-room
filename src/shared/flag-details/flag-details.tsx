@@ -4,7 +4,11 @@ import Form from "antd/lib/form";
 import Button from "antd/lib/button";
 import Row from "antd/lib/row";
 import notification from "antd/lib/notification";
+import Typography from "antd/lib/typography";
 import Col from "antd/lib/col";
+import Tabs from "antd/lib/tabs";
+import Space from "antd/lib/space";
+import Popconfirm from "antd/lib/popconfirm";
 import { t } from "onefx/lib/iso-i18n";
 import { Link } from "onefx/lib/react-router-dom";
 import { styled } from "onefx/lib/styletron-react";
@@ -105,59 +109,97 @@ export function FlagDetails({
         {flagKey}
       </StyledRow>
       <h1>{flagKey}</h1>
-      <Form
-        form={form}
-        initialValues={flagDetails ? { ...flagDetails, rules } : {}}
-        layout="vertical"
-        onFinish={_onFinish}
-      >
-        <Button loading={isPosting} type="primary" htmlType="submit">
-          Save Changes
-        </Button>
+      <Tabs>
+        <Tabs.TabPane tab="Targeting" key="1">
+          <Form
+            form={form}
+            initialValues={flagDetails ? { ...flagDetails, rules } : {}}
+            layout="vertical"
+            onFinish={_onFinish}
+          >
+            <Button loading={isPosting} type="primary" htmlType="submit">
+              Save Changes
+            </Button>
 
-        <CommonMargin />
-        <Row gutter={8} align="middle">
-          <Col flex="none">Is flag on? :</Col>
-          <Col flex="auto">
-            <Form.Item noStyle name="on" valuePropName="checked">
-              <Switch loading={isFetching} />
+            <CommonMargin />
+            <Row gutter={8} align="middle">
+              <Col flex="none">Is flag on? :</Col>
+              <Col flex="auto">
+                <Form.Item noStyle name="on" valuePropName="checked">
+                  <Switch loading={isFetching} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <CommonMargin />
+            <Form.Item
+              label="Target users who match these rules"
+              shouldUpdate={(prevValues, curValues) =>
+                prevValues.variations !== curValues.variations ||
+                prevValues.fallthrough !== curValues.fallthrough
+              }
+            >
+              {({ getFieldValue }) => (
+                <Rules
+                  variance={getFieldValue("variations")}
+                  loading={isFetching}
+                />
+              )}
             </Form.Item>
-          </Col>
-        </Row>
-
-        <CommonMargin />
-        <Form.Item
-          label="Target users who match these rules"
-          shouldUpdate={(prevValues, curValues) =>
-            prevValues.variations !== curValues.variations ||
-            prevValues.fallthrough !== curValues.fallthrough
-          }
-        >
-          {({ getFieldValue }) => (
-            <Rules
-              variance={getFieldValue("variations")}
-              loading={isFetching}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          shouldUpdate={(prevValues, curValues) =>
-            prevValues.variations !== curValues.variations
-          }
-        >
-          {({ getFieldValue }) => (
-            <VarianceSelect
-              itemProps={{
-                name: "offVariation",
-                label: "If targeting is off, serve",
-              }}
-              variance={getFieldValue("variations")}
-              disabled={false}
-              loading={isFetching}
-            />
-          )}
-        </Form.Item>
-      </Form>
+            <Form.Item
+              shouldUpdate={(prevValues, curValues) =>
+                prevValues.variations !== curValues.variations
+              }
+            >
+              {({ getFieldValue }) => (
+                <VarianceSelect
+                  itemProps={{
+                    name: "offVariation",
+                    label: "If targeting is off, serve",
+                  }}
+                  variance={getFieldValue("variations")}
+                  disabled={false}
+                  loading={isFetching}
+                />
+              )}
+            </Form.Item>
+          </Form>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Setting" key="2">
+          <Typography.Title level={5} type="secondary">
+            {flagDetails?.archived ? "Restore flag" : "Archive flag"}
+          </Typography.Title>
+          <Space direction="vertical">
+            <Typography.Text>
+              {flagDetails?.archived
+                ? "This flag will be restored across all environments."
+                : "This flag will be archived across all environments and will only appear in your list when filtered for."}
+            </Typography.Text>
+            <Popconfirm
+              title={
+                flagDetails?.archived
+                  ? "Are you sure to restore this flag?"
+                  : "Are you sure to archived this flag?"
+              }
+              onConfirm={() =>
+                upsertFlag({
+                  workspaceId,
+                  key: flagKey,
+                  archived: !flagDetails?.archived,
+                }).then(() =>
+                  notification.success({
+                    message: flagDetails?.archived
+                      ? "Flag successfully restored"
+                      : "Flag successfully archived",
+                  })
+                )
+              }
+            >
+              <Button>{flagDetails?.archived ? "RESTORE" : "ARCHIVE"}</Button>
+            </Popconfirm>
+          </Space>
+        </Tabs.TabPane>
+      </Tabs>
     </ContentPadding>
   );
 }

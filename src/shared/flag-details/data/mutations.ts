@@ -12,6 +12,7 @@ export const upsertFlag = gql`
     $variationsJson: [String!]
     $fallthrough: FallthroughInput
     $offVariation: Int
+    $archived: Boolean
   ) {
     upsertFlag(
       workspaceId: $workspaceId
@@ -24,6 +25,7 @@ export const upsertFlag = gql`
       variationsJson: $variationsJson
       fallthrough: $fallthrough
       offVariation: $offVariation
+      archived: $archived
     )
   }
 `;

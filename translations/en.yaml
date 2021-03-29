@@ -1,5 +1,13 @@
 auth.label_workspace: Workspace Name
 
+feature_flags.not_found_archived_description_1: 'Search for a flag by name, key, or description.'
+
+feature_flags.not_found_archived_description_2: Modify your filter selection.
+
+feature_flags.not_found_archived_description_3: Check for typos.
+
+feature_flags.not_found_archived_title: 'No archived feature flags match. Try this:'
+
 feature_flags.not_found_description: There are no flags in this project yet.
 
 feature_flags.not_found_title: Create feature flags to manage who sees different aspects of your product.

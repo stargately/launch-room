@@ -44,6 +44,7 @@ export const Standard: React.FC = () => (
       variations: [true, false],
       fallthrough: { variation: 1 },
       offVariation: 0,
+      archived: false,
     }}
     flagKey="key"
     upsertFlag={async (variables) => console.log(variables)}

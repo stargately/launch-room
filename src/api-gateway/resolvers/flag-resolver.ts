@@ -166,6 +166,9 @@ class FlagDetails {
 
   @Field(() => ClientSideAvailability)
   clientSideAvailability: ClientSideAvailability;
+
+  @Field(() => Boolean)
+  archived: boolean;
 }
 
 @InputType()
@@ -185,6 +188,9 @@ class FlagsStatus {
   @Field(() => Int)
   limit: number;
 
+  @Field(() => Boolean)
+  archived: boolean;
+
   @Field(() => [FlagDetails])
   flags: Array<FlagDetails>;
 }
@@ -199,6 +205,9 @@ class FlagsArgs {
 
   @Field(() => Int)
   limit: number;
+
+  @Field(() => Boolean)
+  archived: boolean;
 }
 
 @ArgsType()
@@ -241,6 +250,9 @@ class UpFlagDetailsArgs {
 
   @Field(() => FallthroughInput, { nullable: true })
   fallthrough: FallthroughInput;
+
+  @Field(() => Boolean, { nullable: true })
+  archived: boolean;
 }
 
 @Resolver()
@@ -248,13 +260,14 @@ export class FlagResolver {
   @Authorized()
   @Query(() => FlagsStatus)
   public async flagsStatus(
-    @Args() { workspaceId, skip, limit }: FlagsArgs,
+    @Args() { workspaceId, skip, limit, archived }: FlagsArgs,
     @Ctx() { model: { flagModel, userWorkspace }, userId }: IContext
   ): Promise<FlagsStatus> {
     await assertWorkspace(userWorkspace, userId, workspaceId);
 
     const query = {
       workspace: workspaceId,
+      archived,
     };
 
     const [total, flags] = await Promise.all([
@@ -269,6 +282,7 @@ export class FlagResolver {
       skip,
       limit,
       total,
+      archived,
       // @ts-ignore
       flags,
     };
@@ -299,7 +313,15 @@ export class FlagResolver {
     @Args() detail: UpFlagDetailsArgs,
     @Ctx() { model: { flagModel, userWorkspace }, userId }: IContext
   ): Promise<boolean> {
-    const { key, workspaceId, rules, on, offVariation, fallthrough } = detail;
+    const {
+      key,
+      workspaceId,
+      rules,
+      on,
+      offVariation,
+      fallthrough,
+      archived,
+    } = detail;
 
     await assertWorkspace(userWorkspace, userId, workspaceId);
 
@@ -324,6 +346,10 @@ export class FlagResolver {
 
       if (fallthrough) {
         updated.fallthrough = fallthrough;
+      }
+
+      if (archived !== undefined) {
+        updated.archived = archived;
       }
 
       await flagModel.findOneAndUpdate(

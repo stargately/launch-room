@@ -99,6 +99,61 @@ const seedFlags = [
       usingMobileKey: true,
       usingEnvironmentId: true,
     },
+    archived: false,
+  },
+  {
+    key: "alpha-launch",
+    name: "alpha-launch",
+    description: "alpha-launch",
+    workspace: seedWorkspaces[0]._id,
+    version: 100,
+    // this should be "on", however mongoose does not allow it
+    isOn: true,
+    trackEvents: false,
+    trackEventsFallthrough: false,
+    deleted: false,
+    prerequisites: [],
+    salt: "3eaa44da02e4467790d33e4f957e677b",
+    sel: "0885b10ced58494ea3ae649c1d4ef937",
+    targets: [],
+    rules: [
+      {
+        id: "b47993ca-fb08-4eac-bc19-839fce50b1ac",
+        variation: 0,
+        clauses: [
+          {
+            attribute: "email",
+            op: "endsWith",
+            values: ["@beancount.io"],
+            negate: false,
+          },
+        ],
+        trackEvents: false,
+      },
+      {
+        id: "65947501-e647-44fc-b4e2-f4e025c07157",
+        variation: 0,
+        clauses: [
+          {
+            attribute: "email",
+            op: "startsWith",
+            values: ["jane.doe+", "jackie+"],
+            negate: false,
+          },
+        ],
+        trackEvents: false,
+      },
+    ],
+    fallthrough: { variation: 1 },
+    offVariation: 1,
+    variations: [true, false],
+    debugEventsUntilDate: null,
+    clientSide: true,
+    clientSideAvailability: {
+      usingMobileKey: true,
+      usingEnvironmentId: true,
+    },
+    archived: true,
   },
   {
     key: "spendingReportSubscription",
