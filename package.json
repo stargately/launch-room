@@ -182,7 +182,7 @@
     "graphql-iso-date": "3.6.1",
     "graphql-tag": "2.11.0",
     "is-browser": "2.1.0",
-    "isomorphic-unfetch": "3.0.0",
+    "isomorphic-unfetch": "3.1.0",
     "jsonwebtoken": "8.5.1",
     "koa": "2.13.0",
     "launchdarkly-js-client-sdk": "2.18.3",
