@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Row from "antd/lib/row";
@@ -7,8 +7,10 @@ import Select from "antd/lib/select";
 import Checkbox from "antd/lib/checkbox";
 import Button from "antd/lib/button";
 import notification from "antd/lib/notification";
+import JsonEditor from "@/shared/common/json-editor";
 import { CommonMargin } from "@/shared/common/common-margin";
 import { styled } from "onefx/lib/styletron-react";
+import { t } from "onefx/lib/iso-i18n";
 import { margin } from "polished";
 import { RefetchContext, WorkspaceIdContext } from "./context";
 import { VarIcon } from "../common/icons/var-icon";
@@ -42,23 +44,57 @@ export const NewFlagForm: React.FC<Props> = ({
   closeModal,
   loading,
 }) => {
-  const workspaceId = React.useContext(WorkspaceIdContext);
-  const refetch = React.useContext(RefetchContext);
+  const workspaceId = useContext(WorkspaceIdContext);
+  const refetch = useContext(RefetchContext);
+
   const [form] = Form.useForm();
 
-  const onFinish = async (values: Record<string, unknown>) => {
-    const variations = Object.keys(values)
-      .map((key) => /variations\[(.+?)\]/.exec(key))
-      .filter((key) => !!key)
-      .map((result) => ({
-        // @ts-ignore
-        key: result[0],
-        // @ts-ignore
-        value: Number.parseInt(result[1], 10),
-      }))
-      .sort((a, b) => a.value - b.value)
-      .map((item) => values[item.key]) as any[];
+  const renderVariationField = (type: string, i: number) => {
+    switch (type) {
+      case "Boolean":
+        return (
+          <Form.Item name={["variationsBoolean", i]} initialValue={i !== 0}>
+            <Input disabled />
+          </Form.Item>
+        );
 
+      case "Json":
+        return (
+          <Form.Item
+            name={["variationsJson", i]}
+            validateFirst
+            rules={[
+              { required: true, message: t("feature_flags.rule_required") },
+              () => ({
+                async validator(_: any, value: string) {
+                  try {
+                    const item = JSON.parse(value);
+
+                    if (typeof item === "object" && item !== null) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(t("feature_flags.rule_valid_json"))
+                    );
+                  } catch (e) {
+                    return Promise.reject(
+                      new Error(t("feature_flags.rule_valid_json"))
+                    );
+                  }
+                },
+              }),
+            ]}
+          >
+            <JsonEditor />
+          </Form.Item>
+        );
+
+      default:
+        return <Input disabled />;
+    }
+  };
+
+  const _onFinish = async (values: Record<string, unknown>) => {
     try {
       await upsertFlag({
         name: values.name as string,
@@ -66,7 +102,8 @@ export const NewFlagForm: React.FC<Props> = ({
         workspaceId,
         key: values.key as string,
         on: true,
-        variations,
+        variationsBoolean: values.variationsBoolean as boolean[],
+        variationsJson: values.variationsJson as string[],
         fallthrough: values.fallthrough as { variation: number },
       });
       form.resetFields();
@@ -89,7 +126,7 @@ export const NewFlagForm: React.FC<Props> = ({
         A feature flag lets you control who can see a particular feature in your
         app.
       </div>
-      <Form form={form} onFinish={onFinish} layout="vertical">
+      <Form form={form} onFinish={_onFinish} layout="vertical">
         <Form.Item
           name="name"
           label="Name"
@@ -121,7 +158,7 @@ export const NewFlagForm: React.FC<Props> = ({
         <p>Control which client-side SDKs can use this flag.</p>
 
         <Form.Item name="clientSideAvailability">
-          <Checkbox.Group style={{ width: "100%" }} onChange={() => null}>
+          <Checkbox.Group style={{ width: "100%" }}>
             <Row>
               <Col span={12}>
                 <Checkbox value={usingMobileKey}>
@@ -147,35 +184,29 @@ export const NewFlagForm: React.FC<Props> = ({
         >
           <Select>
             <Select.Option value="Boolean">Boolean</Select.Option>
+            <Select.Option value="Json">JSON</Select.Option>
           </Select>
         </Form.Item>
 
         <CommonMargin />
 
         <Form.Item
-          name="variations[0]"
-          label={
-            <>
-              <VarIcon value={true} /> Variation 1
-            </>
+          noStyle
+          shouldUpdate={(prevValues, curValues) =>
+            prevValues.variationType !== curValues.variationType
           }
-          initialValue={true}
         >
-          <Input disabled />
-        </Form.Item>
-
-        <CommonMargin />
-
-        <Form.Item
-          name="variations[1]"
-          label={
-            <>
-              <VarIcon value={false} /> Variation 2
-            </>
+          {({ getFieldValue }) =>
+            ["Variation 1", "Variation 2"].map((variation, i) => (
+              <>
+                <Row align="middle">
+                  <VarIcon value={i === 0} /> {variation}
+                </Row>
+                <CommonMargin />
+                {renderVariationField(getFieldValue("variationType"), i)}
+              </>
+            ))
           }
-          initialValue={false}
-        >
-          <Input disabled />
         </Form.Item>
 
         <CommonMargin />
@@ -187,7 +218,7 @@ export const NewFlagForm: React.FC<Props> = ({
           <Form.Item
             style={{ width: "20%" }}
             name={["fallthrough", "variation"]}
-            initialValue={1}
+            initialValue={0}
           >
             <Select>
               <Select.Option value={0}>True</Select.Option>

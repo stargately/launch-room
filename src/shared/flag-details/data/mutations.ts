@@ -8,7 +8,8 @@ export const upsertFlag = gql`
     $description: String
     $rules: [RuleInput!]
     $on: Boolean
-    $variations: [Boolean!]
+    $variationsBoolean: [Boolean!]
+    $variationsJson: [String!]
     $fallthrough: FallthroughInput
     $offVariation: Int
   ) {
@@ -19,7 +20,8 @@ export const upsertFlag = gql`
       on: $on
       name: $name
       description: $description
-      variations: $variations
+      variationsBoolean: $variationsBoolean
+      variationsJson: $variationsJson
       fallthrough: $fallthrough
       offVariation: $offVariation
     )

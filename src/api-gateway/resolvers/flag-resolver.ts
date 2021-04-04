@@ -12,6 +12,7 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
+import GraphQLJSON from "graphql-type-json";
 import { v4 as uuid } from "uuid";
 import { IContext } from "@/api-gateway/api-gateway";
 import { ForbiddenError } from "apollo-server-koa";
@@ -157,8 +158,8 @@ class FlagDetails {
   @Field(() => Int)
   offVariation: number;
 
-  @Field(() => [Boolean])
-  variations: Array<boolean>;
+  @Field(() => [GraphQLJSON || Boolean])
+  variations: Array<boolean | Record<string, unknown>>;
 
   @Field(() => Boolean)
   clientSide: boolean;
@@ -230,7 +231,10 @@ class UpFlagDetailsArgs {
   on: boolean;
 
   @Field(() => [Boolean], { nullable: true })
-  variations: boolean[];
+  variationsBoolean: boolean[];
+
+  @Field(() => [String], { nullable: true })
+  variationsJson: string[];
 
   @Field(() => Int, { nullable: true })
   offVariation: number;
@@ -330,6 +334,10 @@ export class FlagResolver {
         updated
       );
     } else {
+      const { variationsJson, variationsBoolean } = detail;
+      const variations =
+        variationsBoolean || variationsJson?.map((value) => JSON.parse(value));
+
       await flagModel.create({
         workspace: workspaceId,
         clientSideAvailability: {
@@ -340,6 +348,7 @@ export class FlagResolver {
         salt: "",
         sel: "",
         targets: [],
+        variations,
         ...detail,
       });
     }
