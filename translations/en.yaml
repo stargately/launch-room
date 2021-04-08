@@ -24,6 +24,8 @@ feature_flags.not_found_archived_description_3: Check for typos.
 
 feature_flags.not_found_archived_title: 'No archived feature flags match. Try this:'
 
+feature_flags.default_variation_tooltip: You cannot delete this variation because it is a default variation.
+
 feature_flags.not_found_description: There are no flags in this project yet.
 
 feature_flags.not_found_title: Create feature flags to manage who sees different aspects of your product.
@@ -33,6 +35,8 @@ feature_flags.restore_flag_label: Restore flag
 feature_flags.restore_flag_title: Are you sure to restore this flag?
 
 feature_flags.rule_required: A value is required
+
+feature_flags.rule_unique_value: You can't create variations with the same value
 
 feature_flags.rule_valid_json: This must be valid JSON
 

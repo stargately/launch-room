@@ -1,12 +1,15 @@
 import React, { useContext } from "react";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
+import InputNumber from "antd/lib/input-number";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Select from "antd/lib/select";
 import Checkbox from "antd/lib/checkbox";
 import Button from "antd/lib/button";
 import notification from "antd/lib/notification";
+import Tooltip from "antd/lib/tooltip";
+import MinusOutlined from "@ant-design/icons/MinusOutlined";
 import JsonEditor from "@/shared/common/json-editor";
 import { CommonMargin } from "@/shared/common/common-margin";
 import { styled } from "onefx/lib/styletron-react";
@@ -49,48 +52,42 @@ export const NewFlagForm: React.FC<Props> = ({
 
   const [form] = Form.useForm();
 
-  const renderVariationField = (type: string, i: number) => {
+  const renderVariationField = (type: string) => {
     switch (type) {
       case "Boolean":
-        return (
-          <Form.Item name={["variationsBoolean", i]} initialValue={i !== 0}>
-            <Input disabled />
-          </Form.Item>
-        );
+        return <Input disabled />;
+
+      case "String":
+        return <Input />;
+
+      case "Number":
+        return <InputNumber />;
 
       case "Json":
-        return (
-          <Form.Item
-            name={["variationsJson", i]}
-            validateFirst
-            rules={[
-              { required: true, message: t("feature_flags.rule_required") },
-              () => ({
-                async validator(_: any, value: string) {
-                  try {
-                    const item = JSON.parse(value);
-
-                    if (typeof item === "object" && item !== null) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(t("feature_flags.rule_valid_json"))
-                    );
-                  } catch (e) {
-                    return Promise.reject(
-                      new Error(t("feature_flags.rule_valid_json"))
-                    );
-                  }
-                },
-              }),
-            ]}
-          >
-            <JsonEditor />
-          </Form.Item>
-        );
+        return <JsonEditor />;
 
       default:
-        return <Input disabled />;
+        return null;
+    }
+  };
+
+  const uniqueValidator = async (_: any, values: Array<string>) => {
+    if (new Set(values).size !== values.length && values[0] !== "") {
+      return Promise.reject(new Error(t("feature_flags.rule_unique_value")));
+    }
+    return Promise.resolve();
+  };
+
+  const jsonValidator = async (_: any, value: string) => {
+    try {
+      const item = JSON.parse(value);
+
+      if (typeof item === "object" && item !== null) {
+        return Promise.resolve();
+      }
+      return Promise.reject(new Error(t("feature_flags.rule_valid_json")));
+    } catch (e) {
+      return Promise.reject(new Error(t("feature_flags.rule_valid_json")));
     }
   };
 
@@ -104,6 +101,8 @@ export const NewFlagForm: React.FC<Props> = ({
         on: true,
         variationsBoolean: values.variationsBoolean as boolean[],
         variationsJson: values.variationsJson as string[],
+        variationsNumber: values.variationsNumber as number[],
+        variationsString: values.variationsString as string[],
         fallthrough: values.fallthrough as { variation: number },
       });
       form.resetFields();
@@ -126,7 +125,20 @@ export const NewFlagForm: React.FC<Props> = ({
         A feature flag lets you control who can see a particular feature in your
         app.
       </div>
-      <Form form={form} onFinish={_onFinish} layout="vertical">
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={_onFinish}
+        initialValues={{
+          variationType: "Boolean",
+          offVariation: false,
+          fallthrough: { variation: 0 },
+          variationsBoolean: [true, false],
+          variationsJson: ["", ""],
+          variationsString: ["", ""],
+          variationsNumber: ["", ""],
+        }}
+      >
         <Form.Item
           name="name"
           label="Name"
@@ -179,11 +191,12 @@ export const NewFlagForm: React.FC<Props> = ({
         <Form.Item
           name="variationType"
           label="Flag variations"
-          initialValue="Boolean"
           help="This controls the evaluation return type of your flag in your code."
         >
           <Select>
             <Select.Option value="Boolean">Boolean</Select.Option>
+            <Select.Option value="String">String</Select.Option>
+            <Select.Option value="Number">Number</Select.Option>
             <Select.Option value="Json">JSON</Select.Option>
           </Select>
         </Form.Item>
@@ -196,17 +209,70 @@ export const NewFlagForm: React.FC<Props> = ({
             prevValues.variationType !== curValues.variationType
           }
         >
-          {({ getFieldValue }) =>
-            ["Variation 1", "Variation 2"].map((variation, i) => (
-              <>
-                <Row align="middle">
-                  <VarIcon value={i === 0} /> {variation}
-                </Row>
-                <CommonMargin />
-                {renderVariationField(getFieldValue("variationType"), i)}
-              </>
-            ))
-          }
+          {({ getFieldValue }) => (
+            <Form.List
+              name={`variations${getFieldValue("variationType")}`}
+              rules={[{ validator: uniqueValidator }]}
+            >
+              {(fields, { add, remove }, { errors }) => (
+                <>
+                  {fields.map((field) => (
+                    <React.Fragment key={field.key}>
+                      <Row align="middle" gutter={[0, 4]}>
+                        <VarIcon index={field.name} />
+                        {`variation ${field.name + 1}`}
+                      </Row>
+                      <Row>
+                        <Col flex="auto">
+                          <Form.Item
+                            {...field}
+                            validateFirst
+                            rules={[
+                              {
+                                required: true,
+                                message: t("feature_flags.rule_required"),
+                              },
+                              ...(getFieldValue("variationType") === "Json"
+                                ? [{ validator: jsonValidator }]
+                                : []),
+                            ]}
+                          >
+                            {renderVariationField(
+                              getFieldValue("variationType")
+                            )}
+                          </Form.Item>
+                        </Col>
+                        <Col flex="none">
+                          <Tooltip
+                            title={
+                              field.key < 2 &&
+                              t("feature_flags.default_variation_tooltip")
+                            }
+                          >
+                            <Button
+                              type="text"
+                              shape="circle"
+                              disabled={field.key < 2}
+                              icon={<MinusOutlined />}
+                              onClick={() => remove(field.name)}
+                            />
+                          </Tooltip>
+                        </Col>
+                      </Row>
+                    </React.Fragment>
+                  ))}
+                  {getFieldValue("variationType") !== "Boolean" && (
+                    <Form.Item>
+                      <Button size="small" onClick={() => add()}>
+                        ADD VARIATION
+                      </Button>
+                      <Form.ErrorList errors={errors} />
+                    </Form.Item>
+                  )}
+                </>
+              )}
+            </Form.List>
+          )}
         </Form.Item>
 
         <CommonMargin />
@@ -218,7 +284,6 @@ export const NewFlagForm: React.FC<Props> = ({
           <Form.Item
             style={{ width: "20%" }}
             name={["fallthrough", "variation"]}
-            initialValue={0}
           >
             <Select>
               <Select.Option value={0}>True</Select.Option>
@@ -229,11 +294,7 @@ export const NewFlagForm: React.FC<Props> = ({
 
         <Row align="middle">
           <VariationFlag>OFF</VariationFlag>
-          <Form.Item
-            style={{ width: "20%" }}
-            name="offVariation"
-            initialValue={false}
-          >
+          <Form.Item style={{ width: "20%" }} name="offVariation">
             <Select>
               {/*
               // @ts-ignore */}
