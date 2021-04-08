@@ -46,6 +46,11 @@ function HeadInner({
           href: assetURL("stylesheets/antd-dark.css"),
         },
         {
+          rel: "stylesheet",
+          type: "text/css",
+          href: assetURL("stylesheets/codemirror.css"),
+        },
+        {
           href:
             "https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic",
           rel: "stylesheet",

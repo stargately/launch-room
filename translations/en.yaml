@@ -4,6 +4,10 @@ feature_flags.not_found_description: There are no flags in this project yet.
 
 feature_flags.not_found_title: Create feature flags to manage who sees different aspects of your product.
 
+feature_flags.rule_required: A value is required
+
+feature_flags.rule_valid_json: This must be valid JSON
+
 home.desc: Launch room leverages Launch Darkly clients and build the open-source server upon it.
 
 home.title: 'Feature Flags, Simplified'

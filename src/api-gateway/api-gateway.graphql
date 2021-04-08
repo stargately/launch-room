@@ -57,7 +57,7 @@ type FlagDetails {
   rules: [Rule!]
   fallthrough: Fallthrough!
   offVariation: Int!
-  variations: [Boolean!]!
+  variations: [JSON!]!
   clientSide: Boolean!
   clientSideAvailability: ClientSideAvailability!
 }
@@ -69,9 +69,12 @@ type FlagsStatus {
   flags: [FlagDetails!]!
 }
 
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
 type Mutation {
   subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
-  upsertFlag(workspaceId: ID!, key: ID!, name: String, description: String, rules: [RuleInput!], on: Boolean, variations: [Boolean!], offVariation: Int, fallthrough: FallthroughInput): Boolean!
+  upsertFlag(workspaceId: ID!, key: ID!, name: String, description: String, rules: [RuleInput!], on: Boolean, variationsBoolean: [Boolean!], variationsJson: [String!], offVariation: Int, fallthrough: FallthroughInput): Boolean!
   upsertApiTokens(_id: String!, sendgridApiKey: String, carrierToken: String): ApiTokens
 }
 
