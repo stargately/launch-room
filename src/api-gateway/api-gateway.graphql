@@ -60,12 +60,14 @@ type FlagDetails {
   variations: [JSON!]!
   clientSide: Boolean!
   clientSideAvailability: ClientSideAvailability!
+  archived: Boolean!
 }
 
 type FlagsStatus {
   total: Int!
   skip: Int!
   limit: Int!
+  archived: Boolean!
   flags: [FlagDetails!]!
 }
 
@@ -74,7 +76,7 @@ scalar JSON
 
 type Mutation {
   subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
-  upsertFlag(workspaceId: ID!, key: ID!, name: String, description: String, rules: [RuleInput!], on: Boolean, variationsBoolean: [Boolean!], variationsJson: [String!], offVariation: Int, fallthrough: FallthroughInput): Boolean!
+  upsertFlag(workspaceId: ID!, key: ID!, name: String, description: String, rules: [RuleInput!], on: Boolean, variationsBoolean: [Boolean!], variationsJson: [String!], offVariation: Int, fallthrough: FallthroughInput, archived: Boolean): Boolean!
   upsertApiTokens(_id: String!, sendgridApiKey: String, carrierToken: String): ApiTokens
 }
 
@@ -84,7 +86,7 @@ type Prerequisite {
 }
 
 type Query {
-  flagsStatus(workspaceId: ID!, skip: Int!, limit: Int!): FlagsStatus!
+  flagsStatus(workspaceId: ID!, skip: Int!, limit: Int!, archived: Boolean!): FlagsStatus!
   flagDetails(workspaceId: ID!, key: ID!): FlagDetails
   apiTokens: ApiTokens!
 

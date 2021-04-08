@@ -20,6 +20,7 @@ export const flagDetails = gql`
         variation
       }
       offVariation
+      archived
     }
   }
 `;

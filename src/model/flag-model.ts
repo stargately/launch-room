@@ -92,6 +92,9 @@ export class Flag extends TimeStamps {
 
   @prop()
   description?: string;
+
+  @prop({ default: false })
+  archived?: boolean;
 }
 
 export const FlagModel = getModelForClass(Flag);

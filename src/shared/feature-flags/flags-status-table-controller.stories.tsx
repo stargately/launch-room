@@ -13,6 +13,7 @@ const mocks = [
         limit: 10000,
         skip: 0,
         workspaceId: "5fca07e0e66beb3159d792f2",
+        archived: false,
       },
     },
     result: () => {
@@ -33,6 +34,7 @@ const mocks = [
                 ],
                 variations: [true, false],
                 on: true,
+                archived: false,
                 __typename: "FlagDetails",
               },
             ],
