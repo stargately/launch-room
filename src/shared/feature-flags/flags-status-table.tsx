@@ -86,7 +86,9 @@ export const FlagsStatusTable: React.FC<Props> = ({
             overlay={
               <Menu>
                 <Menu.Item onClick={() => refetch({ archived: !archived })}>
-                  {archived ? "View active flags" : "View archived flags"}
+                  {archived
+                    ? t("feature_flags.active_flag_view")
+                    : t("feature_flags.archived_flag_view")}
                 </Menu.Item>
               </Menu>
             }
@@ -108,25 +110,30 @@ export const FlagsStatusTable: React.FC<Props> = ({
                   <Popconfirm
                     title={
                       archived
-                        ? "Are you sure to restore this flag?"
-                        : "Are you sure to archived this flag?"
+                        ? t("feature_flags.restore_flag_title")
+                        : t("feature_flags.archive_flag_title")
                     }
-                    onConfirm={() =>
-                      upsertFlag({
-                        workspaceId,
-                        key,
-                        archived: !archived,
-                      }).then(() => {
+                    onConfirm={async () => {
+                      try {
+                        await upsertFlag({
+                          workspaceId,
+                          key,
+                          archived: !archived,
+                        });
                         refetch({ archived });
                         notification.success({
                           message: archived
-                            ? "Flag successfully restored"
-                            : "Flag successfully archived",
+                            ? t("feature_flags.success_restore_flag_message")
+                            : t("feature_flags.success_archive_flag_message"),
                         });
-                      })
-                    }
+                      } catch (e) {
+                        notification.error({ message: e.message });
+                      }
+                    }}
                   >
-                    {archived ? "Restore flag" : "Archived"}
+                    {archived
+                      ? t("feature_flags.restore_flag_label")
+                      : t("feature_flags.archive_flag_label")}
                   </Popconfirm>
                 </Menu.Item>
               </Menu>
@@ -142,12 +149,16 @@ export const FlagsStatusTable: React.FC<Props> = ({
   return (
     <ContentPadding>
       <CommonMargin />
-      <h1>{archived ? "Archived Feature Flags" : "Feature Flags"}</h1>
+      <h1>
+        {archived
+          ? t("feature_flags.archived_flag_title")
+          : t("feature_flags.flag_title")}
+      </h1>
       <NewFlagController newFlagLabel="+ Flag" />
       <p>
         {archived
-          ? "Use this page to see all archived feature flags in this project."
-          : "Use this page to see all feature flags in this project. Select a flag to manage the environment-specific targeting and rollout rules."}
+          ? t("feature_flags.archived_flag_description")
+          : t("feature_flags.flag_description")}
       </p>
       <ConfigProvider
         renderEmpty={() => (

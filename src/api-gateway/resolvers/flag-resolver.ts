@@ -271,7 +271,7 @@ export class FlagResolver {
     };
 
     const [total, flags] = await Promise.all([
-      flagModel.estimatedDocumentCount({ workspace: workspaceId }),
+      flagModel.countDocuments({ workspace: workspaceId, archived }),
       flagModel.find(query).skip(skip).limit(limit).lean(),
     ]);
     for (const f of flags) {

@@ -167,33 +167,38 @@ export function FlagDetails({
         </Tabs.TabPane>
         <Tabs.TabPane tab="Setting" key="2">
           <Typography.Title level={5} type="secondary">
-            {flagDetails?.archived ? "Restore flag" : "Archive flag"}
+            {flagDetails?.archived
+              ? t("flag_detail.restore_flag_label")
+              : t("flag_detail.archive_flag_label")}
           </Typography.Title>
           <Space direction="vertical">
             <Typography.Text>
               {flagDetails?.archived
-                ? "This flag will be restored across all environments."
-                : "This flag will be archived across all environments and will only appear in your list when filtered for."}
+                ? t("flag_detail.restore_flag_description")
+                : t("flag_detail.archive_flag_description")}
             </Typography.Text>
             <Popconfirm
               title={
                 flagDetails?.archived
-                  ? "Are you sure to restore this flag?"
-                  : "Are you sure to archived this flag?"
+                  ? t("flag_detail.restore_flag_title")
+                  : t("flag_detail.archive_flag_title")
               }
-              onConfirm={() =>
-                upsertFlag({
-                  workspaceId,
-                  key: flagKey,
-                  archived: !flagDetails?.archived,
-                }).then(() =>
+              onConfirm={async () => {
+                try {
+                  await upsertFlag({
+                    workspaceId,
+                    key: flagKey,
+                    archived: !flagDetails?.archived,
+                  });
                   notification.success({
                     message: flagDetails?.archived
-                      ? "Flag successfully restored"
-                      : "Flag successfully archived",
-                  })
-                )
-              }
+                      ? t("feature_flags.success_restore_flag_message")
+                      : t("feature_flags.success_archive_flag_message"),
+                  });
+                } catch (e) {
+                  notification.error({ message: e.message });
+                }
+              }}
             >
               <Button>{flagDetails?.archived ? "RESTORE" : "ARCHIVE"}</Button>
             </Popconfirm>

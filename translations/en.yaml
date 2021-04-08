@@ -1,5 +1,21 @@
 auth.label_workspace: Workspace Name
 
+feature_flags.active_flag_view: View active flags
+
+feature_flags.archive_flag_label: Archived
+
+feature_flags.archive_flag_title: Are you sure to archived this flag?
+
+feature_flags.archived_flag_description: Use this page to see all archived feature flags in this project.
+
+feature_flags.archived_flag_title: Archived Feature Flags
+
+feature_flags.archived_flag_view: View archived flags
+
+feature_flags.flag_description: Use this page to see all feature flags in this project. Select a flag to manage the environment-specific targeting and rollout rules.
+
+feature_flags.flag_title: Feature Flags
+
 feature_flags.not_found_archived_description_1: 'Search for a flag by name, key, or description.'
 
 feature_flags.not_found_archived_description_2: Modify your filter selection.
@@ -12,9 +28,29 @@ feature_flags.not_found_description: There are no flags in this project yet.
 
 feature_flags.not_found_title: Create feature flags to manage who sees different aspects of your product.
 
+feature_flags.restore_flag_label: Restore flag
+
+feature_flags.restore_flag_title: Are you sure to restore this flag?
+
 feature_flags.rule_required: A value is required
 
 feature_flags.rule_valid_json: This must be valid JSON
+
+feature_flags.success_archive_flag_message: Flag successfully archived
+
+feature_flags.success_restore_flag_message: Flag successfully restored
+
+flag_detail.archive_flag_description: This flag will be archived across all environments and will only appear in your list when filtered for.
+
+flag_detail.archive_flag_label: Archive flag
+
+flag_detail.archive_flag_title: Are you sure to archived this flag?
+
+flag_detail.restore_flag_description: This flag will be restored across all environments.
+
+flag_detail.restore_flag_label: Restore flag
+
+flag_detail.restore_flag_title: Are you sure to restore this flag?
 
 home.desc: Launch room leverages Launch Darkly clients and build the open-source server upon it.
 
