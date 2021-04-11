@@ -64,6 +64,14 @@ function isoRender(ctx: Context): void {
 export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   // view routes
   server.get(
+    "home",
+    "/",
+    // server.auth.authOptionalContinue,
+    async (ctx: Context) => {
+      return isoRender(ctx);
+    }
+  );
+  server.get(
     "login",
     "/login",
     // server.auth.authOptionalContinue,
