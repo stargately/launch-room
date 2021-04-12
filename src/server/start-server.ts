@@ -38,7 +38,7 @@ export async function startServer(): Promise<Server> {
   setGateways(server);
   server.auth = new OnefxAuth(server.gateways.mongoose, {
     ...authConfig,
-    loginUrl: "/launch-room/login/",
+    loginUrl: "/launch-room/",
     allowedLoginNext: ["/launch-room/default/"],
   });
 

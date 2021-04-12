@@ -104,7 +104,7 @@ const SignUpInner = (props: Props): JSX.Element => {
             <PasswordField defaultValue={valuePassword} error={errorPassword} />
             <FieldMargin>
               <InputLabel htmlFor="workspace-name">
-                {t("auth.sign_up.label.workspace")}
+                {t("auth/workspace")}
               </InputLabel>
               <TextInput
                 defaultValue={valueWorkspaceName}
