@@ -10,6 +10,7 @@ import { colors } from "@/shared/common/styles/style-color";
 import { fonts } from "@/shared/common/styles/style-font";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
 import { TopBar } from "@/shared/common/top-bar";
+import { Home } from "@/shared/home";
 import { ForgotPassword } from "./forgot-password";
 import { ResetPasswordContainer } from "./reset-password";
 import { SignIn } from "./sign-in";
@@ -36,6 +37,9 @@ export const IdentityApp = ({ googleTid }: Props): JSX.Element => {
           <EmailTokenInvalid />
         </Route>
         <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
           <Route exact path="/login">
             <SignIn />
           </Route>
