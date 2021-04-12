@@ -8,13 +8,6 @@ import { apolloClient } from "@/shared/common/apollo-client";
 import { baseReducer } from "@/shared/common/base-reducer";
 import { ThemeProvider } from "@/shared/common/styles/theme-provider";
 
-const reducer = combineReducers({
-  base: baseReducer,
-  apolloState: noopReducer,
-});
-
-export type RootState = ReturnType<typeof reducer>;
-
 clientReactRender({
   VDom: (
     <ApolloProvider client={apolloClient}>
@@ -24,5 +17,8 @@ clientReactRender({
     </ApolloProvider>
   ),
   // @ts-ignore
-  reducer,
+  reducer: combineReducers({
+    base: baseReducer,
+    apolloState: noopReducer,
+  }),
 });

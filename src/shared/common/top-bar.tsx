@@ -2,10 +2,7 @@ import { styled, Theme } from "onefx/lib/styletron-react";
 import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import OutsideClickHandler from "react-outside-click-handler";
-import { RootState } from "@/client/javascripts/main";
-import { Link } from "onefx/lib/react-router-dom";
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
 import { Cross } from "./icons/cross.svg";
@@ -19,8 +16,6 @@ export const TOP_BAR_HEIGHT = 52;
 
 export const TopBar = (): JSX.Element => {
   const [displayMobileMenu, setDisplayMobileMenu] = useState(false);
-
-  const userId = useSelector((state: RootState) => state.base.userId);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -37,18 +32,13 @@ export const TopBar = (): JSX.Element => {
     setDisplayMobileMenu(false);
   };
 
-  const renderMenu = (): JSX.Element =>
-    userId ? (
-      <>
-        <A to="/default" onClick={hideMobileMenu}>
-          {t("topbar.flags")}
-        </A>
-      </>
-    ) : (
-      <A key={0} to="/login" onClick={hideMobileMenu}>
-        {t("topbar.login")}
+  const renderMenu = (): JSX.Element => (
+    <>
+      <A href="/" key={0} onClick={hideMobileMenu}>
+        {t("topbar.home")}
       </A>
-    );
+    </>
+  );
 
   const renderMobileMenu = (): JSX.Element | null => {
     if (!displayMobileMenu) {
@@ -69,7 +59,7 @@ export const TopBar = (): JSX.Element => {
           <Flex>
             <Logo />
             <CommonMargin />
-            <BrandText to="/">{t("topbar.brand")}</BrandText>
+            <BrandText href="/">{t("topbar.brand")}</BrandText>
           </Flex>
           <Flex>
             <Menu>{renderMenu()}</Menu>
@@ -108,8 +98,7 @@ const Bar = styled("nav", ({ $theme }) => ({
   alignItems: "center",
   lineHeight: `${TOP_BAR_HEIGHT}px`,
   height: `${TOP_BAR_HEIGHT}px`,
-  backgroundColor: $theme.colors.white,
-  boxShadow: "0 0 4px 0 #c6c6c6ba",
+  backgroundColor: $theme.colors.nav01,
   color: $theme.colors.textReverse,
   position: "fixed",
   top: "0px",
@@ -188,8 +177,8 @@ function Logo(): JSX.Element {
   );
 }
 
-const A = styled(Link, ({ $theme }: { $theme: Theme }) => ({
-  color: $theme.colors.text01,
+const A = styled("a", ({ $theme }: { $theme: Theme }) => ({
+  color: $theme.colors.textReverse,
   marginLeft: "14px",
   textDecoration: "none",
   ":hover": {
@@ -205,8 +194,8 @@ const A = styled(Link, ({ $theme }: { $theme: Theme }) => ({
   },
 }));
 
-const BrandText = styled(Link, ({ $theme }) => ({
-  color: $theme.colors.text01,
+const BrandText = styled("a", ({ $theme }) => ({
+  color: $theme.colors.textReverse,
   textDecoration: "none",
   ":hover": {
     color: $theme.colors.primary,

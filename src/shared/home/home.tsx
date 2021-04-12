@@ -1,12 +1,13 @@
 import React from "react";
+import { actionSetTheme } from "@/shared/common/base-reducer";
 import { colors } from "@/shared/common/styles/style-color";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
 import Row from "antd/lib/grid/row";
 import { assetURL } from "onefx/lib/asset-url";
 import { styled } from "onefx/lib/styletron-react";
-import { Link } from "onefx/lib/react-router-dom";
+import { connect, useSelector } from "react-redux";
 import Col from "antd/lib/grid/col";
-import Layout from "antd/lib/layout";
+import { Flex } from "@/shared/common/flex";
 import { media } from "@/shared/common/styles/style-media";
 import { t } from "onefx/lib/iso-i18n";
 import { margin } from "polished";
@@ -15,110 +16,60 @@ import { CommonMargin } from "../common/common-margin";
 
 const Fade = require("react-reveal/Fade");
 
-export const Home = (): JSX.Element => {
-  return (
-    <Layout>
-      <Layout.Content>
+export const Home = connect(
+  (state: { base: { themeCode: "dark" | "light" } }) => ({
+    themeCode: state.base.themeCode,
+  }),
+  (dispatch) => ({
+    actionSetTheme: (themeCode: "dark" | "light") => {
+      dispatch(actionSetTheme(themeCode));
+    },
+  })
+)(
+  (): JSX.Element => {
+    const { routePrefix } = useSelector(
+      (state: { base: { routePrefix: string } }) => ({
+        routePrefix: state.base.routePrefix,
+      })
+    );
+    return (
+      <div>
         <ContentPadding>
           <StyledHeroRow gutter={32}>
             <Col md={12} xs={24}>
-              <HeroH1>{t("home.title_0")}</HeroH1>
-              <HeroP>{t("home.desc_0")}</HeroP>
+              <HeroH1>{t("home.title")}</HeroH1>
+              <HeroP>{t("home.desc")}</HeroP>
 
               <CommonMargin />
 
               <Fade ssrReveal={true}>
-                <Link to="/sign-up">
-                  <Button size="large" type="primary">
-                    GET STARTED FREE
-                  </Button>
-                </Link>
+                <Button href={`${routePrefix}/sign-up/`} type="primary">
+                  Sign Up for Free
+                </Button>
+                <CommonMargin />
+                <Button>Fork me on Github</Button>
               </Fade>
               <CommonMargin />
             </Col>
 
             <Col md={12} xs={24}>
-              <Fade right ssrReveal={true}>
-                <Img src={assetURL("hero.svg")} alt="Feature flag" />
-              </Fade>
+              <Flex center={true} width="100%">
+                <Fade right ssrReveal={true} style={{ width: "100%" }}>
+                  <Img src={assetURL("hero.svg")} alt="Feature flag" />
+                </Fade>
+                <CommonMargin />
+              </Flex>
             </Col>
           </StyledHeroRow>
         </ContentPadding>
-      </Layout.Content>
-
-      <Layout.Content style={{ backgroundColor: "rgb(201, 243, 241)" }}>
-        <ContentPadding>
-          <StyledHeroRow gutter={32}>
-            <Col md={12} xs={24}>
-              <Fade left ssrReveal={true}>
-                <Img src={assetURL("cloud-security.svg")} alt="Feature flag" />
-              </Fade>
-            </Col>
-
-            <Col md={12} xs={24}>
-              <HeroH1>{t("home.title_1")}</HeroH1>
-              <HeroP>{t("home.desc_1")}</HeroP>
-            </Col>
-          </StyledHeroRow>
-        </ContentPadding>
-      </Layout.Content>
-
-      <Layout.Content style={{ backgroundColor: colors.white }}>
-        <WaveImg src={assetURL("wave.png")} />
-        <ContentPadding>
-          <StyledHeroRow gutter={32}>
-            <Col md={12} xs={24}>
-              <Card>
-                <IconContainer>
-                  <Icon src={assetURL("mobile-icon.svg")} />
-                </IconContainer>
-                <CardTitle>{t("home.card_title_0")}</CardTitle>
-                <p>{t("home.card_desc_0")}</p>
-              </Card>
-            </Col>
-            <Col md={12} xs={24}>
-              <Card>
-                <IconContainer>
-                  <Icon src={assetURL("server-icon.svg")} />
-                </IconContainer>
-                <CardTitle>{t("home.card_title_1")}</CardTitle>
-                <p>{t("home.card_desc_1")}</p>
-              </Card>
-            </Col>
-            <Col md={12} xs={24}>
-              <Card>
-                <IconContainer>
-                  <Icon src={assetURL("cms-icon.svg")} />
-                </IconContainer>
-                <CardTitle>{t("home.card_title_2")}</CardTitle>
-                <p>{t("home.card_desc_2")}</p>
-              </Card>
-            </Col>
-            <Col md={12} xs={24}>
-              <Card>
-                <IconContainer>
-                  <Icon src={assetURL("map-icon.svg")} />
-                </IconContainer>
-                <CardTitle>{t("home.card_title_3")}</CardTitle>
-                <p>{t("home.card_desc_3")}</p>
-              </Card>
-            </Col>
-          </StyledHeroRow>
-        </ContentPadding>
-      </Layout.Content>
-    </Layout>
-  );
-};
-
-const WaveImg = styled("img", {
-  position: "absolute",
-  height: 500,
-});
+      </div>
+    );
+  }
+);
 
 const Img = styled("img", {
-  width: "90%",
-  margin: "0 auto",
-  display: "block",
+  width: "100%",
+  height: "400px",
   [media.palm]: {
     width: "100%",
   },
@@ -126,9 +77,9 @@ const Img = styled("img", {
 
 const HeroH1 = styled("h1", ({ $theme }) => ({
   color: colors.text01,
-  fontSize: "36px",
+  fontSize: $theme.sizing[5],
   margin: 0,
-  fontWeight: 500,
+  fontWeight: 700,
   [media.palm]: {
     fontSize: $theme.sizing[4],
   },
@@ -136,35 +87,13 @@ const HeroH1 = styled("h1", ({ $theme }) => ({
 
 const HeroP = styled("div", ({ $theme }) => ({
   fontSize: $theme.sizing[3],
-  ...margin($theme.sizing[5], 0),
+  fontWeight: 400,
+  ...margin($theme.sizing[3], 0),
 }));
 
 const StyledHeroRow = styled(Row, ({ $theme }) => ({
-  ...margin("80px", 0),
+  ...margin("120px", 0, 0),
   [media.palm]: {
     ...margin($theme.sizing[5], 0, 0),
   },
 }));
-
-const Card = styled("div", {
-  textAlign: "center",
-  wordWrap: "break-word",
-});
-
-const IconContainer = styled("div", {
-  background: "#5B67FB",
-  borderRadius: "100%",
-  height: "80px",
-  margin: "0 auto 30px",
-  width: "80px",
-  display: "flex",
-});
-
-const Icon = styled("img", {
-  display: "block",
-  margin: "auto",
-});
-
-const CardTitle = styled("h3", {
-  fontWeight: 700,
-});

@@ -1,60 +1,4 @@
-auth/button_submit: Submit
-
-auth/consent: 'By clicking "SUBMIT", you agree to our <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.'
-
-auth/continue_with_blockstack: Continue with Blockstack
-
-auth/email-already-in-use: Email is already in use
-
-auth/forgot_password: Forgot Password
-
-auth/forgot_password.back: ← Back to Login
-
-auth/forgot_password.desc: 'Enter the email address associated with your account, and we’ll email you a link to reset your password.'
-
-auth/forgot_password.email_content: 'Hi, we’ve received a request to reset your password. If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using the following link.'
-
-auth/forgot_password.email_cta: RESET YOUR PASSWORD
-
-auth/forgot_password.email_title: Reset your Password
-
-auth/forgot_password.email_token_failure: Your request to reset password has already expired. Please try again.
-
-auth/forgot_password.send: SEND RESET LINK
-
-auth/forgot_password.sent: 'A link to reset your password has been sent to ${email}.'
-
-auth/invalid-email: Email is invalid
-
-auth/new-password: New Password
-
-auth/password: Password
-
-auth/reset_password: Reset password
-
-auth/reset_password.desc: 'Your password needs to have at least one symbol or number, and have at least 6 characters.'
-
-auth/reset_password.success: Your password has been updated.
-
-auth/sign_in.forgot_password: Forgot password? Reset
-
-auth/sign_in.switch_to_sign_up: Don’t have an account? Sign up
-
-auth/sign_in.title: Sign In
-
-auth/sign_up.switch_to_sign_in: Already have an account? Log in
-
-auth/user-disabled: User is banned
-
-auth/user-not-found: User is not found
-
-auth/weak-password: Please use at least 8 characters as the password
-
-auth/workspace: Workspace Name
-
-auth/wrong-password: Password is incorrect
-
-auth/create_account: CREATE ACCOUNT
+auth.label_workspace: Workspace Name
 
 feature_flags.active_flag_view: View active flags
 
@@ -67,8 +11,6 @@ feature_flags.archived_flag_description: Use this page to see all archived featu
 feature_flags.archived_flag_title: Archived Feature Flags
 
 feature_flags.archived_flag_view: View archived flags
-
-feature_flags.default_variation_tooltip: You cannot delete this variation because it is a default variation.
 
 feature_flags.flag_description: Use this page to see all feature flags in this project. Select a flag to manage the environment-specific targeting and rollout rules.
 
@@ -94,8 +36,6 @@ feature_flags.restore_flag_title: Are you sure to restore this flag?
 
 feature_flags.rule_required: A value is required
 
-feature_flags.rule_unique_value: You can't create variations with the same value
-
 feature_flags.rule_valid_json: This must be valid JSON
 
 feature_flags.success_archive_flag_message: Flag successfully archived
@@ -114,29 +54,9 @@ flag_detail.restore_flag_label: Restore flag
 
 flag_detail.restore_flag_title: Are you sure to restore this flag?
 
-home.desc_0: Launch room leverages Launch Darkly clients and build the open-source server upon it.
+home.desc: Launch room leverages Launch Darkly clients and build the open-source server upon it.
 
-home.title_0: 'Feature Flags, Simplified'
-
-home.desc_1: Modern development and operations teams are using feature management to deliver faster and take on more development cycles. This best practice enables engineering teams of any size to continuously deploy code, and empowers business teams with control over features so they can manage their customers' experience. With the Launch room Feature Management Platform, leading teams are able to reduce risk and launch their ideas at inception.
-
-home.title_1: Why Feature Management
-
-home.card_title_0: SDK Powered
-
-home.card_desc_0: All LaunchDarkly feature flag updates and evaluations are handled automatically by our SDKs. We have SDK support for every major programming language so that you can embed LaunchDarkly into your server, client, and mobile applications. Plus, our feature flags are cross-platform and multi-lingual, so there’s no need to implement multiple flags based on device or language.
-
-home.card_title_1: Stored Locally
-
-home.card_desc_1: After our SDK initializes, all your feature flag rules are stored locally in memory. This allows you to process millions of evaluations, without introducing latency in your services, since you don't have to run a query against a separate database or call back to LaunchDarkly at the time of a flag evaluation. You can even add an additional layer of reliability by using one of our local storage options with our SDKs.
-
-home.card_title_2: Real-time Updates
-
-home.card_desc_2: Our unique streaming architecture means you can instantly turn features on/off when you need to without introducing any latency to your site. It only takes 200 milliseconds to propagate flag updates.
-
-home.card_title_3: Consistent Experience
-
-home.card_desc_3: Whether you’re updating a new feature for end-users or migrating a microservice to a new provider, we understand the importance of keeping your environments consistent. Our streaming architecture ensures every change you make is dispersed to every user and microservice in real-time. No more waiting and wondering if the changes you requested have actually propagated across all your servers.
+home.title: 'Feature Flags, Simplified'
 
 meta.description: Feature Flags Simplified
 
@@ -154,11 +74,7 @@ page.noscript: 'We’re sorry, some parts of the website don’t work properly w
 
 topbar.brand: LaunchRoom
 
-topbar.flags: Features flags
+topbar.home: Home
 
 topbar.login: Login
-
-tos.privacy: Privacy Policy
-
-tos.tos: Terms of Service
 

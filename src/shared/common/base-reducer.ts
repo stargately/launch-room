@@ -13,11 +13,9 @@ const storeTheme = (newTheme: ThemeCode) => {
 };
 
 export function baseReducer(
-  initialState: { themeCode?: ThemeCode } = {
-    themeCode: defaultThemeCode,
-  },
+  initialState: { themeCode?: ThemeCode } = { themeCode: defaultThemeCode },
   action: { type: string; payload: ThemeCode }
-): { themeCode?: ThemeCode; userId?: string } {
+): { themeCode?: ThemeCode } {
   if (action.type === "SET_THEME") {
     const themeCode = action.payload === "light" ? "light" : "dark";
     window.document &&
