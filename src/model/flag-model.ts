@@ -73,7 +73,7 @@ export class Flag extends TimeStamps {
   offVariation?: number;
 
   @prop()
-  variations: Array<any | any>;
+  variations: Array<boolean | string | number>;
 
   @prop({ default: null })
   debugEventsUntilDate?: any;

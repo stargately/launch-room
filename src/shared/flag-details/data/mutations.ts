@@ -10,6 +10,8 @@ export const upsertFlag = gql`
     $on: Boolean
     $variationsBoolean: [Boolean!]
     $variationsJson: [String!]
+    $variationsString: [String!]
+    $variationsNumber: [Int!]
     $fallthrough: FallthroughInput
     $offVariation: Int
     $archived: Boolean
@@ -23,6 +25,8 @@ export const upsertFlag = gql`
       description: $description
       variationsBoolean: $variationsBoolean
       variationsJson: $variationsJson
+      variationsString: $variationsString
+      variationsNumber: $variationsNumber
       fallthrough: $fallthrough
       offVariation: $offVariation
       archived: $archived

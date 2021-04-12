@@ -245,6 +245,12 @@ class UpFlagDetailsArgs {
   @Field(() => [String], { nullable: true })
   variationsJson: string[];
 
+  @Field(() => [Int], { nullable: true })
+  variationsNumber: number[];
+
+  @Field(() => [String], { nullable: true })
+  variationsString: string[];
+
   @Field(() => Int, { nullable: true })
   offVariation: number;
 
@@ -360,9 +366,17 @@ export class FlagResolver {
         updated
       );
     } else {
-      const { variationsJson, variationsBoolean } = detail;
+      const {
+        variationsJson,
+        variationsBoolean,
+        variationsNumber,
+        variationsString,
+      } = detail;
       const variations =
-        variationsBoolean || variationsJson?.map((value) => JSON.parse(value));
+        variationsBoolean ||
+        variationsJson?.map((value) => JSON.parse(value)) ||
+        variationsNumber ||
+        variationsString;
 
       await flagModel.create({
         workspace: workspaceId,
