@@ -1,3 +1,7 @@
+api_tokens.button_submit: Edit
+
+api_tokens.launch_room_token: Launch Room Token
+
 auth/button_submit: Submit
 
 auth/consent: 'By clicking "SUBMIT", you agree to our <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.'
@@ -99,6 +103,10 @@ feature_flags.rule_valid_json: This must be valid JSON
 feature_flags.success_archive_flag_message: Flag successfully archived
 
 feature_flags.success_restore_flag_message: Flag successfully restored
+
+feature_flags.tab_api_title: Settings & API Tokens
+
+feature_flags.tab_flag_title: Feature Flags
 
 flag_detail.archive_flag_description: This flag will be archived across all environments and will only appear in your list when filtered for.
 
