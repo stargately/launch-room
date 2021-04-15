@@ -39,7 +39,10 @@ export const App: React.FC<Props> = (props: Props) => {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route exact path="/default*">
+            <Route
+              exact
+              path={["/default", "/default/flags", "/default/settings"]}
+            >
               <FlagsTabs />
             </Route>
             <Route exact path="/default/features/:flagKey">
