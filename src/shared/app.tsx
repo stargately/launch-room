@@ -9,7 +9,7 @@ import { ScrollToTop } from "@/shared/common/scroll-top";
 import { fonts } from "@/shared/common/styles/style-font";
 import { TopBar } from "@/shared/common/top-bar";
 import { Home } from "@/shared/home/home";
-import { FlagsStatusTableController } from "./feature-flags/flags-status-table-controller";
+import { FlagsTabs } from "./feature-flags/flags-tabs";
 import { FlagDetailsController } from "./flag-details/flag-details-controller";
 
 const initGoogleAnalytics = require("./common/google-analytics");
@@ -39,8 +39,11 @@ export const App: React.FC<Props> = (props: Props) => {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route exact path="/default">
-              <FlagsStatusTableController />
+            <Route
+              exact
+              path={["/default", "/default/flags", "/default/settings"]}
+            >
+              <FlagsTabs />
             </Route>
             <Route exact path="/default/features/:flagKey">
               <FlagDetailsController />

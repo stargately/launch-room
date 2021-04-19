@@ -15,7 +15,7 @@ export class ApiTokensDoc extends TimeStamps {
   _id?: mongoose.Types.ObjectId;
 
   @prop({ ref: Workspace, required: true })
-  workspace: Ref<Workspace>;
+  workspace?: Ref<Workspace>;
 
   @prop({ default: () => `launch_room_${nanoid58()}` })
   launchRoomToken?: string;

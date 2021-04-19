@@ -4,10 +4,8 @@
 # -----------------------------------------------
 
 type ApiTokens {
-  _id: String
-  sendgridApiKey: String
-  carrierToken: String
-  logoUrl: String
+  _id: String!
+  launchRoomToken: String!
 }
 
 type Clause {
@@ -77,7 +75,7 @@ scalar JSON
 type Mutation {
   subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
   upsertFlag(workspaceId: ID!, key: ID!, name: String, description: String, rules: [RuleInput!], on: Boolean, variationsBoolean: [Boolean!], variationsJson: [String!], variationsNumber: [Int!], variationsString: [String!], offVariation: Int, fallthrough: FallthroughInput, archived: Boolean): Boolean!
-  upsertApiTokens(_id: String!, sendgridApiKey: String, carrierToken: String): ApiTokens
+  upsertApiTokens(_id: String!, launchRoomToken: String!): ApiTokens
 }
 
 type Prerequisite {

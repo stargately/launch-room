@@ -19,7 +19,6 @@ import {
   RefetchContext,
   WorkspaceIdContext,
 } from "@/shared/feature-flags/context";
-import { ContentPadding } from "@/shared/common/styles/style-padding";
 import { CommonMargin } from "@/shared/common/common-margin";
 import { Link } from "onefx/lib/react-router-dom";
 import { t } from "onefx/lib/iso-i18n";
@@ -147,7 +146,7 @@ export const FlagsStatusTable: React.FC<Props> = ({
   ];
 
   return (
-    <ContentPadding>
+    <>
       <CommonMargin />
       <h1>
         {archived
@@ -196,6 +195,6 @@ export const FlagsStatusTable: React.FC<Props> = ({
           dataSource={data}
         />
       </ConfigProvider>
-    </ContentPadding>
+    </>
   );
 };
