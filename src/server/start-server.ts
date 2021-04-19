@@ -36,10 +36,12 @@ export async function startServer(): Promise<Server> {
   const server: MyServer = new Server((config as any) as Config) as MyServer;
   server.app.proxy = Boolean(config.get("server.proxy"));
   setGateways(server);
+  const { routePrefix } = server.config.server;
   server.auth = new OnefxAuth(server.gateways.mongoose, {
     ...authConfig,
-    loginUrl: "/launch-room/",
-    allowedLoginNext: ["/launch-room/default/"],
+    loginUrl: `${routePrefix}/`,
+    allowedLoginNext: [`${routePrefix}/default/`],
+    allowedLogoutNext: [`${routePrefix}/`],
   });
 
   setMiddleware(server);

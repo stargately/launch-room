@@ -27,7 +27,7 @@ const seedWorkspaces = [
   {
     _id: "5fca07e0e66beb3159d49218",
     name: "Beancount.io",
-    owner: "5fc9f952b8e8b72f4a7f811e",
+    owner: "5fc9f952b8e8b72f4a7f8112",
   },
 ];
 

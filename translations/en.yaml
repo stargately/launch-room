@@ -62,7 +62,7 @@ auth/wrong-password: Password is incorrect
 
 feature_flags.active_flag_view: View active flags
 
-feature_flags.archive_flag_label: Archived
+feature_flags.archive_flag_label: Archive the flag
 
 feature_flags.archive_flag_title: Are you sure to archived this flag?
 
