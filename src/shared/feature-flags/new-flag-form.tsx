@@ -55,13 +55,13 @@ export const NewFlagForm: React.FC<Props> = ({
   const renderVariationField = (type: string) => {
     switch (type) {
       case "Boolean":
-        return <Input disabled />;
+        return <Input disabled autoComplete="off" />;
 
       case "String":
-        return <Input />;
+        return <Input autoComplete="off" />;
 
       case "Number":
-        return <InputNumber />;
+        return <InputNumber autoComplete="off" />;
 
       case "Json":
         return <JsonEditor />;
@@ -144,7 +144,7 @@ export const NewFlagForm: React.FC<Props> = ({
           label="Name"
           rules={[{ required: true, message: "Please enter name" }]}
         >
-          <Input placeholder="Eg. New gallery" />
+          <Input placeholder="Eg. New gallery" autoComplete="off" />
         </Form.Item>
 
         <CommonMargin />
@@ -155,13 +155,16 @@ export const NewFlagForm: React.FC<Props> = ({
           help={KeyHelp}
           rules={[{ required: true, message: "Please enter name" }]}
         >
-          <Input placeholder="new-gallery" />
+          <Input placeholder="new-gallery" autoComplete="off" />
         </Form.Item>
 
         <CommonMargin />
 
         <Form.Item name="description" label="Description">
-          <Input placeholder="Describe what this feature flag controls" />
+          <Input
+            placeholder="Describe what this feature flag controls"
+            autoComplete="off"
+          />
         </Form.Item>
 
         <CommonMargin />

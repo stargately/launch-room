@@ -26,14 +26,14 @@ export const ApiTokensController = () => {
   return (
     <Form layout="vertical" form={form} onFinish={onFinish}>
       <Form.Item hidden={true} name="_id">
-        <Input />
+        <Input autoComplete="off" />
       </Form.Item>
 
       <Form.Item
         label={t("api_tokens.launch_room_token")}
         name="launchRoomToken"
       >
-        <Input />
+        <Input autoComplete="off" />
       </Form.Item>
 
       <Form.Item

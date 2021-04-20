@@ -61,7 +61,7 @@ export function NewsletterForm({
       }}
     >
       <Form.Item name="email">
-        <Input placeholder={placeholder} size="large" />
+        <Input placeholder={placeholder} size="large" autoComplete="off" />
       </Form.Item>
 
       <Form.Item>

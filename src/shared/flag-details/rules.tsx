@@ -110,7 +110,7 @@ const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
       </Row>
 
       <Form.Item name={["rules", index, "id"]} hidden>
-        <Input />
+        <Input autoComplete="off" />
       </Form.Item>
 
       <Form.List name={[index, "clauses"]}>
