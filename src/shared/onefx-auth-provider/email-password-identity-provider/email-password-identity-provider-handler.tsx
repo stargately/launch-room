@@ -6,6 +6,7 @@ import { Context } from "onefx/lib/types";
 import * as React from "react";
 import validator from "validator";
 import { WorkspaceRole } from "@/model/user-workspace-model";
+import { ThemeProvider } from "@/shared/common/styles/theme-provider";
 import { IdentityAppContainer } from "./view/identity-app-container";
 
 const PASSWORD_MIN_LENGTH = 8;
@@ -54,8 +55,13 @@ export function passwordValidator(): Handler {
 }
 
 function isoRender(ctx: Context): void {
+  ctx.setState("base.nonce", ctx.state.nonce);
   ctx.body = ctx.isoReactRender({
-    VDom: <IdentityAppContainer />,
+    VDom: (
+      <ThemeProvider>
+        <IdentityAppContainer />
+      </ThemeProvider>
+    ),
     reducer: noopReducer,
     clientScript: "/identity-provider-main.js",
   });

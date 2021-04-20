@@ -46,7 +46,7 @@ export const Home = (): JSX.Element => {
         </ContentPadding>
       </Layout.Content>
 
-      <Layout.Content style={{ backgroundColor: "rgb(201, 243, 241)" }}>
+      <GreyContent>
         <ContentPadding>
           <StyledHeroRow gutter={32}>
             <Col md={12} xs={24}>
@@ -61,9 +61,9 @@ export const Home = (): JSX.Element => {
             </Col>
           </StyledHeroRow>
         </ContentPadding>
-      </Layout.Content>
+      </GreyContent>
 
-      <Layout.Content style={{ backgroundColor: colors.white }}>
+      <Layout.Content>
         <WaveImg src={assetURL("wave.png")} />
         <ContentPadding>
           <StyledHeroRow gutter={32}>
@@ -168,3 +168,7 @@ const Icon = styled("img", {
 const CardTitle = styled("h3", {
   fontWeight: 700,
 });
+
+const GreyContent = styled(Layout.Content, ({ $theme }) => ({
+  backgroundColor: $theme.colors.black40,
+}));

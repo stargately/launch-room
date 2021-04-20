@@ -8,7 +8,7 @@ import { ProfileAppContainer } from "./profile-app";
 export function setProfileHandler(server: MyServer): void {
   server.get(
     "profile",
-    "/profile/*",
+    "/profile/(.*)",
     server.auth.authRequired,
     async (ctx: Context) => {
       ctx.setState("base.userId", ctx.state.userId);

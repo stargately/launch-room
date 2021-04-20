@@ -4,6 +4,7 @@ import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { border } from "polished";
 import { CommonMargin } from "./common-margin";
 import { Flex } from "./flex";
 import { colors } from "./styles/style-color";
@@ -11,7 +12,6 @@ import { contentPadding } from "./styles/style-padding";
 import { TOP_BAR_HEIGHT } from "./top-bar";
 
 export const FOOTER_HEIGHT = 89;
-export const LINE = "1px #EDEDED solid";
 
 export const FOOTER_ABOVE = {
   minHeight: `calc(100vh - ${FOOTER_HEIGHT + TOP_BAR_HEIGHT}px)`,
@@ -49,9 +49,9 @@ export function Footer(): JSX.Element {
   );
 }
 
-const Align = styled("div", (_) => ({
+const Align = styled("div", ({ $theme }) => ({
   ...contentPadding,
-  borderTop: LINE,
+  ...border("top", "1px", $theme.colors.black60, "solid"),
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
