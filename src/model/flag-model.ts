@@ -56,7 +56,7 @@ export class Flag extends TimeStamps {
   @prop()
   rules?: Array<{
     id?: string;
-    variation: number;
+    variation?: number;
     clauses: Array<{
       attribute: string;
       op: string;
@@ -64,10 +64,11 @@ export class Flag extends TimeStamps {
       negate: boolean;
     }>;
     trackEvents: boolean;
+    rollout?: { variations: Array<number> };
   }>;
 
   @prop()
-  fallthrough: { variation: number };
+  fallthrough: { variation?: number; rollout?: { variations: Array<number> } };
 
   @prop({ default: 0 })
   offVariation?: number;

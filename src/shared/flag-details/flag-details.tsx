@@ -70,7 +70,7 @@ export function FlagDetails({
 
   const _onFinish = async (formData: Record<string, unknown>) => {
     const values = deepOmit(formData, "__typename");
-    const { on, fallthrough, offVariation } = values;
+    const { fallthrough, on, offVariation } = values;
     const newRules = values.rules.map((value: { clauses: ClauseInput[] }) => ({
       ...value,
       clauses: value.clauses.map((clause) => {
@@ -141,6 +141,7 @@ export function FlagDetails({
             >
               {({ getFieldValue }) => (
                 <Rules
+                  form={form}
                   variance={getFieldValue("variations")}
                   loading={isFetching}
                 />
@@ -158,7 +159,6 @@ export function FlagDetails({
                     label: "If targeting is off, serve",
                   }}
                   variance={getFieldValue("variations")}
-                  disabled={false}
                   loading={isFetching}
                 />
               )}

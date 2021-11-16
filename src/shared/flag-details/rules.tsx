@@ -6,7 +6,7 @@ import Row from "antd/lib/row";
 import Menu from "antd/lib/menu";
 import Col from "antd/lib/col";
 import Select from "antd/lib/select";
-import Form from "antd/lib/form";
+import Form, { FormInstance } from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import Dropdown from "antd/lib/dropdown";
@@ -19,11 +19,12 @@ import operators from "@/shared/flag-details/data/operators";
 import attributes from "@/shared/flag-details/data/attributes";
 
 export type RulesProps = {
+  form: FormInstance;
   variance: boolean[];
   loading?: boolean;
 };
 
-export function Rules({ variance, loading }: RulesProps): JSX.Element {
+export const Rules: React.FC<RulesProps> = ({ form, variance, loading }) => {
   return (
     <>
       <Form.List name="rules">
@@ -32,6 +33,7 @@ export function Rules({ variance, loading }: RulesProps): JSX.Element {
             <Skeleton active loading={loading}>
               {fields.map((field) => (
                 <Rule
+                  form={form}
                   variance={variance}
                   index={field.key}
                   key={field.key}
@@ -61,26 +63,30 @@ export function Rules({ variance, loading }: RulesProps): JSX.Element {
 
       <Card>
         <VarianceSelect
+          form={form}
+          isShowRollout={true}
           itemProps={{
-            name: "fallthrough.variation",
+            name: ["fallthrough", "variation"],
             label: "Default Rule",
+            noStyle: true,
           }}
+          rolloutName={["fallthrough", "rollout", "variations"]}
           variance={variance}
-          disabled={false}
           loading={loading}
         />
       </Card>
     </>
   );
-}
+};
 
 type RuleProps = {
+  form: FormInstance;
   variance: boolean[];
   index: number;
   remove: () => void;
 };
 
-const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
+const Rule: React.FC<RuleProps> = ({ form, variance, index, remove }) => {
   const operatorOptions = operators.reduce((acc, { id, label }): any => {
     if (label) {
       return [...acc, { value: id, label }];
@@ -199,12 +205,13 @@ const Rule: React.FC<RuleProps> = ({ variance, index, remove }) => {
 
       <Row gutter={4} align="middle">
         <Col span={2}>SERVE</Col>
-        <Col span={4}>
+        <Col span={22}>
           <VarianceSelect
-            itemProps={{
-              name: [index, "variation"],
-              noStyle: true,
-            }}
+            form={form}
+            isShowRollout={true}
+            itemProps={{ name: [index, "variation"], noStyle: true }}
+            parentName="rules"
+            rolloutName={[index, "rollout", "variations"]}
             variance={variance}
           />
         </Col>
