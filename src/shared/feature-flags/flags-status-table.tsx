@@ -60,9 +60,9 @@ export const FlagsStatusTable: React.FC<Props> = ({
         } else {
           const set = new Set();
           for (const r of record.rules || []) {
-            set.add(variations[r.variation]);
+            set.add(variations[r.variation || ""]);
           }
-          set.add(variations[record.fallthrough.variation]);
+          set.add(variations[record.fallthrough.variation || ""]);
           val = [...set];
         }
         return <pre>{String(val)}</pre>;
