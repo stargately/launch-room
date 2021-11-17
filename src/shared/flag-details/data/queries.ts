@@ -14,10 +14,16 @@ export const flagDetails = gql`
         }
         variation
         trackEvents
+        rollout {
+          variations
+        }
       }
       variations
       fallthrough {
         variation
+        rollout {
+          variations
+        }
       }
       offVariation
       archived

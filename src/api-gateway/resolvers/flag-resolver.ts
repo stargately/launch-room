@@ -67,9 +67,24 @@ class ClauseInput {
 }
 
 @ObjectType()
+class VariationsObject {
+  @Field(() => [Int])
+  variations: Array<Record<number, unknown>>;
+}
+
+@InputType()
+class Variations {
+  @Field(() => [Int])
+  variations: Array<Record<number, unknown>>;
+}
+
+@ObjectType()
 class Fallthrough {
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   variation: number;
+
+  @Field(() => VariationsObject, { nullable: true })
+  rollout: VariationsObject;
 }
 
 @ObjectType()
@@ -77,14 +92,17 @@ class Rule {
   @Field(() => ID, { nullable: true })
   id?: string;
 
-  @Field(() => Int)
-  variation: number;
-
   @Field(() => [Clause])
   clauses: Array<Clause>;
 
   @Field(() => Boolean)
   trackEvents: boolean;
+
+  @Field(() => Int, { nullable: true })
+  variation: number;
+
+  @Field(() => VariationsObject, { nullable: true })
+  rollout: VariationsObject;
 }
 
 @InputType()
@@ -92,14 +110,17 @@ class RuleInput {
   @Field(() => ID, { nullable: true })
   id?: string;
 
-  @Field(() => Int)
-  variation: number;
-
   @Field(() => [ClauseInput])
   clauses: Array<ClauseInput>;
 
   @Field(() => Boolean)
   trackEvents: boolean;
+
+  @Field(() => Int, { nullable: true })
+  variation: number;
+
+  @Field(() => Variations, { nullable: true })
+  rollout: Variations;
 }
 
 @ObjectType()
@@ -173,8 +194,11 @@ class FlagDetails {
 
 @InputType()
 class FallthroughInput {
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   variation: number;
+
+  @Field(() => Variations, { nullable: true })
+  rollout: Variations;
 }
 
 @ObjectType()
