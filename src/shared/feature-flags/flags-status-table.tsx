@@ -1,10 +1,13 @@
 /* eslint-disable camelcase */
 import React from "react";
+import { Link } from "onefx/lib/react-router-dom";
+import { t } from "onefx/lib/iso-i18n";
 import Table from "antd/lib/table/Table";
 import ConfigProvider from "antd/lib/config-provider";
 import Skeleton from "antd/lib/skeleton";
 import Space from "antd/lib/space";
 import Typography from "antd/lib/typography";
+import Row from "antd/lib/row";
 import { ColumnsType } from "antd/lib/table";
 import Button from "antd/lib/button";
 import Menu from "antd/lib/menu";
@@ -20,8 +23,7 @@ import {
   WorkspaceIdContext,
 } from "@/shared/feature-flags/context";
 import { CommonMargin } from "@/shared/common/common-margin";
-import { Link } from "onefx/lib/react-router-dom";
-import { t } from "onefx/lib/iso-i18n";
+import { VarIcon } from "@/shared/common/icons/var-icon";
 import { NewFlagController } from "./new-flag-controller";
 
 type Props = {
@@ -53,19 +55,16 @@ export const FlagsStatusTable: React.FC<Props> = ({
       key: "variance",
       title: "Serving variations",
       dataIndex: "variations",
-      render(variations, record, _index) {
-        let val;
-        if (!record.on) {
-          val = variations[record.offVariation];
-        } else {
-          const set = new Set();
-          for (const r of record.rules || []) {
-            set.add(variations[r.variation || ""]);
-          }
-          set.add(variations[record.fallthrough.variation || ""]);
-          val = [...set];
-        }
-        return <pre>{String(val)}</pre>;
+      render(_, record) {
+        return (
+          <Row align="middle">
+            <VarIcon index={record.offVariation} />
+            <pre style={{ margin: "0" }}>
+              {JSON.stringify(record.variations[record.offVariation])}
+            </pre>
+            <Typography.Text type="secondary"> - off variation</Typography.Text>
+          </Row>
+        );
       },
     },
     // {
