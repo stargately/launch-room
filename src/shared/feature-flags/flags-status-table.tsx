@@ -11,6 +11,7 @@ import Row from "antd/lib/row";
 import { ColumnsType } from "antd/lib/table";
 import Button from "antd/lib/button";
 import Menu from "antd/lib/menu";
+import Switch from "antd/lib/switch";
 import Dropdown from "antd/lib/dropdown";
 import Popconfirm from "antd/lib/popconfirm";
 import notification from "antd/lib/notification";
@@ -47,7 +48,7 @@ export const FlagsStatusTable: React.FC<Props> = ({
       key: "key",
       title: "Name",
       dataIndex: "key",
-      render(key, _record, _index) {
+      render(key) {
         return <Link to={`/default/features/${key}`}>{key}</Link>;
       },
     },
@@ -55,26 +56,62 @@ export const FlagsStatusTable: React.FC<Props> = ({
       key: "variance",
       title: "Serving variations",
       dataIndex: "variations",
-      render(_, record) {
+      render(variations, record) {
+        if (record.on) {
+          return (
+            <Row align="middle">
+              {record.fallthrough.variation !== null ? (
+                <>
+                  <VarIcon index={0} />
+                  <pre style={{ margin: "0" }}>
+                    {JSON.stringify(variations[record.fallthrough.variation])}
+                  </pre>
+                </>
+              ) : (
+                record.fallthrough?.rollout?.variations.map((_, i) => (
+                  <Row align="middle" key={i}>
+                    <VarIcon index={i} />
+                    <pre style={{ margin: "0" }}>
+                      {JSON.stringify(variations[i])}
+                    </pre>
+                  </Row>
+                ))
+              )}
+            </Row>
+          );
+        }
         return (
           <Row align="middle">
             <VarIcon index={record.offVariation} />
             <pre style={{ margin: "0" }}>
-              {JSON.stringify(record.variations[record.offVariation])}
+              {JSON.stringify(variations[record.offVariation])}
             </pre>
             <Typography.Text type="secondary"> - off variation</Typography.Text>
           </Row>
         );
       },
     },
-    // {
-    //   key: "on",
-    //   title: "Flag Switch",
-    //   dataIndex: "on",
-    //   render(value, _record, _index) {
-    //     return <Switch defaultChecked={value} onChange={() => null} />;
-    //   },
-    // },
+    {
+      key: "on",
+      title: "Flag Switch",
+      dataIndex: "on",
+      render(value, record) {
+        return (
+          <Switch
+            defaultChecked={value}
+            onChange={async () => {
+              try {
+                await upsertFlag({ workspaceId, key: record.key, on: !value });
+
+                notification.success({ message: t("notification.update") });
+              } catch (e) {
+                notification.error({ message: e.message });
+              }
+            }}
+          />
+        );
+      },
+    },
     {
       title: function renderTitle() {
         return (
