@@ -71,8 +71,8 @@ export const VarianceSelect: React.FC<{
                 >
                   {variance.map((v, i) => {
                     return (
-                      <Select.Option key={String(v)} value={i}>
-                        {String(v)}
+                      <Select.Option key={JSON.stringify(v)} value={i}>
+                        {JSON.stringify(v)}
                       </Select.Option>
                     );
                   })}
@@ -146,7 +146,9 @@ export const VarianceSelect: React.FC<{
                           <Col style={{ marginTop: "8px" }}>
                             <VarIcon index={i} />
                           </Col>
-                          <Col style={{ marginTop: "6px" }}>{String(v)}</Col>
+                          <Col style={{ marginTop: "6px" }}>
+                            {JSON.stringify(v)}
+                          </Col>
                         </Row>
                       );
                     })}
@@ -175,8 +177,8 @@ export const VarianceSelect: React.FC<{
       >
         {variance.map((v, i) => {
           return (
-            <Select.Option key={String(v)} value={i}>
-              {String(v)}
+            <Select.Option key={JSON.stringify(v)} value={i}>
+              {JSON.stringify(v)}
             </Select.Option>
           );
         })}
