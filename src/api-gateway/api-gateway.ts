@@ -8,6 +8,7 @@ import { OnefxAuth } from "onefx-auth";
 import { NonEmptyArray } from "type-graphql/dist/interfaces/NonEmptyArray";
 import { NewsletterResolver } from "@/shared/newsletter/newsletter-resolver";
 import { FlagResolver } from "@/api-gateway/resolvers/flag-resolver";
+import { ProjectsResolver } from "@/api-gateway/resolvers/project-resolver";
 import { MyServer } from "@/server/start-server";
 import { customAuthChecker } from "@/api-gateway/auth-checker";
 import { ApiTokensResolver } from "@/shared/api-tokens/api-tokens-resolver";
@@ -29,6 +30,7 @@ export async function setApiGateway(server: MyServer): Promise<void> {
     NewsletterResolver,
     FlagResolver,
     ApiTokensResolver,
+    ProjectsResolver,
   ];
   server.resolvers = resolvers;
 

@@ -2,7 +2,7 @@ import React from "react";
 import Tabs from "antd/lib/tabs";
 import { useHistory, useRouteMatch } from "react-router";
 import { FlagsStatusTableController } from "@/shared/feature-flags/flags-status-table-controller";
-import { ApiTokensController } from "@/shared//api-tokens/view/api-tokens-controller";
+import { ProjectsSettingsController } from "@/shared/settings/projects-settings-controller";
 import { ContentPadding } from "@/shared/common/styles/style-padding";
 import { t } from "onefx/lib/iso-i18n";
 
@@ -21,7 +21,7 @@ export const FlagsTabs: React.FC = () => {
           <FlagsStatusTableController />
         </TabPane>
         <TabPane tab={t("feature_flags.tab_api_title")} key="settings">
-          <ApiTokensController />
+          <ProjectsSettingsController />
         </TabPane>
       </Tabs>
     </ContentPadding>

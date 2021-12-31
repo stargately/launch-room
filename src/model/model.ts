@@ -3,6 +3,8 @@ import { FlagModel } from "@/model/flag-model";
 import { SegmentModel } from "@/model/segment-model";
 import { WorkspaceModel } from "@/model/workspace-model";
 import { UserWorkspaceModel } from "@/model/user-workspace-model";
+import { ProjectModel } from "@/model/project-model";
+import { EnvironmentModel } from "@/model/environment-model";
 import { ApiTokensModel } from "@/shared/api-tokens/api-tokens-model";
 
 export type Model = {
@@ -11,6 +13,8 @@ export type Model = {
   workspaceModel: typeof WorkspaceModel;
   userWorkspace: typeof UserWorkspaceModel;
   apiTokens: typeof ApiTokensModel;
+  projectModel: typeof ProjectModel;
+  environmentModel: typeof EnvironmentModel;
 };
 
 export async function setModel(server: MyServer): Promise<void> {
@@ -20,4 +24,6 @@ export async function setModel(server: MyServer): Promise<void> {
   server.model.workspaceModel = WorkspaceModel;
   server.model.userWorkspace = UserWorkspaceModel;
   server.model.apiTokens = ApiTokensModel;
+  server.model.projectModel = ProjectModel;
+  server.model.environmentModel = EnvironmentModel;
 }

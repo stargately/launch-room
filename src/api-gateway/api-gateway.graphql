@@ -27,6 +27,9 @@ type ClientSideAvailability {
   usingMobileKey: Boolean!
 }
 
+# The javascript `Date` as string. Type represents date and time as the ISO Date string.
+scalar DateTime
+
 type Empty {
   ok: Boolean!
 }
@@ -78,6 +81,7 @@ type Mutation {
   subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
   upsertApiTokens(_id: String!, launchRoomToken: String!): ApiTokens
   upsertFlag(archived: Boolean, description: String, fallthrough: FallthroughInput, key: ID!, name: String, offVariation: Int, on: Boolean, rules: [RuleInput!], variationsBoolean: [Boolean!], variationsJson: [String!], variationsNumber: [Int!], variationsString: [String!], workspaceId: ID!): Boolean!
+  upsertProject(_id: ID, deletedAt: DateTime, name: String!, workspace: ID!): Project
 }
 
 type Prerequisite {
@@ -85,8 +89,16 @@ type Prerequisite {
   variation: Int!
 }
 
+type Project {
+  _id: ID!
+  deletedAt: DateTime
+  name: String!
+  workspace: ID!
+}
+
 type Query {
   apiTokens: ApiTokens!
+  fetchProjects(workspace: ID!): [Project!]!
   flagDetails(key: ID!, workspaceId: ID!): FlagDetails
   flagsStatus(archived: Boolean!, limit: Int!, skip: Int!, workspaceId: ID!): FlagsStatus!
 
