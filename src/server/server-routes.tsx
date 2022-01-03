@@ -7,6 +7,7 @@ import { setEmailPasswordIdentityProviderRoutes } from "@/shared/onefx-auth-prov
 import { setApiGateway } from "@/api-gateway/api-gateway";
 import { setSdkApiRoutes } from "@/server/sdk-api/sdk-api-routes";
 import { MyServer } from "./start-server";
+import { Environment as EnvironmentDoc } from "@/model/environment-model";
 
 export function setServerRoutes(server: MyServer): void {
   // Health checks
@@ -32,6 +33,21 @@ export function setServerRoutes(server: MyServer): void {
         user: ctx.state.userId,
       });
       ctx.setState("base.workspaceId", userWorkspace?.workspace);
+
+      const projects = await server.model.projectModel.find({
+        workspace: userWorkspace?.workspace,
+        deletedAt: null,
+      });
+      const environments = await Promise.all(
+        projects.map(
+          async (project): Promise<EnvironmentDoc[]> =>
+            server.model.environmentModel.find({
+              project: project._id,
+              deletedAt: null,
+            })
+        )
+      );
+      ctx.setState("base.currentEnvironment", environments?.flat()[0]);
 
       ctx.body = await apolloSSR(ctx, {
         VDom: <AppContainer />,
