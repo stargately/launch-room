@@ -4,19 +4,21 @@ import {
   Authorized,
   Ctx,
   Field,
+  ID,
   Mutation,
   ObjectType,
   Query,
   Resolver,
 } from "type-graphql";
 import { IContext } from "@/api-gateway/api-gateway";
+import { ApiTokensDoc } from "@/shared/api-tokens/api-tokens-model";
 
 @ObjectType()
 class ApiTokens {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   _id: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   launchRoomToken?: string;
 }
 
@@ -29,23 +31,21 @@ class UpsertTokensRequest {
   launchRoomToken: string;
 }
 
+@ArgsType()
+class RequestByApiTokenId {
+  @Field(() => ID)
+  _id: string;
+}
+
 @Resolver()
 export class ApiTokensResolver {
   @Authorized()
   @Query(() => ApiTokens)
-  public async apiTokens(@Ctx() ctx: IContext): Promise<ApiTokens> {
-    const userWorkspace = await ctx.model.userWorkspace.findOne({
-      user: ctx.userId,
-    });
-
-    const tokens = await ctx.model.apiTokens.findOne({
-      workspace: userWorkspace?.workspace,
-    });
-
-    return (
-      tokens ||
-      ctx.model.apiTokens.create({ workspace: userWorkspace?.workspace })
-    );
+  public async fetchApiTokens(
+    @Args() { _id }: RequestByApiTokenId,
+    @Ctx() { model: { apiTokens } }: IContext
+  ): Promise<ApiTokensDoc | null> {
+    return apiTokens.findById(_id);
   }
 
   @Authorized()

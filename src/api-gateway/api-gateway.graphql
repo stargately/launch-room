@@ -4,8 +4,8 @@
 # -----------------------------------------------
 
 type ApiTokens {
-  _id: String!
-  launchRoomToken: String!
+  _id: String
+  launchRoomToken: String
 }
 
 type Clause {
@@ -32,6 +32,14 @@ scalar DateTime
 
 type Empty {
   ok: Boolean!
+}
+
+type Environment {
+  _id: ID!
+  apiToken: ID!
+  deletedAt: DateTime
+  name: String!
+  project: ID!
 }
 
 type Fallthrough {
@@ -80,6 +88,7 @@ scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 type Mutation {
   subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
   upsertApiTokens(_id: String!, launchRoomToken: String!): ApiTokens
+  upsertEnvironment(_id: ID, deletedAt: DateTime, launchRoomToken: String, name: String!, project: ID): Environment
   upsertFlag(archived: Boolean, description: String, fallthrough: FallthroughInput, key: ID!, name: String, offVariation: Int, on: Boolean, rules: [RuleInput!], variationsBoolean: [Boolean!], variationsJson: [String!], variationsNumber: [Int!], variationsString: [String!], workspaceId: ID!): Boolean!
   upsertProject(_id: ID, deletedAt: DateTime, name: String!, workspace: ID!): Project
 }
@@ -97,7 +106,8 @@ type Project {
 }
 
 type Query {
-  apiTokens: ApiTokens!
+  fetchApiTokens(_id: ID!): ApiTokens!
+  fetchEnvironments(workspace: ID!): [Environment!]!
   fetchProjects(workspace: ID!): [Project!]!
   flagDetails(key: ID!, workspaceId: ID!): FlagDetails
   flagsStatus(archived: Boolean!, limit: Int!, skip: Int!, workspaceId: ID!): FlagsStatus!

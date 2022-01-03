@@ -10,3 +10,15 @@ export const fetchProjects = gql`
     }
   }
 `;
+
+export const fetchEnvironments = gql`
+  query FetchEnvironments($workspace: ID!) {
+    fetchEnvironments(workspace: $workspace) {
+      _id
+      name
+      project
+      apiToken
+      deletedAt
+    }
+  }
+`;

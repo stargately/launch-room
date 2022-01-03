@@ -7,14 +7,17 @@ export class Environment extends TimeStamps {
   @prop({ default: () => new mongoose.Types.ObjectId() })
   _id?: mongoose.Types.ObjectId;
 
-  @prop({ ref: Project, required: true })
+  @prop({ ref: Project })
   project?: Ref<Project>;
 
-  @prop({ ref: ApiTokensDoc, required: true })
+  @prop({ ref: ApiTokensDoc })
   apiToken?: Ref<ApiTokensDoc>;
 
   @prop()
   name: string;
+
+  @prop()
+  deletedAt?: Date;
 }
 
 export const EnvironmentModel = getModelForClass(Environment);

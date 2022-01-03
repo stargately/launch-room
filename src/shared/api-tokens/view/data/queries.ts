@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client/core";
 
-export const apiTokens = gql`
-  query ApiTokens {
-    apiTokens {
+export const fetchApiTokens = gql`
+  query FetchApiTokens($_id: ID!) {
+    fetchApiTokens(_id: $_id) {
       _id
       launchRoomToken
     }

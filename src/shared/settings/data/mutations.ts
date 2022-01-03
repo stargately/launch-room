@@ -17,3 +17,21 @@ export const upsertProject = gql`
     }
   }
 `;
+
+export const upsertEnvironment = gql`
+  mutation UpsertEnvironment(
+    $_id: ID
+    $name: String!
+    $project: ID
+    $deletedAt: DateTime
+  ) {
+    upsertEnvironment(
+      _id: $_id
+      name: $name
+      project: $project
+      deletedAt: $deletedAt
+    ) {
+      _id
+    }
+  }
+`;

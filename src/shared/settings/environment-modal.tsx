@@ -5,26 +5,29 @@ import Form from "antd/lib/form";
 import Input from "antd/lib/input/Input";
 import notification from "antd/lib/notification";
 import Popconfirm from "antd/lib/popconfirm";
+import Space from "antd/lib/space";
 import { styled } from "onefx/lib/styletron-react";
 import { margin } from "polished";
-import { UpsertProjectVariables } from "@/shared/settings/data/__generated__/UpsertProject";
-import Space from "antd/lib/space";
+import { UpsertEnvironmentVariables } from "@/shared/settings/data/__generated__/UpsertEnvironment";
+import { t } from "onefx/lib/iso-i18n";
 
 type Props = {
-  project?: {
-    _id: string;
-    name: string;
-    workspace: string;
-    deletedAt: Date;
-  };
-  action: (variables: UpsertProjectVariables) => Promise<void>;
+  environment?: UpsertEnvironmentVariables;
+  action: (variables: UpsertEnvironmentVariables) => Promise<void>;
+  loading?: boolean;
+  launchRoomToken?: string | null;
 };
 
 const StyledAddFlag = styled("div", ({ $theme }) => ({
   ...margin($theme.sizing[2], 0),
 }));
 
-export const ProjectModal: React.FC<Props> = ({ project, action }) => {
+export const EnvironmentModal: React.FC<Props> = ({
+  environment,
+  launchRoomToken,
+  action,
+  loading,
+}) => {
   const [visible, setVisible] = useState(false);
 
   const [form] = Form.useForm();
@@ -38,26 +41,26 @@ export const ProjectModal: React.FC<Props> = ({ project, action }) => {
 
   return (
     <StyledAddFlag>
-      <Button onClick={open} type={!project ? "primary" : "default"}>
-        {!project ? "Create Project" : "Edit"}
+      <Button onClick={open} type={!environment ? "primary" : "default"}>
+        {!environment ? "Create Environment" : "Edit Environment"}
       </Button>
       <Modal
-        title={!project ? "Create a project" : "Edit"}
+        title={!environment ? "Create a environment" : "Edit"}
         visible={visible}
         footer={null}
         onCancel={close}
       >
         <Form
           form={form}
-          initialValues={project}
+          initialValues={{ ...environment, launchRoomToken }}
           layout="vertical"
           onFinish={async (values) => {
             await action(values);
             close();
             notification.info({
-              message: !project
-                ? "Create the project!"
-                : "Updated the project!",
+              message: !environment
+                ? "Create the environment!"
+                : "Updated the environment!",
               placement: "topLeft",
             });
           }}
@@ -68,6 +71,15 @@ export const ProjectModal: React.FC<Props> = ({ project, action }) => {
           <Form.Item name="name" label="Name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
+          {environment && (
+            <Form.Item
+              name="launchRoomToken"
+              label={t("api_tokens.launch_room_token")}
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+          )}
           <Form.Item shouldUpdate>
             {({ getFieldValue }) => {
               return (
@@ -76,24 +88,28 @@ export const ProjectModal: React.FC<Props> = ({ project, action }) => {
                     type="primary"
                     htmlType="submit"
                     disabled={!getFieldValue("name")}
+                    loading={loading}
                   >
-                    Save project
+                    Save environment
                   </Button>
-                  {!!project && (
+                  {!!environment && (
                     <Popconfirm
-                      title="Are you sure to delete this project?"
+                      title="Are you sure to delete this environment?"
                       onConfirm={async () => {
-                        await action({ ...project, deletedAt: new Date() });
+                        await action({
+                          ...environment,
+                          deletedAt: new Date(),
+                        });
                         close();
                         notification.info({
-                          message: "Delete the project!",
+                          message: "Delete the environment!",
                           placement: "topLeft",
                         });
                       }}
                       okText="Yes"
                       cancelText="No"
                     >
-                      <Button>Delete Project</Button>
+                      <Button>Delete Environment</Button>
                     </Popconfirm>
                   )}
                 </Space>
