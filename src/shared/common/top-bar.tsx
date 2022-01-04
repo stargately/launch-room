@@ -42,7 +42,7 @@ export const TopBar = (): JSX.Element => {
 
   const currentProject = useMemo(
     () =>
-      projects?.find((project) => project._id === currentEnvironment.project),
+      projects?.find((project) => project?._id === currentEnvironment?.project),
     [projects, currentEnvironment]
   );
 
@@ -109,11 +109,11 @@ export const TopBar = (): JSX.Element => {
             <CommonMargin />
             <div>
               <Space>
-                {currentProject && (
+                {currentProject && currentEnvironment._id && (
                   <>
                     <Typography.Text>{currentProject.name}</Typography.Text>
                     <Select
-                      defaultValue={currentProject.name}
+                      defaultValue={currentEnvironment._id}
                       style={{ width: 200 }}
                       onChange={(id) =>
                         dispatch({

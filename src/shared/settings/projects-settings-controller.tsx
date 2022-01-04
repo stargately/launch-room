@@ -10,7 +10,7 @@ import { useUpsertProject } from "@/shared/settings/hooks/use-upsert-project";
 import { useFetchProjects } from "@/shared/settings/hooks/use-fetch-projects";
 import { useUpsertEnvironment } from "@/shared/settings/hooks/use-upsert-environment";
 import { useFetchEnvironments } from "@/shared/settings/hooks/use-fetch-environments";
-import { UpsertProjectVariables } from "@/shared/settings/data/__generated__/upsertProject";
+import { UpsertProjectVariables } from "@/shared/settings/data/__generated__/UpsertProject";
 import { UpsertEnvironmentVariables } from "@/shared/settings/data/__generated__/UpsertEnvironment";
 
 export const ProjectsSettingsController: React.FC = () => {

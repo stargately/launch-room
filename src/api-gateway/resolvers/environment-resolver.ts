@@ -80,7 +80,10 @@ export class EnvironmentsResolver {
   @Mutation(() => Environment, { nullable: true })
   async upsertEnvironment(
     @Args() { _id, name, project, deletedAt }: UpsertEnvironmentRequest,
-    @Ctx() { model: { environmentModel, projectModel, apiTokens } }: IContext
+    @Ctx()
+    {
+      model: { environmentModel, projectModel, apiTokens, flagModel },
+    }: IContext
   ): Promise<EnvironmentDoc | null> {
     if (_id) {
       return environmentModel.findOneAndUpdate(
@@ -88,11 +91,35 @@ export class EnvironmentsResolver {
         { name, project, deletedAt }
       );
     }
-    const workspace = await projectModel.findOne({ _id: project });
+    const currentProject = await projectModel.findOne({ _id: project });
     const apiToken = await apiTokens.create({
-      workspace: workspace?.workspace,
+      workspace: currentProject?.workspace,
+    });
+    const environment = await environmentModel.create({
+      name,
+      project,
+      apiToken,
     });
 
-    return environmentModel.create({ name, project, apiToken });
+    const prevEnvironment = await environmentModel.findOne({
+      project,
+      deletedAt: null,
+    });
+    if (prevEnvironment) {
+      const flags = await flagModel
+        .find({
+          workspace: currentProject?.workspace,
+          environment: prevEnvironment._id,
+        })
+        .lean();
+
+      await Promise.all(
+        flags.map(async (flag) => {
+          delete flag._id;
+          await flagModel.create({ ...flag, environment: environment._id });
+        })
+      );
+    }
+    return environment;
   }
 }

@@ -58,6 +58,7 @@ type FlagDetails {
   clientSideAvailability: ClientSideAvailability!
   deleted: Boolean!
   description: String!
+  environment: ID!
   fallthrough: Fallthrough!
   key: String!
   name: String!
@@ -89,7 +90,7 @@ type Mutation {
   subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
   upsertApiTokens(_id: String!, launchRoomToken: String!): ApiTokens
   upsertEnvironment(_id: ID, deletedAt: DateTime, launchRoomToken: String, name: String!, project: ID): Environment
-  upsertFlag(archived: Boolean, description: String, fallthrough: FallthroughInput, key: ID!, name: String, offVariation: Int, on: Boolean, rules: [RuleInput!], variationsBoolean: [Boolean!], variationsJson: [String!], variationsNumber: [Int!], variationsString: [String!], workspaceId: ID!): Boolean!
+  upsertFlag(archived: Boolean, description: String, environment: ID!, fallthrough: FallthroughInput, key: ID!, name: String, offVariation: Int, on: Boolean, rules: [RuleInput!], variationsBoolean: [Boolean!], variationsJson: [String!], variationsNumber: [Int!], variationsString: [String!], workspaceId: ID!): Boolean!
   upsertProject(_id: ID, deletedAt: DateTime, name: String!, workspace: ID!): Project
 }
 

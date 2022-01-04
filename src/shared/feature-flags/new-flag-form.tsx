@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import InputNumber from "antd/lib/input-number";
@@ -15,6 +16,7 @@ import { CommonMargin } from "@/shared/common/common-margin";
 import { styled } from "onefx/lib/styletron-react";
 import { t } from "onefx/lib/iso-i18n";
 import { margin } from "polished";
+import { RootState } from "@/client/javascripts/main";
 import { RefetchContext, WorkspaceIdContext } from "./context";
 import { VarIcon } from "../common/icons/var-icon";
 import { UpsertFlagVariables } from "../flag-details/data/__generated__/UpsertFlag";
@@ -49,6 +51,9 @@ export const NewFlagForm: React.FC<Props> = ({
 }) => {
   const workspaceId = useContext(WorkspaceIdContext);
   const refetch = useContext(RefetchContext);
+  const environment = useSelector(
+    (state: RootState) => state.base.currentEnvironment?._id
+  );
 
   const [form] = Form.useForm();
 
@@ -99,6 +104,7 @@ export const NewFlagForm: React.FC<Props> = ({
         workspaceId,
         key: values.key as string,
         on: true,
+        environment,
         variationsBoolean: values.variationsBoolean as boolean[],
         variationsJson: values.variationsJson as string[],
         variationsNumber: values.variationsNumber as number[],

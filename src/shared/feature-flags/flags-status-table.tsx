@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "onefx/lib/react-router-dom";
 import { t } from "onefx/lib/iso-i18n";
 import Table from "antd/lib/table/Table";
@@ -25,6 +26,7 @@ import {
 } from "@/shared/feature-flags/context";
 import { CommonMargin } from "@/shared/common/common-margin";
 import { VarIcon } from "@/shared/common/icons/var-icon";
+import { RootState } from "@/client/javascripts/main";
 import { NewFlagController } from "./new-flag-controller";
 
 type Props = {
@@ -42,6 +44,9 @@ export const FlagsStatusTable: React.FC<Props> = ({
 }) => {
   const refetch = React.useContext(RefetchContext);
   const workspaceId = React.useContext(WorkspaceIdContext);
+  const environment = useSelector(
+    (state: RootState) => state.base.currentEnvironment?._id
+  );
 
   const columns: ColumnsType<FlagsStatus_flagsStatus_flags> = [
     {
@@ -98,11 +103,17 @@ export const FlagsStatusTable: React.FC<Props> = ({
       render(value, record) {
         return (
           <Switch
+            key={environment}
             defaultChecked={value}
             onChange={async () => {
               try {
-                await upsertFlag({ workspaceId, key: record.key, on: !value });
-
+                await upsertFlag({
+                  environment,
+                  workspaceId,
+                  key: record.key,
+                  on: !value,
+                });
+                refetch();
                 notification.success({ message: t("notification.update") });
               } catch (e) {
                 notification.error({ message: e.message });
@@ -151,6 +162,7 @@ export const FlagsStatusTable: React.FC<Props> = ({
                     onConfirm={async () => {
                       try {
                         await upsertFlag({
+                          environment,
                           workspaceId,
                           key,
                           archived: !archived,

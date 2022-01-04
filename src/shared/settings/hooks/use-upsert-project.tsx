@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import {
   UpsertProject,
   UpsertProjectVariables,
-} from "@/shared/settings/data/__generated__/upsertProject";
+} from "@/shared/settings/data/__generated__/UpsertProject";
 import { upsertProject } from "@/shared/settings/data/mutations";
 
 export const useUpsertProject = () => {

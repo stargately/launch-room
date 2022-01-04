@@ -6,8 +6,8 @@ import { apolloSSR } from "@/shared/common/apollo-ssr";
 import { setEmailPasswordIdentityProviderRoutes } from "@/shared/onefx-auth-provider/email-password-identity-provider/email-password-identity-provider-handler";
 import { setApiGateway } from "@/api-gateway/api-gateway";
 import { setSdkApiRoutes } from "@/server/sdk-api/sdk-api-routes";
-import { MyServer } from "./start-server";
 import { Environment as EnvironmentDoc } from "@/model/environment-model";
+import { MyServer } from "./start-server";
 
 export function setServerRoutes(server: MyServer): void {
   // Health checks
@@ -38,16 +38,35 @@ export function setServerRoutes(server: MyServer): void {
         workspace: userWorkspace?.workspace,
         deletedAt: null,
       });
-      const environments = await Promise.all(
-        projects.map(
-          async (project): Promise<EnvironmentDoc[]> =>
-            server.model.environmentModel.find({
-              project: project._id,
-              deletedAt: null,
-            })
-        )
-      );
-      ctx.setState("base.currentEnvironment", environments?.flat()[0]);
+
+      if (projects.length === 0) {
+        const project = await server.model.projectModel.create({
+          name: "Default",
+          workspace: userWorkspace?.workspace,
+        });
+        const apiToken = await server.model.apiTokens.create({
+          workspace: userWorkspace?.workspace,
+        });
+        const environment = await server.model.environmentModel.create({
+          name: "Prod",
+          project: project._id,
+          apiToken,
+        });
+
+        ctx.setState("base.currentEnvironment", environment);
+      } else {
+        const environments = await Promise.all(
+          projects.map(
+            async (project): Promise<EnvironmentDoc[]> =>
+              server.model.environmentModel.find({
+                project: project._id,
+                deletedAt: null,
+              })
+          )
+        );
+
+        ctx.setState("base.currentEnvironment", environments?.flat()[0]);
+      }
 
       ctx.body = await apolloSSR(ctx, {
         VDom: <AppContainer />,

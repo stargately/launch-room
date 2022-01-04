@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
 import Switch from "antd/lib/switch";
 import Form from "antd/lib/form";
 import Button from "antd/lib/button";
@@ -22,6 +23,7 @@ import { CommonMargin } from "@/shared/common/common-margin";
 import { Rules } from "@/shared/flag-details/rules";
 import deepOmit from "@/shared/utils/deep-omit";
 import operators from "@/shared/flag-details/data/operators";
+import { RootState } from "@/client/javascripts/main";
 import { ClauseInput } from "../../../__generated__/globalTypes";
 
 const StyledRow = styled(Row, ({ $theme }) => ({
@@ -51,6 +53,9 @@ export function FlagDetails({
   isPosting,
 }: Props): JSX.Element {
   const [form] = Form.useForm();
+  const environment = useSelector(
+    (state: RootState) => state.base.currentEnvironment?._id
+  );
 
   const rules = useMemo(
     () =>
@@ -89,6 +94,7 @@ export function FlagDetails({
     }));
 
     await upsertFlag({
+      environment,
       workspaceId,
       key: flagKey,
       on,
@@ -186,6 +192,7 @@ export function FlagDetails({
               onConfirm={async () => {
                 try {
                   await upsertFlag({
+                    environment,
                     workspaceId,
                     key: flagKey,
                     archived: !flagDetails?.archived,

@@ -14,6 +14,7 @@ export const upsertFlag = gql`
     $variationsNumber: [Int!]
     $fallthrough: FallthroughInput
     $offVariation: Int
+    $environment: ID!
     $archived: Boolean
   ) {
     upsertFlag(
@@ -29,6 +30,7 @@ export const upsertFlag = gql`
       variationsNumber: $variationsNumber
       fallthrough: $fallthrough
       offVariation: $offVariation
+      environment: $environment
       archived: $archived
     )
   }

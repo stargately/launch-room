@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import {
   UpsertEnvironment,
   UpsertEnvironmentVariables,
-} from "@/shared/settings/data/__generated__/upsertEnvironment";
+} from "@/shared/settings/data/__generated__/UpsertEnvironment";
 import { upsertEnvironment } from "@/shared/settings/data/mutations";
 
 export const useUpsertEnvironment = () => {
