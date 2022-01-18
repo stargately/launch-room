@@ -38,6 +38,7 @@ export async function setApiGateway(server: MyServer): Promise<void> {
     authChecker: customAuthChecker,
     emitSchemaFile: {
       path: sdlPath,
+      commentDescriptions: true,
     },
     validate: false,
   });
