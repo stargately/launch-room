@@ -104,6 +104,7 @@ export const NewFlagForm: React.FC<Props> = ({
         variationsNumber: values.variationsNumber as number[],
         variationsString: values.variationsString as string[],
         fallthrough: values.fallthrough as { variation: number },
+        offVariation: values.offVariation as number,
       });
       form.resetFields();
       closeModal();
@@ -131,7 +132,7 @@ export const NewFlagForm: React.FC<Props> = ({
         onFinish={_onFinish}
         initialValues={{
           variationType: "Boolean",
-          offVariation: false,
+          offVariation: 1,
           fallthrough: { variation: 0 },
           variationsBoolean: [true, false],
           variationsJson: ["", ""],
@@ -284,28 +285,53 @@ export const NewFlagForm: React.FC<Props> = ({
 
         <Row align="middle">
           <VariationFlag>ON</VariationFlag>
-          <Form.Item
-            style={{ width: "20%" }}
-            name={["fallthrough", "variation"]}
-          >
-            <Select>
-              <Select.Option value={0}>True</Select.Option>
-              <Select.Option value={1}>False</Select.Option>
-            </Select>
+          <Form.Item noStyle shouldUpdate>
+            {({ getFieldValue }) => {
+              const variance = getFieldValue(
+                `variations${getFieldValue("variationType")}`
+              ) as [];
+              return (
+                <Form.Item
+                  style={{ width: "50%" }}
+                  name={["fallthrough", "variation"]}
+                >
+                  <Select>
+                    {variance.map((v, i) => {
+                      return (
+                        <Select.Option key={i} value={i}>
+                          {JSON.stringify(v)}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              );
+            }}
           </Form.Item>
         </Row>
 
         <Row align="middle">
           <VariationFlag>OFF</VariationFlag>
-          <Form.Item style={{ width: "20%" }} name="offVariation">
-            <Select>
-              {/*
-              // @ts-ignore */}
-              <Select.Option value={true}>True</Select.Option>
-              {/*
-              // @ts-ignore */}
-              <Select.Option value={false}>False</Select.Option>
-            </Select>
+          <Form.Item noStyle shouldUpdate>
+            {({ getFieldValue }) => {
+              const variance = getFieldValue(
+                `variations${getFieldValue("variationType")}`
+              ) as [];
+
+              return (
+                <Form.Item style={{ width: "50%" }} name="offVariation">
+                  <Select>
+                    {variance.map((v, i) => {
+                      return (
+                        <Select.Option key={i} value={i}>
+                          {JSON.stringify(v)}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+              );
+            }}
           </Form.Item>
         </Row>
 

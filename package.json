@@ -87,7 +87,8 @@
     "@storybook/react": "6.1.11",
     "@typescript-eslint/eslint-plugin": "4.1.0",
     "@typescript-eslint/parser": "4.1.0",
-    "apollo": "2.32.0",
+    "@types/mongoose": "5.10.3",
+    "apollo": "2.32.5",
     "ava": "3.14.0",
     "cache-loader": "4.1.0",
     "del": "5.1.0",
@@ -138,7 +139,7 @@
     "@babel/preset-typescript": "7.12.7",
     "@babel/register": "7.12.10",
     "@sendgrid/client": "7.4.0",
-    "@typegoose/typegoose": "7.4.6",
+    "@typegoose/typegoose": "7.6.3",
     "@types/bcryptjs": "2.4.2",
     "@types/config": "0.0.36",
     "@types/dateformat": "3.0.1",
@@ -149,7 +150,6 @@
     "@types/jsonwebtoken": "8.5.0",
     "@types/koa": "2.11.4",
     "@types/koa-router": "7.4.1",
-    "@types/mongoose": "5.7.36",
     "@types/node-fetch": "2.5.7",
     "@types/nodemailer": "6.4.0",
     "@types/nodemailer-mailgun-transport": "1.4.1",
@@ -190,7 +190,7 @@
     "koa": "2.13.0",
     "launchdarkly-js-client-sdk": "2.18.3",
     "launchdarkly-react-client-sdk": "2.21.0",
-    "mongoose": "5.10.5",
+    "mongoose": "5.10.18",
     "nanoid-base58": "0.1.0",
     "nodemailer": "6.4.11",
     "nodemailer-mailgun-transport": "2.0.0",
@@ -224,7 +224,8 @@
     "validator": "13.1.1"
   },
   "engines": {
-    "node": "14.15.4"
+    "node": "14.15.4",
+    "npm": "6.14.8"
   },
   "private": true
 }

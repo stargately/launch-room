@@ -32,8 +32,9 @@ export type MyServer = Server & {
 const loadSeedData = config.get("loadSeedData") === "true";
 
 export async function startServer(): Promise<Server> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const server: MyServer = new Server((config as any) as Config) as MyServer;
+  const server: MyServer = new Server(
+    (config as unknown) as Config
+  ) as MyServer;
   server.app.proxy = Boolean(config.get("server.proxy"));
   setGateways(server);
   const { routePrefix } = server.config.server;
@@ -48,7 +49,7 @@ export async function startServer(): Promise<Server> {
   if (loadSeedData) {
     await server.gateways.mongoose.connection.dropDatabase();
   }
-  setModel(server);
+  await setModel(server);
   setServerRoutes(server);
   if (loadSeedData) {
     await updateSeedDate(server.auth, server.model);

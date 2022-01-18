@@ -5,6 +5,7 @@ import { buildSchema } from "type-graphql";
 import { Model } from "@/model/model";
 import { Gateways } from "@/server/gateway/gateway";
 import { OnefxAuth } from "onefx-auth";
+import { NonEmptyArray } from "type-graphql/dist/interfaces/NonEmptyArray";
 import { NewsletterResolver } from "@/shared/newsletter/newsletter-resolver";
 import { FlagResolver } from "@/api-gateway/resolvers/flag-resolver";
 import { MyServer } from "@/server/start-server";
@@ -22,7 +23,8 @@ export interface IContext {
 }
 
 export async function setApiGateway(server: MyServer): Promise<void> {
-  const resolvers = [
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const resolvers: NonEmptyArray<Function> = [
     MetaResolver,
     NewsletterResolver,
     FlagResolver,

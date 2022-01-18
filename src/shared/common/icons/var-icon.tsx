@@ -8,7 +8,7 @@ type Colors = {
   [key: number]: string;
 };
 
-const colors: Colors = {
+export const colors: Colors = {
   0: "rgb(56, 217, 169)",
   1: "rgb(34, 139, 230)",
   2: "rgb(247, 103, 7)",
@@ -26,7 +26,7 @@ const colors: Colors = {
 export const VarIcon: React.FC<Props> = ({ index }) => {
   return (
     <svg
-      style={{ marginRight: "12px" }}
+      style={{ margin: "0 12px" }}
       x="0"
       y="0"
       width="16px"

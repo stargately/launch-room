@@ -22,6 +22,9 @@ export const flagsStatus = gql`
         offVariation
         fallthrough {
           variation
+          rollout {
+            variations
+          }
         }
         rules {
           variation

@@ -13,7 +13,7 @@ export type Model = {
   apiTokens: typeof ApiTokensModel;
 };
 
-export function setModel(server: MyServer): void {
+export async function setModel(server: MyServer): Promise<void> {
   server.model = server.model || {};
   server.model.flagModel = FlagModel;
   server.model.segmentModel = SegmentModel;
