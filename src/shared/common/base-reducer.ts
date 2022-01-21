@@ -17,7 +17,7 @@ export function baseReducer(
     themeCode: defaultThemeCode,
   },
   action: { type: string; payload: ThemeCode }
-): { themeCode?: ThemeCode; userId?: string } {
+) {
   if (action.type === "SET_THEME") {
     const themeCode = action.payload === "light" ? "light" : "dark";
     window.document &&
@@ -26,6 +26,12 @@ export function baseReducer(
     return {
       ...initialState,
       themeCode,
+    };
+  }
+  if (action.type === "SET_CURRENT_ENVIRONMENT") {
+    return {
+      ...initialState,
+      currentEnvironment: action.payload,
     };
   }
   if (!initialState.themeCode) {

@@ -4,8 +4,8 @@
 # -----------------------------------------------
 
 type ApiTokens {
-  _id: String!
-  launchRoomToken: String!
+  _id: String
+  launchRoomToken: String
 }
 
 type Clause {
@@ -27,8 +27,19 @@ type ClientSideAvailability {
   usingMobileKey: Boolean!
 }
 
+# The javascript `Date` as string. Type represents date and time as the ISO Date string.
+scalar DateTime
+
 type Empty {
   ok: Boolean!
+}
+
+type Environment {
+  _id: ID!
+  apiToken: ID!
+  deletedAt: DateTime
+  name: String!
+  project: ID!
 }
 
 type Fallthrough {
@@ -47,6 +58,7 @@ type FlagDetails {
   clientSideAvailability: ClientSideAvailability!
   deleted: Boolean!
   description: String!
+  environment: ID!
   fallthrough: Fallthrough!
   key: String!
   name: String!
@@ -77,7 +89,9 @@ scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 type Mutation {
   subscribeToNewsletter(email: String!, firstName: String, lastName: String): Empty!
   upsertApiTokens(_id: String!, launchRoomToken: String!): ApiTokens
-  upsertFlag(archived: Boolean, description: String, fallthrough: FallthroughInput, key: ID!, name: String, offVariation: Int, on: Boolean, rules: [RuleInput!], variationsBoolean: [Boolean!], variationsJson: [String!], variationsNumber: [Int!], variationsString: [String!], workspaceId: ID!): Boolean!
+  upsertEnvironment(_id: ID, deletedAt: DateTime, launchRoomToken: String, name: String!, project: ID): Environment
+  upsertFlag(archived: Boolean, description: String, environment: ID!, fallthrough: FallthroughInput, key: ID!, name: String, offVariation: Int, on: Boolean, rules: [RuleInput!], variationsBoolean: [Boolean!], variationsJson: [String!], variationsNumber: [Int!], variationsString: [String!], workspaceId: ID!): Boolean!
+  upsertProject(_id: ID, deletedAt: DateTime, name: String!, workspace: ID!): Project
 }
 
 type Prerequisite {
@@ -85,8 +99,17 @@ type Prerequisite {
   variation: Int!
 }
 
+type Project {
+  _id: ID!
+  deletedAt: DateTime
+  name: String!
+  workspace: ID!
+}
+
 type Query {
-  apiTokens: ApiTokens!
+  fetchApiTokens(_id: ID!): ApiTokens!
+  fetchEnvironments(workspace: ID!): [Environment!]!
+  fetchProjects(workspace: ID!): [Project!]!
   flagDetails(key: ID!, workspaceId: ID!): FlagDetails
   flagsStatus(archived: Boolean!, limit: Int!, skip: Int!, workspaceId: ID!): FlagsStatus!
 

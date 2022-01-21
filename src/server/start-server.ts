@@ -41,7 +41,7 @@ export async function startServer(): Promise<Server> {
   server.auth = new OnefxAuth(server.gateways.mongoose, {
     ...authConfig,
     loginUrl: `${routePrefix}/`,
-    allowedLoginNext: [`${routePrefix}/default/`],
+    allowedLoginNext: [`${routePrefix}/default/prod`],
     allowedLogoutNext: [`${routePrefix}/`],
   });
 

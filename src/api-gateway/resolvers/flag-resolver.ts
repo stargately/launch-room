@@ -188,6 +188,9 @@ class FlagDetails {
   @Field(() => ClientSideAvailability)
   clientSideAvailability: ClientSideAvailability;
 
+  @Field(() => ID)
+  environment: boolean;
+
   @Field(() => Boolean)
   archived: boolean;
 }
@@ -281,6 +284,9 @@ class UpFlagDetailsArgs {
   @Field(() => FallthroughInput, { nullable: true })
   fallthrough: FallthroughInput;
 
+  @Field(() => ID)
+  environment: string;
+
   @Field(() => Boolean, { nullable: true })
   archived: boolean;
 }
@@ -341,7 +347,8 @@ export class FlagResolver {
   @Mutation(() => Boolean)
   async upsertFlag(
     @Args() detail: UpFlagDetailsArgs,
-    @Ctx() { model: { flagModel, userWorkspace }, userId }: IContext
+    @Ctx()
+    { model: { flagModel, userWorkspace, environmentModel }, userId }: IContext
   ): Promise<boolean> {
     const {
       key,
@@ -351,11 +358,15 @@ export class FlagResolver {
       offVariation,
       fallthrough,
       archived,
+      environment,
     } = detail;
-
     await assertWorkspace(userWorkspace, userId, workspaceId);
 
-    const flag = await flagModel.findOne({ key, workspace: workspaceId });
+    const flag = await flagModel.findOne({
+      key,
+      workspace: workspaceId,
+      environment,
+    });
     if (flag) {
       const updated = {} as Record<string, unknown>;
 
@@ -381,11 +392,13 @@ export class FlagResolver {
       if (archived !== undefined) {
         updated.archived = archived;
       }
+      updated.environment = environment;
 
       await flagModel.findOneAndUpdate(
         {
           key,
           workspace: workspaceId,
+          environment,
         },
         updated
       );
@@ -401,20 +414,29 @@ export class FlagResolver {
         variationsJson?.map((value) => JSON.parse(value)) ||
         variationsNumber ||
         variationsString;
-
-      await flagModel.create({
-        workspace: workspaceId,
-        clientSideAvailability: {
-          usingMobileKey: true,
-          usingEnvironmentId: true,
-        },
-        isOn: true,
-        salt: "",
-        sel: "",
-        targets: [],
-        variations,
-        ...detail,
+      const currentEnvironment = await environmentModel.findById(environment);
+      const environments = await environmentModel.find({
+        project: currentEnvironment?.project,
+        deletedAt: null,
       });
+      await Promise.all(
+        environments.map(async (value) =>
+          flagModel.create({
+            workspace: workspaceId,
+            clientSideAvailability: {
+              usingMobileKey: true,
+              usingEnvironmentId: true,
+            },
+            isOn: true,
+            salt: "",
+            sel: "",
+            targets: [],
+            variations,
+            ...detail,
+            environment: value._id,
+          })
+        )
+      );
     }
 
     return true;

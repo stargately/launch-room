@@ -30,6 +30,7 @@ export const flagsStatus = gql`
           variation
         }
         variations
+        environment
         on
       }
     }

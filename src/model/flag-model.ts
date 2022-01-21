@@ -8,8 +8,9 @@ import {
 } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { Workspace } from "@/model/workspace-model";
+import { Environment } from "@/model/environment-model";
 
-@index({ key: 1, workspace: 1 }, { unique: true })
+@index({ key: 1, workspace: 1, environment: 1 }, { unique: true })
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Flag extends TimeStamps {
   @prop()
@@ -93,6 +94,9 @@ export class Flag extends TimeStamps {
 
   @prop()
   description?: string;
+
+  @prop({ ref: Environment })
+  environment: Ref<Environment>;
 
   @prop({ default: false })
   archived?: boolean;

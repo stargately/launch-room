@@ -40,7 +40,7 @@ export const TopBar = (): JSX.Element => {
   const renderMenu = (): JSX.Element =>
     userId ? (
       <>
-        <A to="/default" onClick={hideMobileMenu}>
+        <A to="/default/prod" onClick={hideMobileMenu}>
           {t("topbar.flags")}
         </A>
       </>
