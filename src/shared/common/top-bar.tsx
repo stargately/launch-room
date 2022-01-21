@@ -1,16 +1,11 @@
 import { styled, Theme } from "onefx/lib/styletron-react";
 import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
-import React, { useEffect, useState, useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import OutsideClickHandler from "react-outside-click-handler";
-import Select from "antd/lib/select";
-import Space from "antd/lib/space";
-import Typography from "antd/lib/typography";
 import { RootState } from "@/client/javascripts/main";
 import { Link } from "onefx/lib/react-router-dom";
-import { useFetchEnvironments } from "@/shared/settings/hooks/use-fetch-environments";
-import { useFetchProjects } from "@/shared/settings/hooks/use-fetch-projects";
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
 import { Cross } from "./icons/cross.svg";
@@ -25,38 +20,7 @@ export const TOP_BAR_HEIGHT = 52;
 export const TopBar = (): JSX.Element => {
   const [displayMobileMenu, setDisplayMobileMenu] = useState(false);
 
-  const dispatch = useDispatch();
-
   const userId = useSelector((state: RootState) => state.base.userId);
-  const workspaceId = useSelector((state: RootState) => state.base.workspaceId);
-  const currentEnvironment = useSelector(
-    (state: RootState) => state.base.currentEnvironment
-  );
-
-  const { data: projects } = useFetchProjects({
-    workspace: workspaceId,
-  });
-  const { data: environments } = useFetchEnvironments({
-    workspace: workspaceId,
-  });
-
-  const currentProject = useMemo(
-    () =>
-      projects?.find((project) => project?._id === currentEnvironment?.project),
-    [projects, currentEnvironment]
-  );
-
-  const environmentOptions = useMemo(
-    () =>
-      environments?.reduce(
-        (result: any, item) => ({
-          ...result,
-          [item.project]: [...(result[item.project] || []), item],
-        }),
-        []
-      ),
-    [environments]
-  );
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -76,7 +40,7 @@ export const TopBar = (): JSX.Element => {
   const renderMenu = (): JSX.Element =>
     userId ? (
       <>
-        <A to="/default" onClick={hideMobileMenu}>
+        <A to="/default/prod" onClick={hideMobileMenu}>
           {t("topbar.flags")}
         </A>
       </>
@@ -106,48 +70,6 @@ export const TopBar = (): JSX.Element => {
             <Logo />
             <CommonMargin />
             <BrandText to="/">{t("topbar.brand")}</BrandText>
-            <CommonMargin />
-            <div>
-              <Space>
-                {currentProject && currentEnvironment._id && (
-                  <>
-                    <Typography.Text>{currentProject.name}</Typography.Text>
-                    <Select
-                      defaultValue={currentEnvironment._id}
-                      style={{ width: 200 }}
-                      onChange={(id) =>
-                        dispatch({
-                          type: "SET_CURRENT_ENVIRONMENT",
-                          payload: environments?.find(
-                            (value) => value._id === id
-                          ),
-                        })
-                      }
-                    >
-                      {environmentOptions &&
-                        Object.keys(environmentOptions).map((key, i) => {
-                          const project = projects?.find(
-                            (value) => value._id === key
-                          );
-
-                          return (
-                            <Select.OptGroup label={project?.name} key={i}>
-                              {environmentOptions[key].map((value: any) => (
-                                <Select.Option
-                                  key={value._id}
-                                  value={value._id}
-                                >
-                                  {value.name}
-                                </Select.Option>
-                              ))}
-                            </Select.OptGroup>
-                          );
-                        })}
-                    </Select>
-                  </>
-                )}
-              </Space>
-            </div>
           </Flex>
           <Flex>
             <Menu>{renderMenu()}</Menu>
@@ -202,7 +124,7 @@ const BarPlaceholder = styled("div", () => {
   return {
     display: "block",
     padding: `${height}px ${height}px ${height}px ${height}px`,
-    backgroundColor: colors.white,
+    backgroundColor: colors.nav01,
   };
 });
 

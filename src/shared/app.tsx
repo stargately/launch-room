@@ -41,11 +41,18 @@ export const App: React.FC<Props> = (props: Props) => {
             </Route>
             <Route
               exact
-              path={["/default", "/default/flags", "/default/settings"]}
+              path={[
+                "/:projectName/:environmentName",
+                "/:projectName/:environmentName/flags",
+                "/:projectName/:environmentName/settings",
+              ]}
             >
               <FlagsTabs />
             </Route>
-            <Route exact path="/default/features/:flagKey">
+            <Route
+              exact
+              path="/:projectName/:environmentName/features/:flagKey"
+            >
               <FlagDetailsController />
             </Route>
             <Route path="*">

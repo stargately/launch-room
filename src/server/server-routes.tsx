@@ -41,20 +41,23 @@ export function setServerRoutes(server: MyServer): void {
 
       if (projects.length === 0) {
         const project = await server.model.projectModel.create({
-          name: "Default",
+          name: "default",
           workspace: userWorkspace?.workspace,
         });
         const apiToken = await server.model.apiTokens.create({
           workspace: userWorkspace?.workspace,
         });
         const environment = await server.model.environmentModel.create({
-          name: "Prod",
+          name: "prod",
           project: project._id,
           apiToken,
         });
 
         ctx.setState("base.currentEnvironment", environment);
       } else {
+        const urlProjectName = ctx.request.url.split("/")[2];
+        const urlEnvironmentName = ctx.request.url.split("/")[3];
+
         const environments = await Promise.all(
           projects.map(
             async (project): Promise<EnvironmentDoc[]> =>
@@ -64,8 +67,24 @@ export function setServerRoutes(server: MyServer): void {
               })
           )
         );
-
-        ctx.setState("base.currentEnvironment", environments?.flat()[0]);
+        let urlEnvironment;
+        if (urlProjectName && urlEnvironmentName) {
+          const urlProject = projects?.find(
+            (item) => item.name === urlProjectName
+          );
+          urlEnvironment = environments
+            ?.flat()
+            .find(
+              (item) =>
+                item.name === urlEnvironmentName &&
+                item.project?.toString() === urlProject?._id.toString()
+            );
+        }
+        if (urlEnvironment) {
+          ctx.setState("base.currentEnvironment", urlEnvironment);
+        } else {
+          ctx.setState("base.currentEnvironment", environments?.flat()[0]);
+        }
       }
 
       ctx.body = await apolloSSR(ctx, {
